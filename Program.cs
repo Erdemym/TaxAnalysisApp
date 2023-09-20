@@ -1,2 +1,12 @@
-﻿// Test for github
-Console.WriteLine("Hello, World!");
+﻿using System;
+
+class Program
+{
+    static void Main()
+    {
+       
+        //new RunTest();
+       
+       new GeneralAction().SbkAnalysis();
+    }
+}

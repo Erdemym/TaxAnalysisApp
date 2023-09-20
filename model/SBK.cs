@@ -1,6 +1,22 @@
 public class SBK
 {
-    public int VKN { get; set; }
+
+    // VKN,Unvan,Yil,Tutar,Belge,Tablo,EkBilgi
+    private string vkn;
+    public string VKN
+    {
+        get{
+            return vkn;
+        } 
+        set
+        {
+        if(value.Length<10){
+            vkn=value.PadLeft(10,'0');
+        }else{
+            vkn=value;
+        }
+    } 
+    }
     public string? Unvan { get; set; }
     public int Yil { get; set; }
     public decimal Tutar { get; set; }
