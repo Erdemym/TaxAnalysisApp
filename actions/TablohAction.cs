@@ -1,12 +1,15 @@
-public class TablohAction{
+public class TablohAction
+{
     public TablohAction()
     {
     }
 
-    public void DetermineTabloHforSBK(){
-        using (OleDbHelper dbHelper = new OleDbHelper()){
+    public void DetermineTabloHforSBK()
+    {
+        using (OleDbHelper dbHelper = new OleDbHelper())
+        {
             dbHelper.OpenConnection();
-             string updateQuery = @"
+            string updateQuery = @"
         UPDATE [sbk$] sbk
         SET sbk.Tablo = 'H'
         WHERE
@@ -22,12 +25,12 @@ public class TablohAction{
                     AND tabloH.[Devam Eden Görev] = 'Yok'
                     AND tabloH.[KDV Mükellefiyeti] = 'Var'
             )";
-            int effectedRow= dbHelper.ExecuteNonQuery(updateQuery);
+            int effectedRow = dbHelper.ExecuteNonQuery(updateQuery);
             Console.WriteLine($"Tablo-H Row effected : {effectedRow}");
             dbHelper.CloseConnection();
         }
     }
 
- 
+
 
 }

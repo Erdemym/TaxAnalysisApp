@@ -6,7 +6,7 @@ public class OleDbHelper : IDisposable
 {
     private const string excelFilePath = "analiz.xlsx"; // Replace with your Excel file path
 
-        // Connection string for Excel
+    // Connection string for Excel
     public static string connectionString = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={excelFilePath};Extended Properties=\"Excel 12.0 Xml;HDR=YES\";";
 
 
@@ -70,5 +70,5 @@ public class OleDbHelper : IDisposable
         _connection.Dispose();
     }
 
-  
+
 }

@@ -7,6 +7,10 @@ public class GeneralAction
     //constructor
     public GeneralAction()
     {
+     
+        
+
+        
         //load Ayar values
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
@@ -14,12 +18,21 @@ public class GeneralAction
         DataTable ayarTable = dbHelper.ExecuteQuery(query);
         dbHelper.CloseConnection();
 
-        Ayar.Tutar = ayarTable.Rows[0].Field<int>("Tutar");
+        Ayar.Tutar = ayarTable.Rows[0].Field<double>("Tutar");
         Ayar.Analiz = ayarTable.Rows[0].Field<string>("Analiz");
-        Ayar.AnalizTuru = ayarTable.Rows[0].Field<string>("AnalizTuru");
-        Ayar.HYil = ayarTable.Rows[0].Field<string>("HYil");
-        Ayar.KararE = ayarTable.Rows[0].Field<string>("KararE");
+        Ayar.AnalizTuru = ayarTable.Rows[0].Field<string>("Analiz Türü");
+        Ayar.HYil = DateTime.Now.Year - 5;
+        Ayar.KararE = DateTime.Now.Month > 6 ? DateTime.Now.Year - 5 : DateTime.Now.Year - 4;
         Ayar.Oncelik = ayarTable.Rows[0].Field<string>("Oncelik");
+
+
+        //check sbk table has double Vkn and Year Taxpayers
+        SbkAction sbkAction = new SbkAction();
+        sbkAction.CheckValuesCorrection();
+        //Check sbk table values
+        sbkAction.CheckTaxPayersTaxAndYearTwice();
+        CheckErrorFlag();
+
 
         bool sbkAnalysis = true;
 
@@ -28,7 +41,7 @@ public class GeneralAction
             sbkAnalysis = false;
         }
 
-
+        FillBlankVKNToE();
 
         if (sbkAnalysis)
         {
@@ -66,7 +79,7 @@ public class GeneralAction
         //check if tabloH is empty
         //TabloH analysis is only for sbk analysis
 
-        string tabloHQuery = @"SELECT * FROM [TabloH$] WHERE [Sonuç]='Tablo-H' 
+        string tabloHQuery = @"SELECT * FROM [tablo-h$] WHERE [Sonuç]='Tablo-H' 
         AND [Müfettiş Belirlenecek Görev] = 'Yok' 
         AND [Devam Eden Görev] = 'Yok' 
         AND [KDV Mükellefiyeti] = 'Var'";
@@ -96,7 +109,7 @@ public class GeneralAction
         {
             Ayar.MatrahEmptyFlag = true;
         }
-     
+
     }
 
 
@@ -133,7 +146,7 @@ public class GeneralAction
 
         if (fillAFlag)
         {
-            fillBlankTabloToA();
+            FillBlankTabloToA();
         }
 
     }
@@ -147,7 +160,7 @@ public class GeneralAction
         //fill the Blank Tablo to A
     }
 
-    private void fillBlankTabloToA()
+    private void FillBlankTabloToA()
     {
         OleDbHelper oleDbHelper = new OleDbHelper();
         string updateQuery = $"Update [sbk$] set [Tablo]='A' where [Tablo] is null";
@@ -157,5 +170,28 @@ public class GeneralAction
         oleDbHelper.CloseConnection();
 
 
+    }
+
+    private void FillBlankVKNToE()
+    {
+        OleDbHelper oleDbHelper = new OleDbHelper();
+        string updateQuery = $"Update [sbk$] set [Tablo]='E' where [VKN] is null";
+        oleDbHelper.OpenConnection();
+        int effectedRows = oleDbHelper.ExecuteNonQuery(updateQuery);
+        Console.WriteLine($"A: {effectedRows} rows effected");
+        oleDbHelper.CloseConnection();
+
+
+    }
+
+    //check Error Flag than exit program
+    public void CheckErrorFlag()
+    {
+        if (Ayar.ErrorFlag)
+        {
+            Console.WriteLine("Hatalı Kayıt Var");
+            Console.ReadLine();
+            Environment.Exit(0);
+        }
     }
 }

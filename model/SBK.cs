@@ -2,20 +2,21 @@ public class SBK
 {
 
     // VKN,Unvan,Yil,Tutar,Belge,Tablo,EkBilgi
-    private string vkn;
+    private string? vkn;
     public string VKN
     {
-        get{
-            return vkn;
-        } 
+        get => vkn;
         set
         {
-        if(value.Length<10){
-            vkn=value.PadLeft(10,'0');
-        }else{
-            vkn=value;
+            if (value.Length < 10)
+            {
+                vkn = value.PadLeft(10, '0');
+            }
+            else
+            {
+                vkn = value;
+            }
         }
-    } 
     }
     public string? Unvan { get; set; }
     public int Yil { get; set; }

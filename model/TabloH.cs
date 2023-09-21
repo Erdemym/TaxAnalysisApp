@@ -2,7 +2,7 @@
 // Class for the "tablo-h" sheet
 public class TabloH
 {
-    
+
     //write all fields with comma for commentline
     //VergiNo,Yil,ToplamSMIYBTutari,IZDKHavuzTutari,MalHizmetTutari,MalHizmetTutariPercent5,ToplamTutarDurumu,Percent5AnalizDurumu,Sonuc,MufettisBelirlenecekGorev,DevamEdenGorev,KDVMukellefiyeti,VTRAdeti,RaporTarihi,RaporSayisi
     public string? VergiNo { get; set; }

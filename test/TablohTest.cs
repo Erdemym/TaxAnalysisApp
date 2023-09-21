@@ -1,20 +1,23 @@
 using System.Data;
-public class TablohTest{
-       //Testing Turkish characters and spaces in query
-       public void TurkishCharAndSpacesTest(){
-        
-        OleDbHelper dbHelper = new OleDbHelper();
-        dbHelper.OpenConnection();
-        string query = $"Select  Vergi No,Yıl,Sonuç,Müfettiş Belirlenecek Görev,Devam Eden Görev FROM [tablo-h$]";
-        DataTable dataTable = dbHelper.AdapterFill(query);
-        dbHelper.CloseConnection();
-        Console.WriteLine($"Vergi No : {dataTable.Rows[0]["Vergi No"]},Yıl: {dataTable.Rows[0]["Yıl"]},Sonuç: {dataTable.Rows[0]["Sonuç"]},Müfettiş Belirlenecek Görev: {dataTable.Rows[0]["Müfettiş Belirlenecek Görev"]},Devam Eden Görev: {dataTable.Rows[0]["Devam Eden Görev"]}");
-    }
+public class TablohTest
+{
+  //Testing Turkish characters and spaces in query
+  public void TurkishCharAndSpacesTest()
+  {
 
-      public void testData(){
-        OleDbHelper dbHelper = new OleDbHelper();
-        dbHelper.OpenConnection();
-        string updateQuery = @"
+    OleDbHelper dbHelper = new OleDbHelper();
+    dbHelper.OpenConnection();
+    string query = $"Select  Vergi No,Yıl,Sonuç,Müfettiş Belirlenecek Görev,Devam Eden Görev FROM [tablo-h$]";
+    DataTable dataTable = dbHelper.AdapterFill(query);
+    dbHelper.CloseConnection();
+    Console.WriteLine($"Vergi No : {dataTable.Rows[0]["Vergi No"]},Yıl: {dataTable.Rows[0]["Yıl"]},Sonuç: {dataTable.Rows[0]["Sonuç"]},Müfettiş Belirlenecek Görev: {dataTable.Rows[0]["Müfettiş Belirlenecek Görev"]},Devam Eden Görev: {dataTable.Rows[0]["Devam Eden Görev"]}");
+  }
+
+  public void testData()
+  {
+    OleDbHelper dbHelper = new OleDbHelper();
+    dbHelper.OpenConnection();
+    string updateQuery = @"
         UPDATE [sbk$] sbk
         SET sbk.Tablo = 'H'
         WHERE
@@ -31,11 +34,11 @@ public class TablohTest{
 
             )";
 
-           int effectedRow = dbHelper.ExecuteNonQuery(updateQuery);
-            dbHelper.CloseConnection();
+    int effectedRow = dbHelper.ExecuteNonQuery(updateQuery);
+    dbHelper.CloseConnection();
 
-            Console.WriteLine($"Tablo-H Row effected : {effectedRow}");
+    Console.WriteLine($"Tablo-H Row effected : {effectedRow}");
 
 
-      }
-      }
+  }
+}

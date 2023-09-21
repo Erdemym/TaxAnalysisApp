@@ -1,9 +1,11 @@
-public class RunTest{
+public class RunTest
+{
 
-    public RunTest(){
+    public RunTest()
+    {
         //settings 
-        Ayar.Tutar=25000;
-        Ayar.Analiz="G-25 bin altı";
+        Ayar.Tutar = 25000;
+        Ayar.Analiz = "G-25 bin altı";
 
         //actions
         SbkAction sbkAction = new SbkAction();
