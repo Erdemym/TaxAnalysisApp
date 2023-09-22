@@ -8,13 +8,13 @@ public class RunTest
         Ayar.Analiz = "G-25 bin altı";
 
         //actions
-        SbkAction sbkAction = new SbkAction();
+        SbkTableAction sbkAction = new SbkTableAction();
         //sbkAction.DetermineTaxPayersUnderAmount();
-        TablohAction tablohAction = new TablohAction();
+        TablohTableAction tablohAction = new TablohTableAction();
         //tablohAction.DetermineTabloHforSBK();
         //SbkTest sbkTest = new SbkTest();
         //sbkTest.PutTaxPayerToModelTest();
-        MatrahAction matrahAction = new MatrahAction();
-        matrahAction.determineMatrahForSBK();
+        MatrahTableAction matrahAction = new MatrahTableAction();
+        matrahAction.DetermineMatrahForSBK();
     }
 }

@@ -7,7 +7,7 @@ class Program
 
         //new RunTest();
 
-        new GeneralAction().SbkAnalysis();
+        new SbkController().Analysis();
 
 
     }

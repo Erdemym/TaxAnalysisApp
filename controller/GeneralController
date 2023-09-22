@@ -1,0 +1,134 @@
+
+using System.Data;
+
+public class GeneralController
+{
+
+    //constructor
+    public GeneralController()
+    {
+        WriteProgramName();
+        //load Ayar values
+        OleDbHelper dbHelper = new OleDbHelper();
+        dbHelper.OpenConnection();
+        string query = "Select * from [ayar$]";
+        DataTable ayarTable = dbHelper.ExecuteQuery(query);
+        dbHelper.CloseConnection();
+
+        Ayar.Tutar = ayarTable.Rows[0].Field<double>("Tutar");
+        Ayar.Analiz = ayarTable.Rows[0].Field<string>("Analiz");
+        Ayar.AnalizTuru = ayarTable.Rows[0].Field<string>("Analiz Türü");
+        Ayar.HYil = DateTime.Now.Year - 5;
+        Ayar.KararE = DateTime.Now.Month > 6 ? DateTime.Now.Year - 5 : DateTime.Now.Year - 4;
+        Ayar.Oncelik = ayarTable.Rows[0].Field<string>("Oncelik");
+
+
+        //check sbk table has double Vkn and Year Taxpayers
+        SbkAction sbkAction = new SbkAction();
+        sbkAction.CheckValuesCorrection();
+        //Check sbk table values
+        sbkAction.CheckTaxPayersTaxAndYearTwice();
+        CheckErrorFlag();
+
+
+        bool sbkAnalysis = true;
+
+        if (Ayar.AnalizTuru == "Genel")
+        {
+            sbkAnalysis = false;
+        }
+
+        sbkAction.FillBlankVKNToE();
+        sbkAction.AnalysisYearTimedOuttoE();
+
+        if (sbkAnalysis)
+        {
+            PreControlSBKAnalysis();
+        }
+        else
+        {
+            PreControlGeneralAnalysis();
+        }
+    }
+
+    public void PreControlSBKAnalysis()
+    {
+        MatrahAction matrahAction = new MatrahAction();
+        matrahAction.CheckMatrahTableIsEmptyForSBK();
+        TablohAction tablohAction = new TablohAction();
+        tablohAction.CheckTablohTableIsEmptyForSBK();
+        tablohAction.CheckTablohUnexceptedYears();
+    }
+
+    public void PreControlGeneralAnalysis()
+    {
+        MatrahAction matrahAction = new MatrahAction();
+        matrahAction.CheckMatrahTableIsEmptyForGeneralAnalysis();
+    }
+
+
+    //method for sbk analysis actions
+    public void SbkAnalysis()
+    {
+        //sbk under amount control
+        SbkAction sbkAction = new SbkAction();
+        sbkAction.DetermineTaxPayersUnderAmount();
+        //sbk matrah control
+        if (!Ayar.MatrahEmptyFlag)
+        {
+            MatrahAction matrahAction = new MatrahAction();
+            matrahAction.DetermineMatrahForSBK();
+        }
+
+        //sbk tabloH control
+        bool fillAFlag = true;
+        if (!Ayar.TablohEmptyFlag)
+        {
+            TablohAction tablohAction = new TablohAction();
+            tablohAction.DetermineTabloHforSBK();
+        }
+        else if (Ayar.TablohEmptyFlag)
+        {
+            //Ask user to do you continue without fillBlankTabloToA
+            Console.WriteLine("Tablo-H alanı boş.Sadece G leri bulmak için 1 e, Tüm Analizi Yapmak için 2 ye basınız");
+            int userChoice = Convert.ToInt32(Console.ReadLine());
+            if (userChoice == 1)
+            {
+                fillAFlag = false;
+            }
+        }
+
+        if (fillAFlag)
+        {
+            sbkAction.FillBlankTabloToA();
+        }
+
+    }
+
+
+ 
+
+    //check Error Flag than exit program
+    public void CheckErrorFlag()
+    {
+        if (Ayar.ErrorFlag)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Hatalı Kayıt Var");
+            Console.ReadLine();
+            Environment.Exit(0);
+        }
+    }
+
+
+    private void WriteProgramName()
+    {
+        Console.WriteLine("****************************************************************************************");
+        Console.WriteLine("*******************************Analiz Programı******************************************");
+        Console.WriteLine("****************************************************************************************");
+        Console.WriteLine("**************************Coded by Erdem YILMAZ © 2023**********************************");
+        Console.WriteLine("****************************************************************************************");
+    }
+
+
+}

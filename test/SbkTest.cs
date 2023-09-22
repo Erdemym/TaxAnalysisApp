@@ -11,7 +11,7 @@ public class SbkTest
         dbHelper.CloseConnection();
         foreach (DataRow row in dataTable.Rows)
         {
-            SBK sbkRow = SbkAction.fillSbkModel(row);
+            SBK sbkRow = SbkTableAction.fillSbkModel(row);
             Console.WriteLine(sbkRow.VKN);
         }
 
