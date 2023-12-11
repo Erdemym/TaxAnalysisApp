@@ -7,12 +7,12 @@ public class SbkTest
         string query = "SELECT * FROM [sbk$] WHERE [Yil] = 2018";
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
-        DataTable dataTable = dbHelper.AdapterFill(query);
+        DataTable dataTable = dbHelper.ExecuteQuery(query);
         dbHelper.CloseConnection();
         foreach (DataRow row in dataTable.Rows)
         {
-            SBK sbkRow = SbkTableAction.fillSbkModel(row);
-            Console.WriteLine(sbkRow.VKN);
+            TaxPayer sbkRow = TaxPayerTableAction.fillSbkModel(row);
+            Console.WriteLine(sbkRow.TaxNumber);
         }
 
 

@@ -5,10 +5,11 @@ class Program
     static void Main()
     {
 
-        //new RunTest();
-
-        new SbkController().Analysis();
-
+        bool testMode = false;
+        if(testMode)
+            new RunTest();
+        else
+            new SbkAnalysisController().Analysis();
 
     }
 }

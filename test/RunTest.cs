@@ -4,17 +4,21 @@ public class RunTest
     public RunTest()
     {
         //settings 
-        Ayar.Tutar = 25000;
-        Ayar.Analiz = "G-25 bin altı";
+        Setting.Amount = 25000;
+        Setting.Result = "G-25 bin altı";
+        Setting.GCountList = new List<TaxPayer>();
+        Setting.ACountList = new List<TaxPayer>();
 
         //actions
-        SbkTableAction sbkAction = new SbkTableAction();
+        //TaxPayerTableAction sbkAction = new TaxPayerTableAction();
         //sbkAction.DetermineTaxPayersUnderAmount();
-        TablohTableAction tablohAction = new TablohTableAction();
+        //TablohTableAction tablohAction = new TablohTableAction();
         //tablohAction.DetermineTabloHforSBK();
         //SbkTest sbkTest = new SbkTest();
         //sbkTest.PutTaxPayerToModelTest();
-        MatrahTableAction matrahAction = new MatrahTableAction();
-        matrahAction.DetermineMatrahForSBK();
+        //MatrahTableAction matrahAction = new MatrahTableAction();
+        //atrahAction.DetermineMatrahForSBK();
+        TaxPayerTableAction sbkAction = new TaxPayerTableAction();
+        sbkAction.DetermineAnalysisCount();
     }
 }

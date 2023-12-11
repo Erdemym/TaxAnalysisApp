@@ -4,11 +4,11 @@ using System.Data.OleDb;
 
 public class OleDbHelper : IDisposable
 {
-    private const string excelFilePath = "analiz.xlsx"; // Replace with your Excel file path
+    private const string excelFilePath = "analiz.xls"; // Replace with your Excel file path
 
-    // Connection string for Excel
-    public static string connectionString = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={excelFilePath};Extended Properties=\"Excel 12.0 Xml;HDR=YES\";";
-
+    // Connection string for Excel 2007 xls file format
+    //private const string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"Excel 12.0;HDR=YES\";";
+    public static string connectionString = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={excelFilePath};Extended Properties=\"Excel 12.0;HDR=YES\";";
 
     private OleDbConnection _connection;
 
@@ -25,6 +25,8 @@ public class OleDbHelper : IDisposable
         }
     }
 
+    
+
     public void CloseConnection()
     {
         if (_connection.State != ConnectionState.Closed)
@@ -33,17 +35,14 @@ public class OleDbHelper : IDisposable
         }
     }
 
-    public DataTable ExecuteQuery(string query)
+       public DataTable ExecuteQuery(string query)
     {
-        using (OleDbCommand command = new OleDbCommand(query, _connection))
+        DataTable dataTable = new DataTable();
+        using (OleDbDataAdapter adapter = new OleDbDataAdapter(query, _connection))
         {
-            DataTable dataTable = new DataTable();
-            using (OleDbDataAdapter adapter = new OleDbDataAdapter(command))
-            {
-                adapter.Fill(dataTable);
-            }
-            return dataTable;
+            adapter.Fill(dataTable);
         }
+        return dataTable;
     }
 
     public int ExecuteNonQuery(string query)
@@ -54,15 +53,7 @@ public class OleDbHelper : IDisposable
         }
     }
 
-    public DataTable AdapterFill(string query)
-    {
-        DataTable dataTable = new DataTable();
-        using (OleDbDataAdapter adapter = new OleDbDataAdapter(query, _connection))
-        {
-            adapter.Fill(dataTable);
-        }
-        return dataTable;
-    }
+ 
 
     public void Dispose()
     {

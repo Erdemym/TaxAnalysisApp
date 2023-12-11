@@ -1,8 +1,13 @@
 using System.Data;
 
+/// <summary>
+/// Contains methods for checking and determining the 'tablo-h' table.
+/// CheckTablohTableIsEmptyForSBK
+/// CheckTablohUnexceptedYears
+/// DetermineTabloHforSBK
+/// </summary>
 public class TablohTableAction
 {
-
     public void CheckTablohTableIsEmptyForSBK()
     {
         OleDbHelper dbHelper = new OleDbHelper();
@@ -11,10 +16,10 @@ public class TablohTableAction
         AND [Müfettiş Belirlenecek Görev] = 'Yok' 
         AND [Devam Eden Görev] = 'Yok' 
         AND [KDV Mükellefiyeti] = 'Var'";
-        DataTable tabloHTable = dbHelper.AdapterFill(tabloHQuery);
+        DataTable tabloHTable = dbHelper.ExecuteQuery(tabloHQuery);
         if (tabloHTable.Rows.Count == 0)
         {
-            Ayar.TablohEmptyFlag = true;
+            Setting.TablohEmptyFlag = true;
         }
         dbHelper.CloseConnection();
     }
@@ -23,11 +28,11 @@ public class TablohTableAction
     {
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
-        string tabloHQuery = $"SELECT * FROM [tablo-h$] WHERE [Yıl] = {Ayar.HYil}";
-        DataTable tabloHTable = dbHelper.AdapterFill(tabloHQuery);
+        string tabloHQuery = $"SELECT * FROM [tablo-h$] WHERE [Yıl] = {Setting.HYear}";
+        DataTable tabloHTable = dbHelper.ExecuteQuery(tabloHQuery);
         if (tabloHTable.Rows.Count > 0)
         {
-            Print.ColorYellow($"!!!!!!!!!!!-Tablo-H da {Ayar.HYil} yılı var Kontrol Ediniz.");
+            Print.ColorYellow($"!!!!!!!!!!!-Tablo-H da {Setting.HYear} yılı var Kontrol Ediniz.");
             
         }
         dbHelper.CloseConnection();

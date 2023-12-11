@@ -1,23 +1,33 @@
 using System.Data;
-using System.Security.Cryptography.X509Certificates;
 
-public class SbkTableAction
+/// <summary>
+/// Represents an action class for performing various operations on a tax payer table.
+/// DetermineTaxPayersUnderAmount
+/// CheckTaxPayersTaxAndYearTwice
+/// DetermineAnalysisCount
+/// CheckValuesCorrection
+/// CheckUnvanHasSpecialTitle
+/// AnalysisYearTimedOuttoE
+/// FillBlankTabloToA
+/// FillBlankVKNToE
+/// 
+/// </summary>
+public class TaxPayerTableAction
 {
-    public SbkTableAction()
+    public static TaxPayer fillSbkModel(System.Data.DataRow row)
     {
-    }
+        //if row[belge] null convert to 0
+        int belge = Convert.ToInt32(row["Belge"] == null ? 0 : row["Belge"]);
 
-    public static SBK fillSbkModel(System.Data.DataRow row)
-    {
-        SBK data = new SBK
+        TaxPayer data = new TaxPayer
         {
-            VKN = row["VKN"].ToString(),
-            Unvan = row["Unvan"].ToString(),
-            Yil = Convert.ToInt32(row["Yil"]),
-            Tutar = Convert.ToDecimal(row["Tutar"]),
-            Belge = Convert.ToInt32(row["Belge"]),
-            Tablo = row["Tablo"].ToString(),
-            EkBilgi = row["EkBilgi"].ToString()
+            TaxNumber = row["VKN"].ToString(),
+            Title = row["Unvan"].ToString(),
+            Year = Convert.ToInt32(row["Yil"]),
+            Amount = Convert.ToDecimal(row["Tutar"]),
+            Document = belge,
+            Result = row["Tablo"].ToString(),
+            Information = row["EkBilgi"].ToString()
         };
 
         return data;
@@ -29,7 +39,7 @@ public class SbkTableAction
         using (OleDbHelper dbHelper = new OleDbHelper())
         {
             dbHelper.OpenConnection();
-            string UpdateQuery = $"UPDATE [SBK$] SET Tablo='{Ayar.Analiz}' WHERE Tutar<={Ayar.Tutar} AND Tablo IS NULL";
+            string UpdateQuery = $"UPDATE [SBK$] SET Tablo='{Setting.Result}' WHERE Tutar<={Setting.Amount} AND Tablo IS NULL";
             int effectedRow = dbHelper.ExecuteNonQuery(UpdateQuery);
             Console.WriteLine($"G : {effectedRow}");
             dbHelper.CloseConnection();
@@ -45,7 +55,7 @@ public class SbkTableAction
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
         string doubleTaxPayersQuery = "SELECT VKN,Yil,COUNT(*) AS doubleCount FROM [sbk$] GROUP BY VKN,Yil HAVING COUNT(*)>1";
-        DataTable doubleTaxPayersTable = dbHelper.AdapterFill(doubleTaxPayersQuery);
+        DataTable doubleTaxPayersTable = dbHelper.ExecuteQuery(doubleTaxPayersQuery);
         if (doubleTaxPayersTable.Rows.Count > 0)
         {
             foreach (DataRow row in doubleTaxPayersTable.Rows)
@@ -58,24 +68,119 @@ public class SbkTableAction
                     Print.ColorRed("Vergi numaralarini kontrol edin");
                 else
                     Print.ColorRed($"{taxNumber} vergi nolu Mükellefin {year} yılı {count} defa girilmiş");
-                Ayar.ErrorFlag = true;
+                Setting.ErrorFlag = true;
             }
         }
         dbHelper.CloseConnection();
     }
 
+    public List<TaxPayer> FindMultipleRowInList(List<TaxPayer> taxPayers, string result)
+    {
+        List<TaxPayer> taxPayersWithSameTaxNumber = new List<TaxPayer>();
+        //find same taxnumber in gCountList return TaxPayer List
+        var duplicates = taxPayers.GroupBy(x => x.TaxNumber)
+            .Where(g => g.Count() > 1)
+            .Select(y => y.ToList<TaxPayer>()).ToList();
+        int count = 0;
+        foreach (var duplicate in duplicates)
+        {
+            count++;
+            taxPayersWithSameTaxNumber.AddRange(duplicate);
+        }
+
+        if (result == "A")
+        {
+            Setting.ACount += count - taxPayersWithSameTaxNumber.Count;
+        }
+        else if (result == "G")
+        {
+            Setting.GCount += count - taxPayersWithSameTaxNumber.Count;
+        }
+
+
+
+        return taxPayersWithSameTaxNumber;
+    }
+
+    //find Total count starting with A,H and G in sbk sheet Tablo column, Group by Tablo first character
+    public void DetermineAnalysisCount()
+    {
+
+        OleDbHelper dbHelper = new OleDbHelper();
+        dbHelper.OpenConnection();
+        //
+        string query = "SELECT * FROM [sbk$] ";
+        DataTable table = dbHelper.ExecuteQuery(query);
+        foreach (DataRow row in table.Rows)
+        {
+            TaxPayer taxPayer = fillSbkModel(row);
+            string tablo = taxPayer.Result;
+            tablo = tablo.ToCharArray()[0].ToString();
+            if (tablo == "A")
+            {
+                Setting.ACount++;
+                Setting.ACountList.Add(taxPayer);
+            }
+            else if (tablo == "H")
+                Setting.HCount++;
+            else if (tablo == "G")
+            {
+                Setting.GCount++;
+                Setting.GCountList.Add(taxPayer);
+            }
+            else if (tablo == "E")
+                Setting.ECount++;
+        }
+
+
+        //find same taxnumber in gCountList
+        List<TaxPayer> duplicateA = FindMultipleRowInList(Setting.ACountList, "A");
+        List<TaxPayer> duplicateG = FindMultipleRowInList(Setting.GCountList, "G");
+
+        string TotalValueText = "";
+        if (Setting.ACount != 0)
+        {
+            TotalValueText += $"A-{Setting.ACount}";
+        }
+        if (Setting.HCount != 0)
+        {
+            TotalValueText += $", H-{Setting.HCount}";
+        }
+        if (Setting.GCount != 0)
+        {
+            TotalValueText += $", G-{Setting.GCount}";
+        }
+        if (Setting.ECount != 0)
+        {
+            TotalValueText += $", E-{Setting.ECount}";
+        }
+
+        TotalValueText += $" Toplam : {Setting.ACount + Setting.HCount + Setting.GCount + Setting.ECount}";
+
+        Console.WriteLine(TotalValueText);
+        //insert two new row with Tekrar column = .
+        string insertQuery = $"INSERT INTO [sbk$] (Tekrar) VALUES ('.')";
+        int effectedRow = dbHelper.ExecuteNonQuery(insertQuery);
+        insertQuery = $"INSERT INTO [sbk$] (Tekrar) VALUES ('.###.')";
+        effectedRow = dbHelper.ExecuteNonQuery(insertQuery);
+        //insert TotalValueText to Tekrar column = ..
+        string updateQuery = $"UPDATE [sbk$] SET Tablo='{TotalValueText}' WHERE Tekrar='.###.'";
+        dbHelper.ExecuteNonQuery(updateQuery);
+        dbHelper.CloseConnection();
+    }
     public void CheckValuesCorrection()
     {
+        int rowCount = 0;
         OleDbHelper dbHelper = new OleDbHelper();
         string query = "SELECT * FROM [sbk$] order by Yil,VKN";
-        DataTable table = dbHelper.AdapterFill(query);
+        DataTable table = dbHelper.ExecuteQuery(query);
         //check vkn length bigger than 10, year beetween Ayar.HYil-1 and Hyil +5,tutar sayi olmali
         foreach (DataRow row in table.Rows)
         {
             string taxPayerTitle = row["Unvan"].ToString();
             string taxNumber = row["VKN"].ToString();
             CheckUnvanHasSpecialTitle(taxNumber, taxPayerTitle);
-
+            rowCount++;
             int year = 1;
             try
             {
@@ -84,7 +189,7 @@ public class SbkTableAction
             catch
             {
                 Print.ColorRed($"{taxNumber} vergi nolu mükellefin yılı sayı değil");
-                Ayar.ErrorFlag = true;
+                Setting.ErrorFlag = true;
             }
             try
             {
@@ -93,28 +198,29 @@ public class SbkTableAction
             catch
             {
                 Print.ColorRed($"{taxNumber} vergi nolu mükellefin tutarı sayı değil");
-                Ayar.ErrorFlag = true;
+                Setting.ErrorFlag = true;
             }
             //taxNumber only number
             if (!taxNumber.All(char.IsDigit))
             {
                 Print.ColorRed($"{taxNumber} vergi nolu mükellefin VKN'si sayı olmayan karakter içermekte");
-                Ayar.ErrorFlag = true;
+                Setting.ErrorFlag = true;
             }
             if (taxNumber.Length > 10)
             {
                 Print.ColorRed($"{taxNumber} vergi nolu mükellefin VKN'si 10 haneden büyük");
-                Ayar.ErrorFlag = true;
+                Setting.ErrorFlag = true;
             }
 
-            if (year < Ayar.HYil - 1 || year > Ayar.HYil + 5)
+            if (year < Setting.HYear - 1 || year > Setting.HYear + 5)
             {
                 Print.ColorRed($"{taxNumber} vergi nolu mükellefin yılı {year} olarak girilmiş kontrol ediniz");
-                Ayar.ErrorFlag = true;
+                Setting.ErrorFlag = true;
             }
 
 
         }
+        Setting.RowCount = rowCount;
 
 
     }
@@ -143,7 +249,7 @@ public class SbkTableAction
             Print.ColorRed("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             Print.ColorRed("VKN " + taxNumber + " li " + taxPayerTitle + " unvanlı mükellef unvanı : \"" + string.Join(", ", result) + "\" karakteri içermektedir. Yönetici İle Görüşülsün.");
             Print.ColorRed("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            
+
         }
 
     }
@@ -152,7 +258,7 @@ public class SbkTableAction
     {
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
-        string updateQuery = $"UPDATE [sbk$] SET Tablo='E',EkBilgi='Zamanaşımı' WHERE Yil <={Ayar.KararE} AND Tablo IS NULL";
+        string updateQuery = $"UPDATE [sbk$] SET Tablo='E',EkBilgi='Zamanaşımı' WHERE Yil <={Setting.TimeoutYear} AND Tablo IS NULL";
         int effectedRow = dbHelper.ExecuteNonQuery(updateQuery);
         Console.WriteLine($"E : {effectedRow}");
         dbHelper.CloseConnection();
