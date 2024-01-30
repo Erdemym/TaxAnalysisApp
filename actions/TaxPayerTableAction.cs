@@ -61,8 +61,17 @@ public class TaxPayerTableAction
             foreach (DataRow row in doubleTaxPayersTable.Rows)
             {
                 string taxNumber = row["VKN"].ToString();
-                int year = Convert.ToInt32(row["Yil"]);
-                int count = Convert.ToInt32(row["doubleCount"]);
+                int year = 9999;
+                int count = 0;
+                try
+                {
+                    year = Convert.ToInt32(row["Yil"]);
+                    count = Convert.ToInt32(row["doubleCount"]);
+                }
+                catch
+                {
+                    Print.ColorRed($"{taxNumber} vergi nolu mükellefin yılı sayı değil");
+                }
                 //check taxNumber is empty write "Vergi numaralarini kontrol edin
                 if (string.IsNullOrEmpty(taxNumber))
                     Print.ColorRed("Vergi numaralarini kontrol edin");
@@ -78,12 +87,46 @@ public class TaxPayerTableAction
     {
         List<TaxPayer> taxPayersWithSameTaxNumber = new List<TaxPayer>();
         //find same taxnumber in gCountList return TaxPayer List
+       if(result == "G")
+        {
+            //find taxPayers result not equal null
+            taxPayers = taxPayers.Where(x => x.Result != null).ToList();
+        }
         var duplicates = taxPayers.GroupBy(x => x.TaxNumber)
             .Where(g => g.Count() > 1)
             .Select(y => y.ToList<TaxPayer>()).ToList();
         int count = 0;
+        string lastTaxNumber = "";
+        decimal totalAmount = 0;
+        int lastYear = 0;
         foreach (var duplicate in duplicates)
         {
+
+            foreach (TaxPayer taxpayer in duplicate)
+            {
+                lastYear = taxpayer.Year;
+                totalAmount += taxpayer.Amount;
+                lastTaxNumber = taxpayer.TaxNumber;
+                //update Taxpayer Year Tekrar column to +++
+                OleDbHelper dbHelper = new OleDbHelper();
+                dbHelper.OpenConnection();
+                string updateQuery = $"UPDATE [sbk$] SET Tekrar='+++' WHERE VKN={taxpayer.TaxNumber} AND Yil={taxpayer.Year}";
+                int effectedRow = dbHelper.ExecuteNonQuery(updateQuery);
+                dbHelper.CloseConnection();
+            }
+
+            if (result == "A")
+            {
+                OleDbHelper dbHelper = new OleDbHelper();
+                dbHelper.OpenConnection();
+                string updateQuery = $"UPDATE [sbk$] SET EkBilgi='{totalAmount}' WHERE VKN={lastTaxNumber} AND Yil={lastYear}";
+                int effectedRow = dbHelper.ExecuteNonQuery(updateQuery);
+                dbHelper.CloseConnection();
+                totalAmount = 0;
+
+            }
+
+
             count++;
             taxPayersWithSameTaxNumber.AddRange(duplicate);
         }

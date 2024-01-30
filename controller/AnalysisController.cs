@@ -17,16 +17,17 @@ public abstract class AnalysisController
         string query = "Select * from [ayar$]";
         DataTable ayarTable = dbHelper.ExecuteQuery(query);
         //string UpdateQuery = $"UPDATE [sbk$] SET Tablo='G-{vergiKodu}' WHERE VKN={sbkModel.TaxNumber} AND Yil={sbkModel.Year}";
-        
-        string deleteQuery ="UPDATE [sbk$] set Tekrar='',Tablo=''";
+      
+        string deleteQuery ="UPDATE [sbk$] set Tekrar='',Tablo='',EkBilgi=''";
         dbHelper.ExecuteNonQuery(deleteQuery);
         dbHelper.CloseConnection();
+
 
         Setting.Amount = ayarTable.Rows[0].Field<double>("Tutar");
         Setting.Result = ayarTable.Rows[0].Field<string>("Analiz");
         Setting.AnalysisType = ayarTable.Rows[0].Field<string>("Analiz Türü");
-        Setting.HYear = DateTime.Now.Year - 5;
-        Setting.TimeoutYear = DateTime.Now.Month > 6 ? DateTime.Now.Year - 5 : DateTime.Now.Year - 4;
+        Setting.HYear = ayarTable.Rows[0].Field<double>("H Yıl");
+        Setting.TimeoutYear = ayarTable.Rows[0].Field<double>("Karar E");
         Setting.Priority = ayarTable.Rows[0].Field<string>("Oncelik");
         Setting.GCountList = new List<TaxPayer>();
         Setting.ACountList = new List<TaxPayer>();
