@@ -62,7 +62,7 @@ public abstract class AnalysisController
     {
         if (Setting.ErrorFlag)
         {
-            Console.WriteLine("Program sonlandırıldı.");
+            Print.ColorRed("Program Sonlandırıldı.");
             Environment.Exit(0);
         }
     }

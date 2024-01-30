@@ -74,7 +74,8 @@ public class TaxPayerTableAction
                 }
                 //check taxNumber is empty write "Vergi numaralarini kontrol edin
                 if (string.IsNullOrEmpty(taxNumber))
-                    Print.ColorRed("Vergi numaralarini kontrol edin");
+                    Print.ColorRed("Vergi numaralarini kontrol edin. \n"+
+                    "Altta boş satır olabilir. Boş satırları siliniz.");
                 else
                     Print.ColorRed($"{taxNumber} vergi nolu Mükellefin {year} yılı {count} defa girilmiş");
                 Setting.ErrorFlag = true;

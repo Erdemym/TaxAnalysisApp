@@ -23,7 +23,7 @@ public class MatrahTableAction
         {
             matrahTable = dbHelper.ExecuteQuery(matrahQuery);
         }
-        catch (OleDbException e)
+        catch
         {
             Print.ColorRed("Matrah ve Tablo-H da sutünları sayıya dönüştürmeniz gerekmektedir.");
             Setting.ErrorFlag = true;
