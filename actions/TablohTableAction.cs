@@ -29,11 +29,22 @@ public class TablohTableAction
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
         string tabloHQuery = $"SELECT * FROM [tablo-h$] WHERE [Yıl] = {Setting.HYear}";
-        DataTable tabloHTable = dbHelper.ExecuteQuery(tabloHQuery);
+        DataTable tabloHTable;
+        try
+        {
+            tabloHTable = dbHelper.ExecuteQuery(tabloHQuery);
+        }
+        catch
+        {
+            Print.ColorRed("Tablo-H sutünlarını sayıya dönüştürmeniz gerekmektedir.");
+            Setting.ErrorFlag = true;
+            AnalysisController.CheckErrorFlag();
+            return;
+        }
         if (tabloHTable.Rows.Count > 0)
         {
             Print.ColorYellow($"!!!!!!!!!!!-Tablo-H da {Setting.HYear} yılı var Kontrol Ediniz.");
-            
+
         }
         dbHelper.CloseConnection();
     }
@@ -60,7 +71,6 @@ public class TablohTableAction
                     AND tabloH.[KDV Mükellefiyeti] = 'Var'
             )";
             int effectedRow = dbHelper.ExecuteNonQuery(updateQuery);
-            Console.WriteLine($"H : {effectedRow}");
             dbHelper.CloseConnection();
         }
     }

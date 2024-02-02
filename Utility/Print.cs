@@ -1,22 +1,50 @@
-public class Print{
-    public static void ColorRed(string text){
+public class Print
+{
+    private static readonly int asteriskCount = 100;
+    public static void ColorRed(string text)
+    {
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine(text);
         Console.ForegroundColor = ConsoleColor.White;
     }
 
-    public static void ColorYellow(string text){
+    public static void ColorYellow(string text)
+    {
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine(text);
         Console.ForegroundColor = ConsoleColor.White;
     }
 
-     public static void WriteProgramName()
+    public static void WriteProgramName()
     {
-        Console.WriteLine("****************************************************************************************");
-        Console.WriteLine("*******************************Analiz Programı V2.0*************************************");
-        Console.WriteLine("****************************************************************************************");
-        Console.WriteLine("**************************Coded by Erdem YILMAZ © 2023**********************************");
-        Console.WriteLine("****************************************************************************************");
+        Console.ForegroundColor = ConsoleColor.Green;
+        WriteAsteriskLine();
+        WriteAsteriskLineWithText(" Analiz Programı V2.0.1 ");
+        WriteAsteriskLine();
+        WriteAsteriskLineWithText(" Coded by Erdem YILMAZ © 2024 ");
+        WriteAsteriskLine();
+        Console.ForegroundColor = ConsoleColor.White;
+    }
+    public static void WriteAsteriskLine()
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        string asteriskLine = new string('*', asteriskCount);
+        Console.WriteLine(asteriskLine);
+
+    }
+    public static void WriteAsteriskLineWithText(string text)
+    {
+        //only one line calculate text length and write text between asterisks
+        Console.ForegroundColor = ConsoleColor.Green;
+        int textLength = text.Length;
+        int calculatedAsteriskCount = asteriskCount / 2 - textLength / 2;
+        string asteriskLine = new string('*', calculatedAsteriskCount);
+        Console.Write(asteriskLine);
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.Write(text);
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(asteriskLine);
+        Console.ForegroundColor = ConsoleColor.White;
+
     }
 }

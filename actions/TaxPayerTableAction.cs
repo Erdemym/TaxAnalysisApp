@@ -41,13 +41,8 @@ public class TaxPayerTableAction
             dbHelper.OpenConnection();
             string UpdateQuery = $"UPDATE [SBK$] SET Tablo='{Setting.Result}' WHERE Tutar<={Setting.Amount} AND Tablo IS NULL";
             int effectedRow = dbHelper.ExecuteNonQuery(UpdateQuery);
-            Console.WriteLine($"G : {effectedRow}");
             dbHelper.CloseConnection();
         }
-
-
-
-
     }
     public void CheckTaxPayersTaxAndYearTwice()
     {
@@ -73,9 +68,10 @@ public class TaxPayerTableAction
                     Print.ColorRed($"{taxNumber} vergi nolu mükellefin yılı sayı değil");
                 }
                 //check taxNumber is empty write "Vergi numaralarini kontrol edin
-                if (string.IsNullOrEmpty(taxNumber))
+                if (string.IsNullOrEmpty(taxNumber)){
                     Print.ColorRed("Vergi numaralarini kontrol edin. \n"+
-                    "Altta boş satır olabilir. Boş satırları siliniz.");
+                    "***Altta boş satır olabilir. Boş satırları siliniz.***");
+                }
                 else
                     Print.ColorRed($"{taxNumber} vergi nolu Mükellefin {year} yılı {count} defa girilmiş");
                 Setting.ErrorFlag = true;
@@ -120,7 +116,7 @@ public class TaxPayerTableAction
             {
                 OleDbHelper dbHelper = new OleDbHelper();
                 dbHelper.OpenConnection();
-                string updateQuery = $"UPDATE [sbk$] SET EkBilgi='{totalAmount}' WHERE VKN={lastTaxNumber} AND Yil={lastYear}";
+                string updateQuery = $"UPDATE [sbk$] SET ToplamTutar='{totalAmount}' WHERE VKN={lastTaxNumber} AND Yil={lastYear}";
                 int effectedRow = dbHelper.ExecuteNonQuery(updateQuery);
                 dbHelper.CloseConnection();
                 totalAmount = 0;
@@ -200,8 +196,9 @@ public class TaxPayerTableAction
         }
 
         TotalValueText += $" Toplam : {Setting.ACount + Setting.HCount + Setting.GCount + Setting.ECount}";
-
+        Print.WriteAsteriskLine();
         Console.WriteLine(TotalValueText);
+        Print.WriteAsteriskLine();
         //insert two new row with Tekrar column = .
         string insertQuery = $"INSERT INTO [sbk$] (Tekrar) VALUES ('.')";
         int effectedRow = dbHelper.ExecuteNonQuery(insertQuery);
@@ -211,6 +208,12 @@ public class TaxPayerTableAction
         string updateQuery = $"UPDATE [sbk$] SET Tablo='{TotalValueText}' WHERE Tekrar='.###.'";
         dbHelper.ExecuteNonQuery(updateQuery);
         dbHelper.CloseConnection();
+        Console.WriteLine("Analiz Tamamlandı.");
+        if(Setting.TimeBaredFlag)
+           Print.ColorYellow("Zamanaşımlı mükellef bulunmaktadır.Zamanaşımı etiketini seçmeyi unutmayın.");
+        Console.WriteLine("Çıkmak için bir tuşa basınız.");
+        Console.Read();
+
     }
     public void CheckValuesCorrection()
     {
@@ -222,13 +225,21 @@ public class TaxPayerTableAction
         foreach (DataRow row in table.Rows)
         {
             string taxPayerTitle = row["Unvan"].ToString();
+      
             string taxNumber = row["VKN"].ToString();
+            //Console.WriteLine(taxNumber + " - " +taxPayerTitle);
             CheckUnvanHasSpecialTitle(taxNumber, taxPayerTitle);
             rowCount++;
             int year = 1;
             try
             {
                 year = Convert.ToInt32(row["Yil"]);
+                if(year< Setting.HYear - 1 || year > Setting.HYear + 5)
+                {
+                    Print.ColorRed($"{taxNumber} vergi nolu mükellefin yılı {year} olarak girilmiş kontrol ediniz");
+                    Setting.ErrorFlag = true;
+                }
+                
             }
             catch
             {
@@ -290,9 +301,9 @@ public class TaxPayerTableAction
         if (result.Count > 0)
         {
 
-            Print.ColorRed("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Print.ColorRed("VKN " + taxNumber + " li " + taxPayerTitle + " unvanlı mükellef unvanı : \"" + string.Join(", ", result) + "\" karakteri içermektedir. Yönetici İle Görüşülsün.");
-            Print.ColorRed("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Print.ColorYellow("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Print.ColorYellow("VKN " + taxNumber + " li " + taxPayerTitle + " unvanlı mükellef unvanı : \"" + string.Join(", ", result) + "\" karakteri içermektedir. Yönetici İle Görüşülsün.");
+            Print.ColorYellow("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
         }
 
@@ -302,9 +313,12 @@ public class TaxPayerTableAction
     {
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
-        string updateQuery = $"UPDATE [sbk$] SET Tablo='E',EkBilgi='Zamanaşımı' WHERE Yil <={Setting.TimeoutYear} AND Tablo IS NULL";
+        string updateQuery = $"UPDATE [sbk$] SET Tablo='E' WHERE Yil <={Setting.TimeoutYear} AND Tablo IS NULL";
         int effectedRow = dbHelper.ExecuteNonQuery(updateQuery);
-        Console.WriteLine($"E : {effectedRow}");
+        if (effectedRow > 0)
+        {
+            Setting.TimeBaredFlag = true;
+        }
         dbHelper.CloseConnection();
 
     }
@@ -315,7 +329,6 @@ public class TaxPayerTableAction
         string updateQuery = $"Update [sbk$] set [Tablo]='A' where [Tablo] is null";
         oleDbHelper.OpenConnection();
         int effectedRows = oleDbHelper.ExecuteNonQuery(updateQuery);
-        Console.WriteLine($"A: {effectedRows} ");
         oleDbHelper.CloseConnection();
 
 
@@ -327,14 +340,10 @@ public class TaxPayerTableAction
         string updateQuery = $"Update [sbk$] set [Tablo]='E',[EkBilgi]='Vkn Eksik' where [VKN] is null";
         oleDbHelper.OpenConnection();
         int effectedRows = oleDbHelper.ExecuteNonQuery(updateQuery);
-        Console.WriteLine($"E: {effectedRows} ");
         oleDbHelper.CloseConnection();
 
 
     }
 
-    internal void DetermineTaxPayersUnderAmountForGeneralAnalysis()
-    {
-        throw new NotImplementedException();
-    }
+
 }

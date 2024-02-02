@@ -6,10 +6,12 @@ class Program
     {
 
         bool testMode = false;
-        if(testMode)
+        if (testMode)
             new RunTest();
         else
-            new SbkAnalysisController().Analysis();
+        {
+            new SettingAction();
+        }
 
     }
 }

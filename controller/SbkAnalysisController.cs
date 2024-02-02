@@ -19,7 +19,7 @@ public class SbkAnalysisController : AnalysisController
         TablohTableAction tablohAction = new TablohTableAction();
         tablohAction.CheckTablohTableIsEmptyForSBK();
         tablohAction.CheckTablohUnexceptedYears();
-       
+
     }
 
 
@@ -28,13 +28,20 @@ public class SbkAnalysisController : AnalysisController
     {
         //sbk under amount control
         TaxPayerTableAction sbkAction = new TaxPayerTableAction();
-        sbkAction.DetermineTaxPayersUnderAmount();
+        if (Setting.Priority == "tutar")
+            sbkAction.DetermineTaxPayersUnderAmount();
+
         //sbk matrah control
         if (!Setting.MatrahEmptyFlag)
         {
             MatrahTableAction matrahAction = new MatrahTableAction();
             matrahAction.DetermineMatrahForSBK();
         }
+        
+        if (Setting.Priority == "matrah")
+            sbkAction.DetermineTaxPayersUnderAmount();
+
+
 
         //sbk tabloH control
         bool fillAFlag = true;
