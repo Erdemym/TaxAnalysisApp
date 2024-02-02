@@ -227,7 +227,6 @@ public class TaxPayerTableAction
             string taxPayerTitle = row["Unvan"].ToString();
       
             string taxNumber = row["VKN"].ToString();
-            //Console.WriteLine(taxNumber + " - " +taxPayerTitle);
             CheckUnvanHasSpecialTitle(taxNumber, taxPayerTitle);
             rowCount++;
             int year = 1;

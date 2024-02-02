@@ -1,5 +1,3 @@
-//Move to Program.cs to here then go go go went went went
-//Create Class SettingAction
 using System.Data;
 
 public class SettingAction
@@ -55,7 +53,6 @@ public class SettingAction
     private void WriteAnalysisType(string analysisType)
     {
          Console.WriteLine($"Analiz Türü: {analysisType}");
-         //write Amount like 1,000.00
          Console.WriteLine($"Tutar: {Setting.Amount.ToString("N2")}");
          Print.WriteAsteriskLine();
     }
