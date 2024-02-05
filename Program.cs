@@ -5,7 +5,7 @@ class Program
     static void Main()
     {
 
-        bool testMode = false;
+        bool testMode = true;
         if (testMode)
             new RunTest();
         else

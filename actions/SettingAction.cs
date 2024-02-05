@@ -5,12 +5,34 @@ public class SettingAction
     public SettingAction()
     {
         Print.WriteProgramName();
-        //load Ayar values
+        getSettingsFromDB();
+        getVtrSettings();
+        Analysis();
+
+    }
+    private void getVtrSettings()
+    {
         OleDbHelper dbHelper = new OleDbHelper();
-        try{
-        dbHelper.OpenConnection();
-        }catch{
-            Setting.ErrorFlag=true;
+        string query = "Select * from [vtr$]";
+        DataTable ayarTable = dbHelper.ExecuteQuery(query);
+        DataRow getFirst = ayarTable.Rows[0];
+        Vtr vtrData = VtrTableAction.fillVtrModel(getFirst);
+        Setting.VtrTaxPayerTitle = vtrData.TaxPayerTitle;
+        Setting.VtrReportType = vtrData.ReportType;
+        Setting.VtrEvaluationDate = vtrData.EvaluationDate;
+        Setting.VtrTaxPeriod = vtrData.TaxPeriod;
+        
+    }
+    private void getSettingsFromDB()
+    {
+        OleDbHelper dbHelper = new OleDbHelper();
+        try
+        {
+            dbHelper.OpenConnection();
+        }
+        catch
+        {
+            Setting.ErrorFlag = true;
             Print.ColorRed("Excel dosyası açılamadı. Lütfen dosyanın açık olmadığından emin olunuz.");
             AnalysisController.CheckErrorFlag();
         }
@@ -29,31 +51,29 @@ public class SettingAction
         Setting.Priority = ayarTable.Rows[0].Field<string>("Oncelik");
         Setting.GCountList = new List<TaxPayer>();
         Setting.ACountList = new List<TaxPayer>();
-
-         Analysis();
-
     }
 
     public void Analysis()
     {
-            if (Setting.AnalysisType == "SBK")
-            {
-                WriteAnalysisType("Sahte Belge Kullanma");
-                new SbkAnalysisController().Analysis();
-            }
-            else if (Setting.AnalysisType == "Genel")
-            {
-                WriteAnalysisType("Genel İnceleme");
-                new MoneyTransferAnalysisController().Analysis();
-            }
+        if (Setting.AnalysisType == "SBK")
+        {
+            WriteAnalysisType("Sahte Belge Kullanma");
+            new SbkAnalysisController().Analysis();
+        }
+        else if (Setting.AnalysisType == "Genel")
+        {
+            WriteAnalysisType("Genel İnceleme");
+            new MoneyTransferAnalysisController().Analysis();
+        }
+        
 
-           
+
     }
 
     private void WriteAnalysisType(string analysisType)
     {
-         Console.WriteLine($"Analiz Türü: {analysisType}");
-         Console.WriteLine($"Tutar: {Setting.Amount.ToString("N2")}");
-         Print.WriteAsteriskLine();
+        Console.WriteLine($"Analiz Türü: {analysisType}");
+        Console.WriteLine($"Tutar: {Setting.Amount.ToString("N2")}");
+        Print.WriteAsteriskLine();
     }
 }

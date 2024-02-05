@@ -1,3 +1,5 @@
+using System.Drawing;
+
 public class Print
 {
     private static readonly int asteriskCount = 100;
@@ -46,5 +48,25 @@ public class Print
         Console.WriteLine(asteriskLine);
         Console.ForegroundColor = ConsoleColor.White;
 
+    }
+
+    public static void WriteWarningMessage(string message)
+    {
+        
+        Message(ConsoleColor.Yellow,message);
+        
+    }
+    public static void WriteErrorMessage(string message)
+    {
+       Message(ConsoleColor.Red,message);
+    }
+
+    public static void Message(ConsoleColor color,string message){
+        string exclamation = new string('!', 80);
+        Console.ForegroundColor = color;
+        Console.WriteLine(exclamation);
+        Console.WriteLine(message);
+        Console.WriteLine(exclamation);
+        Console.ForegroundColor = ConsoleColor.White;
     }
 }

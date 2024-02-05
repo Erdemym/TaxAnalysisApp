@@ -13,7 +13,10 @@ public abstract class AnalysisController
        
         //check sbk table has double Vkn and Year Taxpayers
         TaxPayerTableAction taxPayerTableAction = new TaxPayerTableAction();
+        CheckDatas.CheckUnvanHasPetrol(Setting.VtrTaxPayerTitle);
+        CheckDatas.VtrEvaluationDateControlIsNullOrEmpty();
         taxPayerTableAction.CheckValuesCorrection();
+        CheckDatas.CheckVtrReportType();
         //Check sbk table values
         taxPayerTableAction.CheckTaxPayersTaxAndYearTwice();
         CheckErrorFlag();

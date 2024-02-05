@@ -1,4 +1,5 @@
 using System.Data;
+using System.Runtime.CompilerServices;
 
 /// <summary>
 /// Represents an action class for performing various operations on a tax payer table.
@@ -68,8 +69,9 @@ public class TaxPayerTableAction
                     Print.ColorRed($"{taxNumber} vergi nolu mükellefin yılı sayı değil");
                 }
                 //check taxNumber is empty write "Vergi numaralarini kontrol edin
-                if (string.IsNullOrEmpty(taxNumber)){
-                    Print.ColorRed("Vergi numaralarini kontrol edin. \n"+
+                if (string.IsNullOrEmpty(taxNumber))
+                {
+                    Print.ColorRed("Vergi numaralarini kontrol edin. \n" +
                     "***Altta boş satır olabilir. Boş satırları siliniz.***");
                 }
                 else
@@ -84,7 +86,7 @@ public class TaxPayerTableAction
     {
         List<TaxPayer> taxPayersWithSameTaxNumber = new List<TaxPayer>();
         //find same taxnumber in gCountList return TaxPayer List
-       if(result == "G")
+        if (result == "G")
         {
             //find taxPayers result not equal null
             taxPayers = taxPayers.Where(x => x.Result != null).ToList();
@@ -209,8 +211,8 @@ public class TaxPayerTableAction
         dbHelper.ExecuteNonQuery(updateQuery);
         dbHelper.CloseConnection();
         Console.WriteLine("Analiz Tamamlandı.");
-        if(Setting.TimeBaredFlag)
-           Print.ColorYellow("Zamanaşımlı mükellef bulunmaktadır.Zamanaşımı etiketini seçmeyi unutmayın.");
+        if (Setting.TimeBaredFlag)
+            Print.ColorYellow("Zamanaşımlı mükellef bulunmaktadır.Zamanaşımı etiketini seçmeyi unutmayın.");
         Console.WriteLine("Çıkmak için bir tuşa basınız.");
         Console.Read();
 
@@ -225,20 +227,21 @@ public class TaxPayerTableAction
         foreach (DataRow row in table.Rows)
         {
             string taxPayerTitle = row["Unvan"].ToString();
-      
+
             string taxNumber = row["VKN"].ToString();
-            CheckUnvanHasSpecialTitle(taxNumber, taxPayerTitle);
+            CheckDatas.CheckUnvanHasSpecialTitle(taxNumber, taxPayerTitle);
             rowCount++;
             int year = 1;
             try
             {
                 year = Convert.ToInt32(row["Yil"]);
-                if(year< Setting.HYear - 1 || year > Setting.HYear + 5)
+                if (year < Setting.HYear - 1 || year > Setting.HYear + 5)
                 {
                     Print.ColorRed($"{taxNumber} vergi nolu mükellefin yılı {year} olarak girilmiş kontrol ediniz");
                     Setting.ErrorFlag = true;
                 }
-                
+                CheckDatas.CheckTaxPeriodCompatible(year.ToString());
+
             }
             catch
             {
@@ -278,36 +281,6 @@ public class TaxPayerTableAction
 
 
     }
-
-    public void CheckUnvanHasSpecialTitle(string taxNumber, string taxPayerTitle)
-    {
-        taxPayerTitle = taxPayerTitle.ToUpper();
-
-        // Initializing test list
-        List<string> specialTitleList = new List<string> { "PART", "BELED", "VALİ", "VALI", "SAVCI", "DERNEK", "VAKIF", "VAKİF", "SAVCİ", "KURUM", "BAŞKAN", "BASKAN" };
-
-        List<string> result = new List<string>();
-
-        foreach (string element in specialTitleList)
-        {
-            if (taxPayerTitle.Contains(element))
-            {
-                result.Add(element);
-            }
-
-        }
-
-        if (result.Count > 0)
-        {
-
-            Print.ColorYellow("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Print.ColorYellow("VKN " + taxNumber + " li " + taxPayerTitle + " unvanlı mükellef unvanı : \"" + string.Join(", ", result) + "\" karakteri içermektedir. Yönetici İle Görüşülsün.");
-            Print.ColorYellow("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-        }
-
-    }
-
     public void AnalysisYearTimedOuttoE()
     {
         OleDbHelper dbHelper = new OleDbHelper();

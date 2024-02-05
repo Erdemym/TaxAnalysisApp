@@ -21,6 +21,11 @@ public class Setting
     public static int HCount { get; internal set; }
     public static int GCount { get; internal set; }
     public static int ECount { get; internal set; }
+    public static string VtrTaxPayerTitle { get; internal set; }
+    public static string VtrReportType { get; internal set; }
+    
+    public static string VtrEvaluationDate { get; internal set; }
+    public static string VtrTaxPeriod { get; internal set; }
     
     public static List<TaxPayer> GCountList { get; internal set; }
     public static List<TaxPayer> ACountList { get; internal set; }
