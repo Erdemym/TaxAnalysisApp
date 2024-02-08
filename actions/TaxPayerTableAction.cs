@@ -18,7 +18,16 @@ public class TaxPayerTableAction
     public static TaxPayer fillSbkModel(System.Data.DataRow row)
     {
         //if row[belge] null convert to 0
-        int belge = Convert.ToInt32(row["Belge"] == null ? 0 : row["Belge"]);
+        int belge = 1;
+
+        try{
+            Convert.ToInt32(row["Belge"] == null ? 0 : row["Belge"]);
+        }catch{
+            if(Setting.DocumentNumberFlag){
+                Print.ColorYellow("Belge kısmı boş gönderilmiş.");
+                Setting.DocumentNumberFlag=false;
+                }
+        }
 
         TaxPayer data = new TaxPayer
         {

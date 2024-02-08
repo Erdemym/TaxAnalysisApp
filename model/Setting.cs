@@ -5,6 +5,7 @@ public class Setting
 
     private static bool _errorFlag = false;
     private static bool _timeBaredFlag = false;
+    private static bool _documentNumberFlag = true;
 
     public static int RowCount { get; set; }
     public static double Amount { get; set; }
@@ -26,7 +27,7 @@ public class Setting
     
     public static string VtrEvaluationDate { get; internal set; }
     public static string VtrTaxPeriod { get; internal set; }
-    
+    public static bool DocumentNumberFlag {get => _documentNumberFlag; set => _documentNumberFlag = value;}
     public static List<TaxPayer> GCountList { get; internal set; }
     public static List<TaxPayer> ACountList { get; internal set; }
 }
