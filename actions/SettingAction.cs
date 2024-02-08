@@ -14,7 +14,14 @@ public class SettingAction
     {
         OleDbHelper dbHelper = new OleDbHelper();
         string query = "Select * from [vtr$]";
-        DataTable ayarTable = dbHelper.ExecuteQuery(query);
+        DataTable ayarTable = dbHelper.ExecuteQuery(query,"SettingAction.getVtrSettings");
+        //ayarTable count equal zero give error and exit program
+        if (ayarTable.Rows.Count == 0)
+        {
+            Setting.ErrorFlag = true;
+            Print.WriteErrorMessage("VTR ayarları girilmedi.Lütfen kontrol ediniz.");
+            AnalysisController.CheckErrorFlag();
+        }
         DataRow getFirst = ayarTable.Rows[0];
         Vtr vtrData = VtrTableAction.fillVtrModel(getFirst);
         Setting.VtrTaxPayerTitle = vtrData.TaxPayerTitle;
@@ -37,9 +44,18 @@ public class SettingAction
             AnalysisController.CheckErrorFlag();
         }
         string query = "Select * from [ayar$]";
-        DataTable ayarTable = dbHelper.ExecuteQuery(query);
+        DataTable ayarTable=new DataTable();
+        try{
+            ayarTable = dbHelper.ExecuteQuery(query,"SettingAction.getSettingsFromDB-49");
+        }catch{
+            Setting.ErrorFlag = true;
+            Print.ColorRed("analiz.xls dosyası bulunamadı. Lütfen dosyayı kontrol ediniz.");
+            AnalysisController.CheckErrorFlag();
+        }
+       
+       //remove old analysis before re-analysis
         string updateQuery = "UPDATE [sbk$] set Tekrar='',ToplamTutar=null,Tablo='',EkBilgi=''";
-        dbHelper.ExecuteNonQuery(updateQuery);
+        dbHelper.ExecuteNonQuery(updateQuery,"SettingAction.getSettingsFromDB-57");
         dbHelper.CloseConnection();
 
 

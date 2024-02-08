@@ -37,7 +37,7 @@ public class SbkAnalysisController : AnalysisController
             MatrahTableAction matrahAction = new MatrahTableAction();
             matrahAction.DetermineMatrahForSBK();
         }
-        
+
         if (Setting.Priority == "matrah")
             sbkAction.DetermineTaxPayersUnderAmount();
 
@@ -64,9 +64,14 @@ public class SbkAnalysisController : AnalysisController
         if (fillAFlag)
         {
             sbkAction.FillBlankTabloToA();
+            sbkAction.DetermineAnalysisCount();
+        }
+        else
+        {
+            Print.ExitMessage("Hıfz Edilen mükellefler tespit edildi.");
         }
 
-        sbkAction.DetermineAnalysisCount();
+
 
     }
 

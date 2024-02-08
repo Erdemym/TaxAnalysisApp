@@ -35,10 +35,7 @@ public abstract class AnalysisController
     {
         if (Setting.ErrorFlag)
         {
-            Console.WriteLine("Program Sonlandırıldı.");
-            Print.WriteAsteriskLine();
-            Console.WriteLine("Çıkmak için bir tuşa basınız.");
-            Console.Read();
+            Print.ExitMessage("Program Sonlandırıldı.");
             Environment.Exit(0);
         }
     }

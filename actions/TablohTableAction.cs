@@ -16,7 +16,7 @@ public class TablohTableAction
         AND [Müfettiş Belirlenecek Görev] = 'Yok' 
         AND [Devam Eden Görev] = 'Yok' 
         AND [KDV Mükellefiyeti] = 'Var'";
-        DataTable tabloHTable = dbHelper.ExecuteQuery(tabloHQuery);
+        DataTable tabloHTable = dbHelper.ExecuteQuery(tabloHQuery,"TablohTableAction.CheckTablohTableIsEmptyForSBK");
         if (tabloHTable.Rows.Count == 0)
         {
             Setting.TablohEmptyFlag = true;
@@ -32,7 +32,7 @@ public class TablohTableAction
         DataTable tabloHTable;
         try
         {
-            tabloHTable = dbHelper.ExecuteQuery(tabloHQuery);
+            tabloHTable = dbHelper.ExecuteQuery(tabloHQuery,"TablohTableAction.CheckTablohUnexceptedYears");
         }
         catch
         {
@@ -70,7 +70,7 @@ public class TablohTableAction
                     AND tabloH.[Devam Eden Görev] = 'Yok'
                     AND tabloH.[KDV Mükellefiyeti] = 'Var'
             )";
-            int effectedRow = dbHelper.ExecuteNonQuery(updateQuery);
+            int effectedRow = dbHelper.ExecuteNonQuery(updateQuery,"TablohTableAction.DetermineTabloHforSBK");
             dbHelper.CloseConnection();
         }
     }

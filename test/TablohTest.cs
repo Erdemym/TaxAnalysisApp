@@ -8,7 +8,7 @@ public class TablohTest
     OleDbHelper dbHelper = new OleDbHelper();
     dbHelper.OpenConnection();
     string query = $"Select  Vergi No,Yıl,Sonuç,Müfettiş Belirlenecek Görev,Devam Eden Görev FROM [tablo-h$]";
-    DataTable dataTable = dbHelper.ExecuteQuery(query);
+    DataTable dataTable = dbHelper.ExecuteQuery(query,"TablohTest.TurkishCharAndSpacesTest");
     dbHelper.CloseConnection();
     Console.WriteLine($"Vergi No : {dataTable.Rows[0]["Vergi No"]},Yıl: {dataTable.Rows[0]["Yıl"]},Sonuç: {dataTable.Rows[0]["Sonuç"]},Müfettiş Belirlenecek Görev: {dataTable.Rows[0]["Müfettiş Belirlenecek Görev"]},Devam Eden Görev: {dataTable.Rows[0]["Devam Eden Görev"]}");
   }
@@ -34,7 +34,7 @@ public class TablohTest
 
             )";
 
-    int effectedRow = dbHelper.ExecuteNonQuery(updateQuery);
+    int effectedRow = dbHelper.ExecuteNonQuery(updateQuery,"TablohTest.testData");
     dbHelper.CloseConnection();
 
     Console.WriteLine($"Tablo-H Row effected : {effectedRow}");

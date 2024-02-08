@@ -7,7 +7,7 @@ public class SbkTest
         string query = "SELECT * FROM [sbk$] WHERE [Yil] = 2018";
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
-        DataTable dataTable = dbHelper.ExecuteQuery(query);
+        DataTable dataTable = dbHelper.ExecuteQuery(query,"SbkTest");
         dbHelper.CloseConnection();
         foreach (DataRow row in dataTable.Rows)
         {

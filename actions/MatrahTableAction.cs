@@ -21,7 +21,7 @@ public class MatrahTableAction
         DataTable matrahTable = new DataTable();
         try
         {
-            matrahTable = dbHelper.ExecuteQuery(matrahQuery);
+            matrahTable = dbHelper.ExecuteQuery(matrahQuery,"MatrahTableAction.CheckMatrahTableIsEmptyForSBK");
         }
         catch
         {
@@ -43,7 +43,7 @@ public class MatrahTableAction
         DataTable matrahTable = new DataTable();
         try
         {
-            matrahTable = dbHelper.ExecuteQuery(matrahQuery);
+            matrahTable = dbHelper.ExecuteQuery(matrahQuery,"MatrahTableAction.CheckMatrahTableIsEmptyForGeneralAnalysis");
         }
         catch
         {
@@ -64,10 +64,10 @@ public class MatrahTableAction
         dbHelper.OpenConnection();
 
         string sbkQuery = "SELECT * FROM [sbk$] WHERE [Tablo] IS NULL";
-        DataTable sbkTable = dbHelper.ExecuteQuery(sbkQuery);
+        DataTable sbkTable = dbHelper.ExecuteQuery(sbkQuery,"MatrahTableAction.DetermineMatrahForSBK-67");
 
         string matrahQuery = "SELECT * FROM [Matrah$] WHERE [Vergi Kodu]=15 and [Ödeme Bilgisi]='Ödendi'";
-        DataTable matrahTable = dbHelper.ExecuteQuery(matrahQuery);
+        DataTable matrahTable = dbHelper.ExecuteQuery(matrahQuery,"MatrahTableAction.DetermineMatrahForSBK-70");
         Setting.GCountList = new List<TaxPayer>();
         foreach (DataRow sbkRow in sbkTable.Rows)
         {
@@ -80,7 +80,7 @@ public class MatrahTableAction
                 string vergiKodu = machingRows[0]["Kanun"].ToString();
                 //update sbk table for VKN and yil
                 string UpdateQuery = $"UPDATE [sbk$] SET Tablo='G-{vergiKodu}' WHERE VKN={sbkModel.TaxNumber} AND Yil={sbkModel.Year}";
-                int effectedRow = dbHelper.ExecuteNonQuery(UpdateQuery);
+                int effectedRow = dbHelper.ExecuteNonQuery(UpdateQuery,"MatrahTableAction.DetermineMatrahForSBK-83");
                 //save taxnumber and year to list then check if taxpayer has more than one 
 
                 Setting.GCountList.Add(new TaxPayer
@@ -115,9 +115,9 @@ public class MatrahTableAction
         dbHelper.OpenConnection();
 
         string sbkQuery = "SELECT * FROM [sbk$] WHERE [Tablo] IS NULL";
-        DataTable sbkTable = dbHelper.ExecuteQuery(sbkQuery);
+        DataTable sbkTable = dbHelper.ExecuteQuery(sbkQuery,"MatrahTableAction.DetermineMatrahForGeneralAnalysis-118");
         string matrahQuery = "SELECT MIN([Vergi No]) as [Vergi No], MIN([Yıl]) as [Yıl], MIN([Kanun]) as [Kanun], SUM([Vergi Kodu]) as [Vergi Kodu] FROM [Matrah$] WHERE [Vergi Kodu]=15 or [Vergi Kodu]=1 or [Vergi Kodu]=10  and [Ödeme Bilgisi]='Ödendi' GROUP BY [Vergi No], [Yıl]";
-        DataTable matrahTable = dbHelper.ExecuteQuery(matrahQuery);
+        DataTable matrahTable = dbHelper.ExecuteQuery(matrahQuery,"MatrahTableAction.DetermineMatrahForGeneralAnalysis-120");
         Setting.GCountList = new List<TaxPayer>();
         foreach (DataRow sbkRow in sbkTable.Rows)
         {
@@ -152,7 +152,7 @@ public class MatrahTableAction
                     Print.ColorRed($"Matrah tablosunu kontrol edin: {taxCode} - {sbkModel.TaxNumber} - {sbkModel.Year}");
                 
                 //update sbk table for VKN and yil
-                int effectedRow = dbHelper.ExecuteNonQuery(UpdateQuery);
+                int effectedRow = dbHelper.ExecuteNonQuery(UpdateQuery,"MatrahTableAction.DetermineMatrahForGeneralAnalysis-155");
                 
                 //save taxnumber and year to list then check if taxpayer has more than one 
 

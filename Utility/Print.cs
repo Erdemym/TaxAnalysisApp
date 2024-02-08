@@ -69,4 +69,14 @@ public class Print
         Console.WriteLine(exclamation);
         Console.ForegroundColor = ConsoleColor.White;
     }
+
+    public static void ExitMessage(string message)
+    {
+        Console.WriteLine(message);
+        ExitMessage();
+    }
+    public static void ExitMessage(){
+        Console.WriteLine("Çıkmak için enter'a basınız.");
+        Console.Read();
+    }
 }

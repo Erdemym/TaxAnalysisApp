@@ -35,21 +35,31 @@ public class OleDbHelper : IDisposable
         }
     }
 
-       public DataTable ExecuteQuery(string query)
+       public DataTable ExecuteQuery(string query,string functionName)
     {
         DataTable dataTable = new DataTable();
+        try{
         using (OleDbDataAdapter adapter = new OleDbDataAdapter(query, _connection))
         {
             adapter.Fill(dataTable);
         }
+        }catch{
+            Console.WriteLine("!!!!!!"+functionName+"!!!!!!");
+        }
+
         return dataTable;
     }
 
-    public int ExecuteNonQuery(string query)
+    public int ExecuteNonQuery(string query,string functionName)
     {
+        try{
         using (OleDbCommand command = new OleDbCommand(query, _connection))
         {
             return command.ExecuteNonQuery();
+        }
+        }catch{
+            Console.WriteLine("!!!!!!"+functionName+"!!!!!!");
+            return 0;
         }
     }
 

@@ -6,7 +6,7 @@ public class VtrTest
     {
         OleDbHelper dbHelper = new OleDbHelper();
         string query = "Select * from [vtr$]";
-        DataTable ayarTable = dbHelper.ExecuteQuery(query);
+        DataTable ayarTable = dbHelper.ExecuteQuery(query,"VtrTest");
         DataRow getFirst = ayarTable.Rows[0];
      
         string taxInspector = getFirst.Field<string>("Vergi Müfettişi");
