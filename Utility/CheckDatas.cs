@@ -2,9 +2,6 @@ public static class CheckDatas{
 
     private static string[] _vtrTaxPeriod = new string[] { "2005" };
     public static void CheckTaxPeriodCompatible(string year){
-        if(_vtrTaxPeriod.Contains(year)){
-            
-        }else{
         //add year to _vtrTaxPeriod
         _vtrTaxPeriod = _vtrTaxPeriod.Concat(new string[] { year }).ToArray();
         //Setting.VtrTaxPeriod string don't has year string give warning message
@@ -13,8 +10,6 @@ public static class CheckDatas{
             Print.WriteWarningMessage($"Rapor dönemi {Setting.VtrTaxPeriod}, listede {year} yılı var. Yönetici ile görüşün.");
         }
         
-        }
-
     }
     public static void CheckUnvanHasPetrol(string taxPayerTitle)
     {
