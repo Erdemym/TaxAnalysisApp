@@ -43,7 +43,7 @@ public class TablohTableAction
         }
         if (tabloHTable.Rows.Count > 0)
         {
-            Print.ColorYellow($"!!!!!!!!!!!-Tablo-H da {Setting.HYear} yılı var Kontrol Ediniz.");
+            Print.ColorYellow($"!!!!!!!!!!!-Tablo-H da {Setting.HYear} yılı var.{Setting.HYear} yılı H analizine girmez. Kontrol Ediniz.");
 
         }
         dbHelper.CloseConnection();
