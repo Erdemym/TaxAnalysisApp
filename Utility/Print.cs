@@ -77,6 +77,7 @@ public class Print
     }
     public static void ExitMessage(){
         Console.WriteLine("Çıkmak için enter'a basınız.");
-        Console.Read();
+        
+        
     }
 }

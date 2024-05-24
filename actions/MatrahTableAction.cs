@@ -116,7 +116,7 @@ public class MatrahTableAction
 
         string sbkQuery = "SELECT * FROM [sbk$] WHERE [Tablo] IS NULL";
         DataTable sbkTable = dbHelper.ExecuteQuery(sbkQuery,"MatrahTableAction.DetermineMatrahForGeneralAnalysis-118");
-        string matrahQuery = "SELECT MIN([Vergi No]) as [Vergi No], MIN([Yıl]) as [Yıl], MIN([Kanun]) as [Kanun], SUM([Vergi Kodu]) as [Vergi Kodu] FROM [Matrah$] WHERE [Vergi Kodu]=15 or [Vergi Kodu]=1 or [Vergi Kodu]=10  and [Ödeme Bilgisi]='Ödendi' GROUP BY [Vergi No], [Yıl]";
+        string matrahQuery = "SELECT MIN([Vergi No]) as [Vergi No], MIN([Yıl]) as [Yıl], MIN([Kanun]) as [Kanun], SUM([Vergi Kodu]) as [Vergi Kodu] FROM [Matrah$] WHERE [Vergi Kodu]=15 and ([Vergi Kodu]=1 or [Vergi Kodu]=10)  and [Ödeme Bilgisi]='Ödendi' GROUP BY [Vergi No], [Yıl]";
         DataTable matrahTable = dbHelper.ExecuteQuery(matrahQuery,"MatrahTableAction.DetermineMatrahForGeneralAnalysis-120");
         Setting.GCountList = new List<TaxPayer>();
         foreach (DataRow sbkRow in sbkTable.Rows)

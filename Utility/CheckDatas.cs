@@ -24,12 +24,13 @@ public static class CheckDatas{
         taxPayerTitle = taxPayerTitle.ToUpper();
 
         // Initializing test list
-        List<string> specialTitleList = new List<string> { "PART", "BELED", "VALİ", "VALI", "SAVCI", "DERNEK", "VAKIF", "VAKİF", "SAVCİ", "KURUM", "BAŞKAN", "BASKAN" };
+        List<string> specialTitleList = new List<string> { "PART", "BELED", "VALI", "SAVCI", "DERNEK", "VAKIF",  "KURUM", "BASKAN", "MUDUR", "KOOP","HAST" };
 
         List<string> result = new List<string>();
 
         foreach (string element in specialTitleList)
         {
+            //make element upper case and chamge İ to I Ş to S
             if (taxPayerTitle.Contains(element))
             {
                 result.Add(element);
