@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Data.OleDb;
+using System.Linq.Expressions;
 
 public class OleDbHelper : IDisposable
 {
@@ -38,14 +39,16 @@ public class OleDbHelper : IDisposable
        public DataTable ExecuteQuery(string query,string functionName)
     {
         DataTable dataTable = new DataTable();
+        //if any error write in catch
         try{
         using (OleDbDataAdapter adapter = new OleDbDataAdapter(query, _connection))
         {
             adapter.Fill(dataTable);
-        }
-        }catch{
+        }}catch(Exception e){
             Console.WriteLine("!!!!!!"+functionName+"!!!!!!");
+            Console.WriteLine(e.Message);
         }
+        
 
         return dataTable;
     }
@@ -57,8 +60,9 @@ public class OleDbHelper : IDisposable
         {
             return command.ExecuteNonQuery();
         }
-        }catch{
+        }catch(Exception e){
             Console.WriteLine("!!!!!!"+functionName+"!!!!!!");
+            Console.WriteLine(e.Message);
             return 0;
         }
     }

@@ -3,6 +3,6 @@ public class RunTest
 
     public RunTest()
     {
-        new VtrTest();
+        new TablohTest().getTablohData();
     }
 }

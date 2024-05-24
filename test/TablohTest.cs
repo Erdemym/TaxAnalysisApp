@@ -41,4 +41,24 @@ public class TablohTest
 
 
   }
+
+  public void getTablohData() {
+        OleDbHelper dbHelper = new OleDbHelper();
+    dbHelper.OpenConnection();
+    string updateQuery = @"
+                SELECT *
+                FROM [Tablo-h$] tabloH
+                WHERE
+                    tabloH.[Sonuç] = 'Tablo-H'
+                    AND tabloH.[Müfettiş Belirlenecek Görev] = 'Yok'
+                    AND tabloH.[Devam Eden Görev] = 'Yok'";
+
+         
+
+    dbHelper.ExecuteQuery(updateQuery,"TablohTest.testData");
+    dbHelper.CloseConnection();
+
+
+    
+  }
 }
