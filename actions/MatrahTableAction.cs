@@ -63,7 +63,7 @@ public class MatrahTableAction
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
 
-        string sbkQuery = "SELECT * FROM [sbk$] WHERE [Tablo] IS NULL";
+        string sbkQuery = "SELECT * FROM [liste$] WHERE [Tablo] IS NULL";
         DataTable sbkTable = dbHelper.ExecuteQuery(sbkQuery,"MatrahTableAction.DetermineMatrahForSBK-67");
 
         string matrahQuery = "SELECT * FROM [Matrah$] WHERE [Vergi Kodu]=15 and [Ödeme Bilgisi]='Ödendi'";
@@ -79,7 +79,7 @@ public class MatrahTableAction
             {
                 string vergiKodu = machingRows[0]["Kanun"].ToString();
                 //update sbk table for VKN and yil
-                string UpdateQuery = $"UPDATE [sbk$] SET Tablo='G-{vergiKodu}' WHERE VKN={sbkModel.TaxNumber} AND Yil={sbkModel.Year}";
+                string UpdateQuery = $"UPDATE [liste$] SET Tablo='G-{vergiKodu}' WHERE VKN={sbkModel.TaxNumber} AND Yil={sbkModel.Year}";
                 int effectedRow = dbHelper.ExecuteNonQuery(UpdateQuery,"MatrahTableAction.DetermineMatrahForSBK-83");
                 //save taxnumber and year to list then check if taxpayer has more than one 
 
@@ -114,7 +114,7 @@ public class MatrahTableAction
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
 
-        string sbkQuery = "SELECT * FROM [sbk$] WHERE [Tablo] IS NULL";
+        string sbkQuery = "SELECT * FROM [liste$] WHERE [Tablo] IS NULL";
         DataTable sbkTable = dbHelper.ExecuteQuery(sbkQuery,"MatrahTableAction.DetermineMatrahForGeneralAnalysis-118");
         string matrahQuery = "SELECT MIN([Vergi No]) as [Vergi No], MIN([Yıl]) as [Yıl], MIN([Kanun]) as [Kanun], SUM([Vergi Kodu]) as [Vergi Kodu] FROM [Matrah$] WHERE [Vergi Kodu]=15 and ([Vergi Kodu]=1 or [Vergi Kodu]=10)  and [Ödeme Bilgisi]='Ödendi' GROUP BY [Vergi No], [Yıl]";
         DataTable matrahTable = dbHelper.ExecuteQuery(matrahQuery,"MatrahTableAction.DetermineMatrahForGeneralAnalysis-120");
@@ -130,7 +130,7 @@ public class MatrahTableAction
                 DataRow row = machingRows[0];
                 string lawCode = machingRows[0]["Kanun"].ToString();
                 int taxCode = Convert.ToInt32(machingRows[0]["Vergi Kodu"]);
-                string UpdateQuery=$"UPDATE [sbk$] SET EkBilgi = '{lawCode}' WHERE VKN={sbkModel.TaxNumber} AND Yil={sbkModel.Year}";
+                string UpdateQuery=$"UPDATE [liste$] SET EkBilgi = '{lawCode}' WHERE VKN={sbkModel.TaxNumber} AND Yil={sbkModel.Year}";
 
                 if (taxCode == 1)
                 {
@@ -145,9 +145,9 @@ public class MatrahTableAction
                     lawCode += "-KDV";
                 }
                 if(taxCode==1 || taxCode==10 || taxCode==15)
-                    UpdateQuery=$"UPDATE [sbk$] SET EkBilgi = '{lawCode}' WHERE VKN={sbkModel.TaxNumber} AND Yil={sbkModel.Year}";
+                    UpdateQuery=$"UPDATE [liste$] SET EkBilgi = '{lawCode}' WHERE VKN={sbkModel.TaxNumber} AND Yil={sbkModel.Year}";
                 else if(taxCode== 16 || taxCode==25)
-                    UpdateQuery = $"UPDATE [sbk$] SET Tablo='G-{lawCode}' WHERE VKN={sbkModel.TaxNumber} AND Yil={sbkModel.Year}";
+                    UpdateQuery = $"UPDATE [liste$] SET Tablo='G-{lawCode}' WHERE VKN={sbkModel.TaxNumber} AND Yil={sbkModel.Year}";
                 else
                     Print.ColorRed($"Matrah tablosunu kontrol edin: {taxCode} - {sbkModel.TaxNumber} - {sbkModel.Year}");
                 

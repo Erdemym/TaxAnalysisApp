@@ -54,8 +54,8 @@ public class SettingAction
         }
        
        //remove old analysis before re-analysis
-        string updateQuery = "UPDATE [sbk$] set Tekrar='',ToplamTutar=null,Tablo='',EkBilgi=''";
-        dbHelper.ExecuteNonQuery(updateQuery,"SettingAction.getSettingsFromDB-57");
+        string updateQuery = "UPDATE [liste$] set Tekrar='',ToplamTutar=null,Tablo='',VtrTarih='',VtrSayi='',VtrTur='',EkBilgi=''";
+        dbHelper.ExecuteNonQuery(updateQuery,"SettingAction.getSettingsFromDB-58");
         dbHelper.CloseConnection();
 
 
@@ -64,7 +64,6 @@ public class SettingAction
         Setting.AnalysisType = ayarTable.Rows[0].Field<string>("Analiz Türü");
         Setting.HYear = ayarTable.Rows[0].Field<double>("H Yıl");
         Setting.TimeoutYear = ayarTable.Rows[0].Field<double>("Karar E");
-        Setting.Priority = ayarTable.Rows[0].Field<string>("Oncelik");
         Setting.GCountList = new List<TaxPayer>();
         Setting.ACountList = new List<TaxPayer>();
     }

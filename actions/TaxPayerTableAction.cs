@@ -44,22 +44,23 @@ public class TaxPayerTableAction
     }
 
     //find TaxPayers under amount and Change Tablo to G-Under Amount
-    public void DetermineTaxPayersUnderAmount()
+    public void DetermineTaxPayersUnderAmountG()
     {
         using (OleDbHelper dbHelper = new OleDbHelper())
         {
             dbHelper.OpenConnection();
-            string UpdateQuery = $"UPDATE [SBK$] SET Tablo='{Setting.Result}' WHERE Tutar<={Setting.Amount} AND Tablo IS NULL";
-            int effectedRow = dbHelper.ExecuteNonQuery(UpdateQuery,"TaxPayerTableAction.DetermineTaxPayersUnderAmount");
+            string UpdateQuery = $"UPDATE [liste$] SET Tablo='G-{Setting.Result}' WHERE Tutar<={Setting.Amount} AND Tablo IS NULL";
+            Setting.PotentialGCount = dbHelper.ExecuteNonQuery(UpdateQuery,"TaxPayerTableAction.DetermineTaxPayersUnderAmount");
             dbHelper.CloseConnection();
         }
     }
+
     public void CheckTaxPayersTaxAndYearTwice()
     {
         //check sbk table has double Vkn and Year Taxpayers
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
-        string doubleTaxPayersQuery = "SELECT VKN,Yil,COUNT(*) AS doubleCount FROM [sbk$] GROUP BY VKN,Yil HAVING COUNT(*)>1";
+        string doubleTaxPayersQuery = "SELECT VKN,Yil,COUNT(*) AS doubleCount FROM [liste$] GROUP BY VKN,Yil HAVING COUNT(*)>1";
         DataTable doubleTaxPayersTable = dbHelper.ExecuteQuery(doubleTaxPayersQuery,"TaxPayerTableAction.CheckTaxPayersTaxAndYearTwice");
         if (doubleTaxPayersTable.Rows.Count > 0)
         {
@@ -118,7 +119,7 @@ public class TaxPayerTableAction
                 //update Taxpayer Year Tekrar column to +++
                 OleDbHelper dbHelper = new OleDbHelper();
                 dbHelper.OpenConnection();
-                string updateQuery = $"UPDATE [sbk$] SET Tekrar='+++' WHERE VKN={taxpayer.TaxNumber} AND Yil={taxpayer.Year}";
+                string updateQuery = $"UPDATE [liste$] SET Tekrar='+++' WHERE VKN={taxpayer.TaxNumber} AND Yil={taxpayer.Year}";
                 int effectedRow = dbHelper.ExecuteNonQuery(updateQuery,"TaxPayerTableAction.FindMultipleRowInList-113");
                 dbHelper.CloseConnection();
             }
@@ -127,7 +128,7 @@ public class TaxPayerTableAction
             {
                 OleDbHelper dbHelper = new OleDbHelper();
                 dbHelper.OpenConnection();
-                string updateQuery = $"UPDATE [sbk$] SET ToplamTutar='{totalAmount}' WHERE VKN={lastTaxNumber} AND Yil={lastYear}";
+                string updateQuery = $"UPDATE [liste$] SET ToplamTutar='{totalAmount}' WHERE VKN={lastTaxNumber} AND Yil={lastYear}";
                 int effectedRow = dbHelper.ExecuteNonQuery(updateQuery,"TaxPayerTableAction.FindMultipleRowInList-122");
                 dbHelper.CloseConnection();
                 totalAmount = 0;
@@ -160,7 +161,7 @@ public class TaxPayerTableAction
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
         //
-        string query = "SELECT * FROM [sbk$] ";
+        string query = "SELECT * FROM [liste$] ";
         DataTable table = dbHelper.ExecuteQuery(query,"TaxPayerTableAction.DetermineAnalysisCount-155");
         foreach (DataRow row in table.Rows)
         {
@@ -211,12 +212,12 @@ public class TaxPayerTableAction
         Console.WriteLine(TotalValueText);
         Print.WriteAsteriskLine();
         //insert two new row with Tekrar column = .
-        string insertQuery = $"INSERT INTO [sbk$] (Tekrar) VALUES ('.')";
+        string insertQuery = $"INSERT INTO [liste$] (Tekrar) VALUES ('.')";
         int effectedRow = dbHelper.ExecuteNonQuery(insertQuery,"TaxPayerTableAction.DetermineAnalysisCount-206");
-        insertQuery = $"INSERT INTO [sbk$] (Tekrar) VALUES ('.###.')";
+        insertQuery = $"INSERT INTO [liste$] (Tekrar) VALUES ('.###.')";
         effectedRow = dbHelper.ExecuteNonQuery(insertQuery,"TaxPayerTableAction.DetermineAnalysisCount-208");
         //insert TotalValueText to Tekrar column = ..
-        string updateQuery = $"UPDATE [sbk$] SET Tablo='{TotalValueText}' WHERE Tekrar='.###.'";
+        string updateQuery = $"UPDATE [liste$] SET Tablo='{TotalValueText}' WHERE Tekrar='.###.'";
         dbHelper.ExecuteNonQuery(updateQuery,"TaxPayerTableAction.DetermineAnalysisCount-211");
         dbHelper.CloseConnection();
         Console.WriteLine("Analiz Tamamlandı.");
@@ -229,9 +230,9 @@ public class TaxPayerTableAction
     {
         int rowCount = 0;
         OleDbHelper dbHelper = new OleDbHelper();
-        string query = "SELECT * FROM [sbk$] order by Yil,VKN";
+        string query = "SELECT * FROM [liste$] order by Yil,VKN";
         DataTable table = dbHelper.ExecuteQuery(query,"TaxPayerTableAction.CheckValuesCorrection");
-        //check vkn length bigger than 10, year beetween Ayar.HYil-1 and Hyil +5,tutar sayi olmali
+        //check vkn length bigger than 10, year beetween Ayar.HYil-1 and Hyil +5,Amount must be digit
         foreach (DataRow row in table.Rows)
         {
             string taxPayerTitle = row["Unvan"].ToString();
@@ -293,7 +294,7 @@ public class TaxPayerTableAction
     {
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
-        string updateQuery = $"UPDATE [sbk$] SET Tablo='E' WHERE Yil <={Setting.TimeoutYear} AND Tablo IS NULL";
+        string updateQuery = $"UPDATE [liste$] SET Tablo='E' WHERE Yil <={Setting.TimeoutYear} AND Tablo IS NULL";
         int effectedRow = dbHelper.ExecuteNonQuery(updateQuery,"TaxPayerTableAction.AnalysisYearTimedOuttoE");
         if (effectedRow > 0)
         {
@@ -306,7 +307,7 @@ public class TaxPayerTableAction
     public void FillBlankTabloToA()
     {
         OleDbHelper oleDbHelper = new OleDbHelper();
-        string updateQuery = $"Update [sbk$] set [Tablo]='A' where [Tablo] is null";
+        string updateQuery = $"Update [liste$] set [Tablo]='A' where [Tablo] is null";
         oleDbHelper.OpenConnection();
         int effectedRows = oleDbHelper.ExecuteNonQuery(updateQuery,"TaxPayerTableAction.FillBlankTabloToA");
         oleDbHelper.CloseConnection();
@@ -317,7 +318,7 @@ public class TaxPayerTableAction
     public void FillBlankVKNToE()
     {
         OleDbHelper oleDbHelper = new OleDbHelper();
-        string updateQuery = $"Update [sbk$] set [Tablo]='E',[EkBilgi]='Vkn Eksik' where [VKN] is null";
+        string updateQuery = $"Update [liste$] set [Tablo]='E',[EkBilgi]='Vkn Eksik' where [VKN] is null";
         oleDbHelper.OpenConnection();
         int effectedRows = oleDbHelper.ExecuteNonQuery(updateQuery,"TaxPayerTableAction.FillBlankVKNToE");
         oleDbHelper.CloseConnection();

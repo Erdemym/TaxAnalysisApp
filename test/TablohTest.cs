@@ -18,7 +18,7 @@ public class TablohTest
     OleDbHelper dbHelper = new OleDbHelper();
     dbHelper.OpenConnection();
     string updateQuery = @"
-        UPDATE [sbk$] sbk
+        UPDATE [liste$] sbk
         SET sbk.Tablo = 'H'
         WHERE
             sbk.Tablo IS NULL

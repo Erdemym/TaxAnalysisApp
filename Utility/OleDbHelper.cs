@@ -26,7 +26,7 @@ public class OleDbHelper : IDisposable
         }
     }
 
-    
+
 
     public void CloseConnection()
     {
@@ -36,38 +36,43 @@ public class OleDbHelper : IDisposable
         }
     }
 
-       public DataTable ExecuteQuery(string query,string functionName)
+    public DataTable ExecuteQuery(string query, string functionName)
     {
         DataTable dataTable = new DataTable();
         //if any error write in catch
-        try{
-        using (OleDbDataAdapter adapter = new OleDbDataAdapter(query, _connection))
+        try
         {
-            adapter.Fill(dataTable);
-        }}catch(Exception e){
-            Console.WriteLine("!!!!!!"+functionName+"!!!!!!");
+            using (OleDbDataAdapter adapter = new OleDbDataAdapter(query, _connection))
+            {
+                adapter.Fill(dataTable);
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("!!!!!!" + functionName + "!!!!!!");
             Console.WriteLine(e.Message);
         }
-        
-
         return dataTable;
     }
 
-    public int ExecuteNonQuery(string query,string functionName)
+    public int ExecuteNonQuery(string query, string functionName)
     {
-        try{
-        using (OleDbCommand command = new OleDbCommand(query, _connection))
+        try
         {
-            return command.ExecuteNonQuery();
+            using (OleDbCommand command = new OleDbCommand(query, _connection))
+            {
+                return command.ExecuteNonQuery();
+            }
         }
-        }catch(Exception e){
-            Console.WriteLine("!!!!!!"+functionName+"!!!!!!");
+        catch (Exception e)
+        {
+            Console.WriteLine("!!!!!!" + functionName + "!!!!!!");
             Console.WriteLine(e.Message);
             return 0;
         }
     }
 
- 
+
 
     public void Dispose()
     {

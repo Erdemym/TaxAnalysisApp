@@ -24,7 +24,7 @@ public static class CheckDatas{
         taxPayerTitle = taxPayerTitle.ToUpper();
 
         // Initializing test list
-        List<string> specialTitleList = new List<string> { "PART", "BELED", "VALI", "SAVCI", "DERNEK", "VAKIF",  "KURUM", "BASKAN", "MUDUR", "KOOP","HAST" };
+        List<string> specialTitleList = new List<string> { "PART", "BELED", "VALI", "SAVCI", "DERNEK", "VAKIF",  "KURUM", "BASKAN", "MUDUR", "KOOP","HAST","LOJMAN","OKUL","AKP","CHP","HDP","DSP","MHP" };
 
         List<string> result = new List<string>();
 
@@ -48,7 +48,7 @@ public static class CheckDatas{
     }
     public static void CheckVtrReportType()
     {
-        if(Setting.VtrReportType=="VTR-Tam Sahte Belge Düzenleme")
+        if(Setting.VtrReportType=="VTR-Tamamen Sahte Belge Düzenleme")
         {
         }else if (!Setting.VtrReportType.StartsWith("VTR"))
         {
@@ -69,6 +69,8 @@ public static class CheckDatas{
         {
             Print.ColorYellow("Rapor Türü Muhteviyatı İtibarıyla Yanıltıcı Belge Düzenleme.");
             Print.ColorYellow("H analizi yapılmayacak.");
+        }else{
+            Print.ColorYellow("Rapor Türü Tanımlı Değil Yönetici İle Görüşün.");
         }
 
     }

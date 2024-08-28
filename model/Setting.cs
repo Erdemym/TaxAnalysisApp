@@ -13,7 +13,6 @@ public class Setting
     public static string? AnalysisType { get; set; }
     public static double TimeoutYear { get; set; }
     public static double HYear { get; set; }
-    public static string Priority { get; set; }
     public static bool TimeBaredFlag {get => _timeBaredFlag; set => _timeBaredFlag = value; }
     public static bool MatrahEmptyFlag { get; set; }
     public static bool TablohEmptyFlag { get; set; }
@@ -24,7 +23,8 @@ public class Setting
     public static int ECount { get; internal set; }
     public static string VtrTaxPayerTitle { get; internal set; }
     public static string VtrReportType { get; internal set; }
-    
+    public static int PotentialGCount { get; set; }
+    public static int PotentialZZZCount { get; set; }
     public static string VtrEvaluationDate { get; internal set; }
     public static string VtrTaxPeriod { get; internal set; }
     public static bool DocumentNumberFlag {get => _documentNumberFlag; set => _documentNumberFlag = value;}

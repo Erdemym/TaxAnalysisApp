@@ -12,17 +12,14 @@ public class MoneyTransferAnalysisController : AnalysisController
     public override void Analysis()
     {
         TaxPayerTableAction sbkAction = new TaxPayerTableAction();
-        if (Setting.Priority == "tutar")
-            sbkAction.DetermineTaxPayersUnderAmount();
+
+        sbkAction.DetermineTaxPayersUnderAmountG();
 
         if (!Setting.MatrahEmptyFlag)
         {
             MatrahTableAction matrahAction = new MatrahTableAction();
             matrahAction.DetermineMatrahForGeneralAnalysis();
         }
-
-        if(Setting.Priority=="matrah")
-            sbkAction.DetermineTaxPayersUnderAmount();
 
         sbkAction.FillBlankTabloToA();
         sbkAction.DetermineAnalysisCount();
