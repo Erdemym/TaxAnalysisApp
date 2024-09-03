@@ -54,20 +54,7 @@ public class SbkAnalysisController : AnalysisController
         new TablohErrorAction().writeTablohErrorToSBK();
         //Fill all blank field to A
         sbkAction.FillBlankTabloToA();
-        //sbkAction.DetermineAnalysisCount();
-        ReasonLetterAction reasonActionLetter = new ReasonLetterAction();
-        if (Setting.ReasonAFlag)
-            reasonActionLetter.SBKReasonA();
-        if (Setting.ReasonEFlag)
-            reasonActionLetter.SBKReasonE();
-        if (Setting.ReasonHFlag)
-            reasonActionLetter.SBKReasonH();
-        if (Setting.ReasonGVTRFlag)
-            reasonActionLetter.SBKReasonGVTR();
-        if (Setting.ReasonGMatrah7326Flag)
-            reasonActionLetter.SBKReasonGMatrah("7326");
-        if (Setting.ReasonGMatrah7440Flag)
-            reasonActionLetter.SBKReasonGMatrah("7440");
+        //sbkAction.DetermineAnalysisCount();       
         Print.ProgramEndMessage();
 
 
