@@ -1,5 +1,5 @@
-public class ReasonActionLetter{
-    public ReasonActionLetter(){
+public class ReasonLetterAction{
+    public ReasonLetterAction(){
         //end with 
         //ZZZZZ tarihli ve ZZZZZ sayılı incelemeye sevk 
         //Change Vergi Dairesi Müdürlüğünün##################

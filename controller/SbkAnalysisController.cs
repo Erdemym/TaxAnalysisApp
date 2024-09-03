@@ -55,7 +55,7 @@ public class SbkAnalysisController : AnalysisController
         //Fill all blank field to A
         sbkAction.FillBlankTabloToA();
         //sbkAction.DetermineAnalysisCount();
-        ReasonActionLetter reasonActionLetter = new ReasonActionLetter();
+        ReasonLetterAction reasonActionLetter = new ReasonLetterAction();
         if (Setting.ReasonAFlag)
             reasonActionLetter.SBKReasonA();
         if (Setting.ReasonEFlag)
