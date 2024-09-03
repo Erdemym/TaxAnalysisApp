@@ -75,6 +75,14 @@ public class Print
         Console.WriteLine(message);
         ExitMessage();
     }
+
+    public static void ProgramEndMessage()
+    {
+        Console.WriteLine("Analiz Tamamlandı.");
+        if (Setting.TimeBaredFlag)
+            Print.ColorYellow("Zamanaşımlı mükellef bulunmaktadır.Zamanaşımı etiketini seçmeyi unutmayın.");
+        ExitMessage();
+    }
     public static void ExitMessage(){
         Console.WriteLine("Çıkmak için enter'a basınız.");
         

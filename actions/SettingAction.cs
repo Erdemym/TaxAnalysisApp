@@ -1,4 +1,6 @@
 using System.Data;
+using System.Globalization;
+
 
 public class SettingAction
 {
@@ -28,6 +30,20 @@ public class SettingAction
         Setting.VtrReportType = vtrData.ReportType;
         Setting.VtrEvaluationDate = vtrData.EvaluationDate;
         Setting.VtrTaxPeriod = vtrData.TaxPeriod;
+        Setting.InspectorName = vtrData.TaxInspectorTitle+" "+vtrData.TaxInspector;
+        Setting.VtrNumber=vtrData.ReportNo;
+        Setting.VtrTaxOfficeName=vtrData.TaxOfficeName;
+        DateTime formattedReportDate;
+         if (DateTime.TryParse(vtrData.ReportDate, out formattedReportDate))
+        {
+            // İstediğiniz formatta string olarak biçimlendirin
+            Setting.VtrDate = formattedReportDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+        }
+        else
+        {
+            Print.ColorRed("Geçersiz Rapor tarihi Formatı.. Gerekçede Rapor Tarihi bölümünü düzenleyin");
+        }
+        Setting.VtrTaxPayerNo=vtrData.TaxNo;
         
     }
     private void getSettingsFromDB()
@@ -60,7 +76,11 @@ public class SettingAction
 
 
         Setting.Amount = ayarTable.Rows[0].Field<double>("Tutar");
-        Setting.Result = ayarTable.Rows[0].Field<string>("Analiz");
+        if(Setting.Amount>=1000000){
+            Setting.Result = $"{(Setting.Amount / 1000000.0):0.#} milyon altı"; 
+        }else if(Setting.Amount>1000){
+            Setting.Result =  $"{(Setting.Amount / 1000)} bin altı";
+        }
         Setting.AnalysisType = ayarTable.Rows[0].Field<string>("Analiz Türü");
         Setting.HYear = ayarTable.Rows[0].Field<double>("H Yıl");
         Setting.TimeoutYear = ayarTable.Rows[0].Field<double>("Karar E");
@@ -89,6 +109,9 @@ public class SettingAction
     {
         Console.WriteLine($"Analiz Türü: {analysisType}");
         Console.WriteLine($"Tutar: {Setting.Amount.ToString("N2")}");
+        Console.WriteLine($"Müfettiş: {Setting.InspectorName}");
+        Console.WriteLine($"VTR: {Setting.VtrNumber}");
+        Console.WriteLine($"İncelenen Mükellef:  {Setting.VtrTaxPayerTitle}");
         Print.WriteAsteriskLine();
     }
 }

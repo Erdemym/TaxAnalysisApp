@@ -1,3 +1,4 @@
+using System.Globalization;
 public static class CheckDatas{
 
     private static string[] _vtrTaxPeriod = new string[] { "2005" };
@@ -80,6 +81,139 @@ public static class CheckDatas{
         {
             Print.WriteWarningMessage("Rapor RDK'dan çıkmamış.Yönetici ile görüşün.");
         }
+    }
+
+    public static string GetSuffix(string fullName)
+    {
+        //split name
+        string[] parts = fullName.Split(' ');
+        var cultureInfo = new CultureInfo("tr-TR");
+        // get Lastname
+        string lastName = parts[parts.Length - 1].ToLower(cultureInfo);
+
+        // Turkish Vowel Letter List
+        char[] frontVowels = new char[] { 'e', 'i', 'ü', 'ö' };
+        char[] backVowels = new char[] { 'a', 'ı', 'u', 'o' };
+
+        
+        char lastChar = lastName[lastName.Length - 1];
+        int index = lastName.Length - 1;
+        string suffix="";
+        // Check if Last Char is Vowel Add "y"
+        if (IsVowel(lastChar))
+        {
+            suffix = "y";
+        }
+        // Find Last Vowel Char in Last Name
+        while (index >= 0 && !IsVowel(lastName[index]))
+        {
+            index--;
+        }
+
+        lastChar = lastName[index];
+
+        // Determine Suffix Letter For Vowel Case
+        
+        if (Array.Exists(frontVowels, vowel => vowel == lastChar))
+        {
+            suffix=suffix+"e"; 
+        }
+        else if (Array.Exists(backVowels, vowel => vowel == lastChar))
+        {
+            suffix =suffix+ "a";  
+        }
+        else
+        {
+            suffix =suffix+ "a";  //Default Return a
+        }
+
+        return suffix;
+    }
+
+    // Check char is Vowel
+    static bool IsVowel(char c)
+    {
+        char[] vowels = new char[] { 'a', 'e', 'ı', 'i', 'o', 'ö', 'u', 'ü' };
+        return Array.Exists(vowels, vowel => vowel == c);
+    }
+
+
+    public static string FormatName(string name)
+    {
+        name=FormatName(name," ");
+        return FormatName(name,".");
+    }
+
+    static string FormatName(string name,string split)
+    {
+        name=name.Replace("I","İ");
+        // Ensure proper culture handling for special characters
+        var cultureInfo = new CultureInfo("tr-TR");
+        
+        // Split the name into parts
+        string[] parts = name.Split(' ');
+        
+        for (int i = 0; i < parts.Length; i++)
+        {
+            // Capitalize the first letter and ensure the rest are lowercase
+            if (!string.IsNullOrEmpty(parts[i]))
+            {
+                parts[i] = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(parts[i].ToLower(cultureInfo));
+            }
+        }
+
+        string.Join(" ", parts);
+        
+        // Join the parts back together with a space
+        return string.Join(" ", parts);
+    }
+
+     public static string FormatTaxOfficeName(string taxOfficeName)
+    {
+        // Split the input string into the code and description parts
+        var parts = taxOfficeName.Split(new[] { " - " }, StringSplitOptions.None);
+        if (parts.Length != 2)
+        {
+            return "###Vergi Dairesi Adı Bilinmiyor.###";
+        }
+
+        var description = parts[1].Trim();
+
+        // Replace based on the ending of the description
+        if (description.EndsWith("VD.", StringComparison.OrdinalIgnoreCase))
+        {
+            description = description.Replace("VD.", "Vergi Dairesi Müdürlüğünün", StringComparison.OrdinalIgnoreCase);
+        }
+        else if (description.EndsWith("MAL MD.", StringComparison.OrdinalIgnoreCase))
+        {
+            description = description.Replace("MAL MD.", "Mal Müdürlüğünün", StringComparison.OrdinalIgnoreCase);
+        }
+
+        // Convert to title case
+        return ToTitleCase(description);
+    }
+
+    // Extension method to convert a string to title case
+    private static string ToTitleCase(string str)
+    {
+        if (string.IsNullOrEmpty(str))
+            return str;
+
+        var words = str.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+        for (var i = 0; i < words.Length; i++)
+        {
+            var word = words[i];
+            if (word.Length > 1)
+            {
+                words[i] = char.ToUpper(word[0]) + word.Substring(1).ToLower();
+            }
+            else
+            {
+                words[i] = word.ToUpper();
+            }
+        }
+
+        return string.Join(" ", words);
     }
    
 }

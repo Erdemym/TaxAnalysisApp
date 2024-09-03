@@ -220,10 +220,7 @@ public class TaxPayerTableAction
         string updateQuery = $"UPDATE [liste$] SET Tablo='{TotalValueText}' WHERE Tekrar='.###.'";
         dbHelper.ExecuteNonQuery(updateQuery,"TaxPayerTableAction.DetermineAnalysisCount-211");
         dbHelper.CloseConnection();
-        Console.WriteLine("Analiz Tamamlandı.");
-        if (Setting.TimeBaredFlag)
-            Print.ColorYellow("Zamanaşımlı mükellef bulunmaktadır.Zamanaşımı etiketini seçmeyi unutmayın.");
-        Print.ExitMessage();
+      
 
     }
     public void CheckValuesCorrection()
@@ -299,6 +296,7 @@ public class TaxPayerTableAction
         if (effectedRow > 0)
         {
             Setting.TimeBaredFlag = true;
+            Setting.ReasonEFlag = true;
         }
         dbHelper.CloseConnection();
 
@@ -310,6 +308,9 @@ public class TaxPayerTableAction
         string updateQuery = $"Update [liste$] set [Tablo]='A' where [Tablo] is null";
         oleDbHelper.OpenConnection();
         int effectedRows = oleDbHelper.ExecuteNonQuery(updateQuery,"TaxPayerTableAction.FillBlankTabloToA");
+        if(effectedRows > 0){
+            Setting.ReasonAFlag = true;
+        }
         oleDbHelper.CloseConnection();
 
 

@@ -7,6 +7,13 @@ public class Setting
     private static bool _timeBaredFlag = false;
     private static bool _documentNumberFlag = true;
 
+    private static bool _reasonEFlag = false;
+    private static bool _reasonHFlag = false;
+    private static bool _reasonAFlag = false;
+    private static bool _reasonGVTRFlag = false;
+    private static bool _reasonGMatrah7326Flag = false;
+    private static bool _reasonGMatrah7440Flag = false;
+   
     public static int RowCount { get; set; }
     public static double Amount { get; set; }
     public static string? Result { get; set; }
@@ -22,12 +29,23 @@ public class Setting
     public static int GCount { get; internal set; }
     public static int ECount { get; internal set; }
     public static string VtrTaxPayerTitle { get; internal set; }
+    public static string VtrTaxPayerNo { get; internal set; }
     public static string VtrReportType { get; internal set; }
     public static int PotentialGCount { get; set; }
     public static int PotentialZZZCount { get; set; }
+    public static string InspectorName {get;set;}
+    public static string VtrNumber {get;set;}
+    public static string VtrDate {get;set;}
     public static string VtrEvaluationDate { get; internal set; }
     public static string VtrTaxPeriod { get; internal set; }
+    public static string VtrTaxOfficeName { get; internal set; }
     public static bool DocumentNumberFlag {get => _documentNumberFlag; set => _documentNumberFlag = value;}
     public static List<TaxPayer> GCountList { get; internal set; }
     public static List<TaxPayer> ACountList { get; internal set; }
+    public static bool ReasonEFlag { get => _reasonEFlag; set => _reasonEFlag = value; }
+    public static bool ReasonHFlag { get => _reasonHFlag; set => _reasonHFlag = value; }
+    public static bool ReasonGVTRFlag { get => _reasonGVTRFlag; set => _reasonGVTRFlag = value; }
+    public static bool ReasonGMatrah7326Flag { get => _reasonGMatrah7326Flag; set => _reasonGMatrah7326Flag = value; }
+    public static bool ReasonGMatrah7440Flag { get => _reasonGMatrah7440Flag; set => _reasonGMatrah7440Flag = value; }
+    public static bool ReasonAFlag { get => _reasonAFlag; set => _reasonAFlag = value; }
 }

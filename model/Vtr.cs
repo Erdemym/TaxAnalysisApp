@@ -22,5 +22,6 @@ public class Vtr
     public string TaxPayerTitle { get; set; }
     public string TaxPeriod { get; set; }
     public string EvaluationDate { get; set; }
+    public string TaxOfficeName { get; set; }
 
 }

@@ -84,6 +84,7 @@ public class TablohTableAction
             int effectedRow = dbHelper.ExecuteNonQuery(updateQuery,"TablohTableAction.DetermineGVTR");
             dbHelper.CloseConnection();
             if(effectedRow>0){
+                Setting.ReasonGVTRFlag = true;
                 dbHelper.OpenConnection();
                 updateQuery = @"
         UPDATE [liste$] sbk,[Tablo-h$] tabloH
@@ -121,6 +122,9 @@ public class TablohTableAction
                     AND tabloH.[KDV Mükellefiyeti] = 'Var'
             )";
             int effectedRow = dbHelper.ExecuteNonQuery(updateQuery,"TablohTableAction.DetermineTabloHforSBK");
+            if(effectedRow>0){
+                Setting.ReasonHFlag = true;
+            }
             dbHelper.CloseConnection();
         }
     }
@@ -144,6 +148,7 @@ public class TablohTableAction
             )";
             int effectedRow = dbHelper.ExecuteNonQuery(updateQuery,"TablohTableAction.DetermineUnderAmountTabloHforSBK");
             if(effectedRow>0){
+                Setting.ReasonHFlag = true;
                 updateQuery = $"UPDATE [liste$] SET Tablo='H-{Setting.Result}' WHERE Tutar<={Setting.Amount} AND Tablo = 'H-250'";
                 effectedRow = dbHelper.ExecuteNonQuery(updateQuery,"TablohTableAction.DetermineUnderAmountTabloHforSBK2"); 
                 updateQuery = $"UPDATE [liste$] SET Tablo=NULL WHERE Tutar>{Setting.Amount} AND Tablo = 'H-250'";

@@ -81,6 +81,16 @@ public class MatrahTableAction
                 //update sbk table for VKN and yil
                 string UpdateQuery = $"UPDATE [liste$] SET Tablo='G-{vergiKodu}' WHERE VKN={sbkModel.TaxNumber} AND Yil={sbkModel.Year}";
                 int effectedRow = dbHelper.ExecuteNonQuery(UpdateQuery,"MatrahTableAction.DetermineMatrahForSBK-83");
+                if(!Setting.ReasonGMatrah7326Flag){
+                    if(vergiKodu=="7326"){
+                        Setting.ReasonGMatrah7326Flag = true;
+                    }  
+                }
+                if(!Setting.ReasonGMatrah7440Flag){
+                    if(vergiKodu=="7440"){
+                        Setting.ReasonGMatrah7440Flag = true;
+                    }
+                }
                 //save taxnumber and year to list then check if taxpayer has more than one 
 
                 Setting.GCountList.Add(new TaxPayer
