@@ -5,7 +5,7 @@ public class ReasonLetterDB{
     public void CleanReasonLetterTable(){
         OleDbHelper oleDbHelper = new OleDbHelper();
         oleDbHelper.OpenConnection();
-        string query = "Update [gerekceler$] set [Gerekçe]=[Gerekçe]+'asdasdsad', [Karar]=NULL";
+        string query = "Update [gerekceler$] set [Gerekçe]=NULL, [Karar]=NULL";
         oleDbHelper.ExecuteNonQuery(query,"ReasonLetterDB.CleanReasonLetterTable");
         oleDbHelper.CloseConnection();
     }

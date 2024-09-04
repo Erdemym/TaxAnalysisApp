@@ -160,7 +160,7 @@ UpgradeLog*.htm
 **/App_Data/*.mdf
 **/App_Data/*.ldf
 **/App_Data/*.sdf
-*.xlsx
+
 
 #LightSwitch generated files
 GeneratedArtifacts/
@@ -219,6 +219,7 @@ project.lock.json
 *.Specs_*.htm
 *.xls
 *.xlsx
+*.txt
 
 # UWP Projects
 AppPackages/

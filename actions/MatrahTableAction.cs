@@ -26,12 +26,12 @@ public class MatrahTableAction
         catch
         {
             Print.ColorRed("Matrah ve Tablo-H da sutünları sayıya dönüştürmeniz gerekmektedir.");
-            Setting.ErrorFlag = true;
+            GlobalVariables.ErrorFlag = true;
         }
 
         if (matrahTable.Rows.Count == 0)
         {
-            Setting.MatrahEmptyFlag = true;
+            GlobalVariables.MatrahEmptyFlag = true;
         }
         dbHelper.CloseConnection();
     }
@@ -48,12 +48,12 @@ public class MatrahTableAction
         catch
         {
             Print.ColorRed("Matrah ve Tablo-H da sutünları sayıya dönüştürmeniz gerekmektedir.");
-            Setting.ErrorFlag = true;
+            GlobalVariables.ErrorFlag = true;
         }
 
         if (matrahTable.Rows.Count == 0)
         {
-            Setting.MatrahEmptyFlag = true;
+            GlobalVariables.MatrahEmptyFlag = true;
         }
         dbHelper.CloseConnection();
     }
@@ -68,7 +68,7 @@ public class MatrahTableAction
 
         string matrahQuery = "SELECT * FROM [Matrah$] WHERE [Vergi Kodu]=15 and [Ödeme Bilgisi]='Ödendi'";
         DataTable matrahTable = dbHelper.ExecuteQuery(matrahQuery,"MatrahTableAction.DetermineMatrahForSBK-70");
-        Setting.GCountList = new List<TaxPayer>();
+        GlobalVariables.GCountList = new List<TaxPayer>();
         foreach (DataRow sbkRow in sbkTable.Rows)
         {
             TaxPayer sbkModel = TaxPayerTableAction.fillSbkModel(sbkRow);
@@ -81,19 +81,19 @@ public class MatrahTableAction
                 //update sbk table for VKN and yil
                 string UpdateQuery = $"UPDATE [liste$] SET Tablo='G-{vergiKodu}' WHERE VKN={sbkModel.TaxNumber} AND Yil={sbkModel.Year}";
                 int effectedRow = dbHelper.ExecuteNonQuery(UpdateQuery,"MatrahTableAction.DetermineMatrahForSBK-83");
-                if(!Setting.ReasonGMatrah7326Flag){
+                if(!GlobalVariables.ReasonGMatrah7326Flag){
                     if(vergiKodu=="7326"){
-                        Setting.ReasonGMatrah7326Flag = true;
+                        GlobalVariables.ReasonGMatrah7326Flag = true;
                     }  
                 }
-                if(!Setting.ReasonGMatrah7440Flag){
+                if(!GlobalVariables.ReasonGMatrah7440Flag){
                     if(vergiKodu=="7440"){
-                        Setting.ReasonGMatrah7440Flag = true;
+                        GlobalVariables.ReasonGMatrah7440Flag = true;
                     }
                 }
                 //save taxnumber and year to list then check if taxpayer has more than one 
 
-                Setting.GCountList.Add(new TaxPayer
+                GlobalVariables.GCountList.Add(new TaxPayer
                 {
                     TaxNumber = sbkModel.TaxNumber,
                     Year = sbkModel.Year
@@ -107,7 +107,7 @@ public class MatrahTableAction
         dbHelper.CloseConnection();
 
         //check list if taxpayer has more than one
-        var duplicateTaxPayers = Setting.GCountList.GroupBy(x => new { x.TaxNumber, x.Year })
+        var duplicateTaxPayers = GlobalVariables.GCountList.GroupBy(x => new { x.TaxNumber, x.Year })
             .Where(g => g.Count() > 1)
             .Select(y => y.Key)
             .ToList();
@@ -128,7 +128,7 @@ public class MatrahTableAction
         DataTable sbkTable = dbHelper.ExecuteQuery(sbkQuery,"MatrahTableAction.DetermineMatrahForGeneralAnalysis-118");
         string matrahQuery = "SELECT MIN([Vergi No]) as [Vergi No], MIN([Yıl]) as [Yıl], MIN([Kanun]) as [Kanun], SUM([Vergi Kodu]) as [Vergi Kodu] FROM [Matrah$] WHERE [Vergi Kodu]=15 and ([Vergi Kodu]=1 or [Vergi Kodu]=10)  and [Ödeme Bilgisi]='Ödendi' GROUP BY [Vergi No], [Yıl]";
         DataTable matrahTable = dbHelper.ExecuteQuery(matrahQuery,"MatrahTableAction.DetermineMatrahForGeneralAnalysis-120");
-        Setting.GCountList = new List<TaxPayer>();
+        GlobalVariables.GCountList = new List<TaxPayer>();
         foreach (DataRow sbkRow in sbkTable.Rows)
         {
             TaxPayer sbkModel = TaxPayerTableAction.fillSbkModel(sbkRow);
@@ -166,7 +166,7 @@ public class MatrahTableAction
                 
                 //save taxnumber and year to list then check if taxpayer has more than one 
 
-                Setting.GCountList.Add(new TaxPayer
+                GlobalVariables.GCountList.Add(new TaxPayer
                 {
                     TaxNumber = sbkModel.TaxNumber,
                     Year = sbkModel.Year
@@ -180,7 +180,7 @@ public class MatrahTableAction
         dbHelper.CloseConnection();
 
         //check list if taxpayer has more than one
-        var duplicateTaxPayers = Setting.GCountList.GroupBy(x => new { x.TaxNumber, x.Year })
+        var duplicateTaxPayers = GlobalVariables.GCountList.GroupBy(x => new { x.TaxNumber, x.Year })
             .Where(g => g.Count() > 1)
             .Select(y => y.Key)
             .ToList();

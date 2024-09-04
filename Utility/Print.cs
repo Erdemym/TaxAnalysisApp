@@ -61,6 +61,15 @@ public class Print
        Message(ConsoleColor.Red,message);
     }
 
+    public static void EnterDocumentDateAndNumber(){
+
+        //Console.WriteLine("Evrakın tarihini giriniz (örnek :"+Datetime.today+"."+tDatetime.month+"."+Datetime.year+):");
+
+        Console.Write("Evrakın tarihini giriniz (örnek :"+DateTime.Today.ToString("dd")+"."+DateTime.Today.ToString("MM")+"."+DateTime.Today.Year+") : ");
+        GlobalVariables.DocumentDate = Console.ReadLine();
+        Console.Write("Evrakın numarasını giriniz : ");
+        GlobalVariables.DocumentNumber = Console.ReadLine();
+    }
     public static void Message(ConsoleColor color,string message){
         string exclamation = new string('!', 80);
         Console.ForegroundColor = color;
@@ -79,13 +88,12 @@ public class Print
     public static void ProgramEndMessage()
     {
         Console.WriteLine("Analiz Tamamlandı.");
-        if (Setting.TimeBaredFlag)
+        if (GlobalVariables.TimeBaredFlag)
             Print.ColorYellow("Zamanaşımlı mükellef bulunmaktadır.Zamanaşımı etiketini seçmeyi unutmayın.");
         ExitMessage();
     }
     public static void ExitMessage(){
         Console.WriteLine("Çıkmak için enter'a basınız.");
-        
         
     }
 }

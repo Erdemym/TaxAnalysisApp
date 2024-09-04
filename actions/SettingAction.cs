@@ -7,6 +7,7 @@ public class SettingAction
     public SettingAction()
     {
         Print.WriteProgramName();
+        Print.EnterDocumentDateAndNumber();
         getSettingsFromDB();
         getVtrSettings();
         Analysis();
@@ -20,30 +21,30 @@ public class SettingAction
         //ayarTable count equal zero give error and exit program
         if (ayarTable.Rows.Count == 0)
         {
-            Setting.ErrorFlag = true;
+            GlobalVariables.ErrorFlag = true;
             Print.WriteErrorMessage("VTR ayarları girilmedi.Lütfen kontrol ediniz.");
             AnalysisController.CheckErrorFlag();
         }
         DataRow getFirst = ayarTable.Rows[0];
         Vtr vtrData = VtrTableAction.fillVtrModel(getFirst);
-        Setting.VtrTaxPayerTitle = vtrData.TaxPayerTitle;
-        Setting.VtrReportType = vtrData.ReportType;
-        Setting.VtrEvaluationDate = vtrData.EvaluationDate;
-        Setting.VtrTaxPeriod = vtrData.TaxPeriod;
-        Setting.InspectorName = vtrData.TaxInspectorTitle+" "+vtrData.TaxInspector;
-        Setting.VtrNumber=vtrData.ReportNo;
-        Setting.VtrTaxOfficeName=vtrData.TaxOfficeName;
+        GlobalVariables.VtrTaxPayerTitle = vtrData.TaxPayerTitle;
+        GlobalVariables.VtrReportType = vtrData.ReportType;
+        GlobalVariables.VtrEvaluationDate = vtrData.EvaluationDate;
+        GlobalVariables.VtrTaxPeriod = vtrData.TaxPeriod;
+        GlobalVariables.InspectorName = vtrData.TaxInspectorTitle+" "+vtrData.TaxInspector;
+        GlobalVariables.VtrNumber=vtrData.ReportNo;
+        GlobalVariables.VtrTaxOfficeName=vtrData.TaxOfficeName;
         DateTime formattedReportDate;
          if (DateTime.TryParse(vtrData.ReportDate, out formattedReportDate))
         {
             // İstediğiniz formatta string olarak biçimlendirin
-            Setting.VtrDate = formattedReportDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+            GlobalVariables.VtrDate = formattedReportDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
         }
         else
         {
             Print.ColorRed("Geçersiz Rapor tarihi Formatı.. Gerekçede Rapor Tarihi bölümünü düzenleyin");
         }
-        Setting.VtrTaxPayerNo=vtrData.TaxNo;
+        GlobalVariables.VtrTaxPayerNo=vtrData.TaxNo;
         
     }
     private void getSettingsFromDB()
@@ -55,7 +56,7 @@ public class SettingAction
         }
         catch
         {
-            Setting.ErrorFlag = true;
+            GlobalVariables.ErrorFlag = true;
             Print.ColorRed("Excel dosyası açılamadı. Lütfen dosyanın açık olmadığından emin olunuz.");
             AnalysisController.CheckErrorFlag();
         }
@@ -64,7 +65,7 @@ public class SettingAction
         try{
             ayarTable = dbHelper.ExecuteQuery(query,"SettingAction.getSettingsFromDB-49");
         }catch{
-            Setting.ErrorFlag = true;
+            GlobalVariables.ErrorFlag = true;
             Print.ColorRed("analiz.xls dosyası bulunamadı. Lütfen dosyayı kontrol ediniz.");
             AnalysisController.CheckErrorFlag();
         }
@@ -84,8 +85,8 @@ public class SettingAction
         Setting.AnalysisType = ayarTable.Rows[0].Field<string>("Analiz Türü");
         Setting.HYear = ayarTable.Rows[0].Field<double>("H Yıl");
         Setting.TimeoutYear = ayarTable.Rows[0].Field<double>("Karar E");
-        Setting.GCountList = new List<TaxPayer>();
-        Setting.ACountList = new List<TaxPayer>();
+        GlobalVariables.GCountList = new List<TaxPayer>();
+        GlobalVariables.ACountList = new List<TaxPayer>();
     }
 
     public void Analysis()
@@ -100,8 +101,6 @@ public class SettingAction
             WriteAnalysisType("Genel İnceleme");
             new MoneyTransferAnalysisController().Analysis();
         }
-        
-
 
     }
 
@@ -109,9 +108,9 @@ public class SettingAction
     {
         Console.WriteLine($"Analiz Türü: {analysisType}");
         Console.WriteLine($"Tutar: {Setting.Amount.ToString("N2")}");
-        Console.WriteLine($"Müfettiş: {Setting.InspectorName}");
-        Console.WriteLine($"VTR: {Setting.VtrNumber}");
-        Console.WriteLine($"İncelenen Mükellef:  {Setting.VtrTaxPayerTitle}");
+        Console.WriteLine($"Müfettiş: {GlobalVariables.InspectorName}");
+        Console.WriteLine($"VTR: {GlobalVariables.VtrNumber}");
+        Console.WriteLine($"İncelenen Mükellef:  {GlobalVariables.VtrTaxPayerTitle}");
         Print.WriteAsteriskLine();
     }
 }

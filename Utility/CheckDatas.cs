@@ -6,9 +6,9 @@ public static class CheckDatas{
         //add year to _vtrTaxPeriod
         _vtrTaxPeriod = _vtrTaxPeriod.Concat(new string[] { year }).ToArray();
         //Setting.VtrTaxPeriod string don't has year string give warning message
-        if (!Setting.VtrTaxPeriod.Contains(year))
+        if (!GlobalVariables.VtrTaxPeriod.Contains(year))
         {
-            Print.WriteWarningMessage($"Rapor dönemi {Setting.VtrTaxPeriod}, listede {year} yılı var. Yönetici ile görüşün.");
+            Print.WriteWarningMessage($"Rapor dönemi {GlobalVariables.VtrTaxPeriod}, listede {year} yılı var. Yönetici ile görüşün.");
         }
         
     }
@@ -49,24 +49,24 @@ public static class CheckDatas{
     }
     public static void CheckVtrReportType()
     {
-        if(Setting.VtrReportType=="VTR-Tamamen Sahte Belge Düzenleme")
+        if(GlobalVariables.VtrReportType=="VTR-Tamamen Sahte Belge Düzenleme")
         {
-        }else if (!Setting.VtrReportType.StartsWith("VTR"))
+        }else if (!GlobalVariables.VtrReportType.StartsWith("VTR"))
         {
             Print.WriteErrorMessage("Rapor Türü VTR değil. Yönetici ile görüşün.");
-        }else if (Setting.VtrReportType == "VTR-Genel")
+        }else if (GlobalVariables.VtrReportType == "VTR-Genel")
         {
             Print.ColorYellow("Rapor Türü Genel. Yanlışlıkla SBK liste gelmemiş ise Ayarları genel incelemeye göre düzenleyiniz.");
             Print.ColorYellow("H analizi yapılmayacak.");
-        }else if (Setting.VtrReportType == "VTR-Kısmen Sahte Belge Düzenleme")
+        }else if (GlobalVariables.VtrReportType == "VTR-Kısmen Sahte Belge Düzenleme")
         {
             Print.ColorYellow("Rapor Türü Kısmen Sahte Belge Düzenleme. H analizi yapılmayacak.");
-        }else if(Setting.VtrReportType.StartsWith("VTR-Taklit"))
+        }else if(GlobalVariables.VtrReportType.StartsWith("VTR-Taklit"))
         {
             Print.ColorYellow("Rapor Türü Taklit-Çalıntı belge.");
             Print.ColorYellow("Giriş yaparken belirtmeyi unutmayın.");
             Print.ColorYellow("H analizi yapılmayacak.");
-        }else if(Setting.VtrReportType.StartsWith("VTR-Muhteviyatı"))
+        }else if(GlobalVariables.VtrReportType.StartsWith("VTR-Muhteviyatı"))
         {
             Print.ColorYellow("Rapor Türü Muhteviyatı İtibarıyla Yanıltıcı Belge Düzenleme.");
             Print.ColorYellow("H analizi yapılmayacak.");
@@ -77,7 +77,7 @@ public static class CheckDatas{
     }
     public static void VtrEvaluationDateControlIsNullOrEmpty()
     {
-        if (string.IsNullOrEmpty(Setting.VtrEvaluationDate))
+        if (string.IsNullOrEmpty(GlobalVariables.VtrEvaluationDate))
         {
             Print.WriteWarningMessage("Rapor RDK'dan çıkmamış.Yönetici ile görüşün.");
         }
@@ -146,7 +146,7 @@ public static class CheckDatas{
 
     static string FormatName(string name,string split)
     {
-        name=name.Replace("I","İ");
+        //name=name.Replace("I","İ");
         // Ensure proper culture handling for special characters
         var cultureInfo = new CultureInfo("tr-TR");
         
@@ -158,7 +158,8 @@ public static class CheckDatas{
             // Capitalize the first letter and ensure the rest are lowercase
             if (!string.IsNullOrEmpty(parts[i]))
             {
-                parts[i] = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(parts[i].ToLower(cultureInfo));
+                string _part=parts[i].ToLower(cultureInfo);
+                parts[i] = cultureInfo.TextInfo.ToTitleCase(_part);
             }
         }
 
@@ -214,6 +215,29 @@ public static class CheckDatas{
         }
 
         return string.Join(" ", words);
+    }
+
+    public static void WriteGerekceToTheTextFile(string message)
+    {
+        using (StreamWriter writer = new StreamWriter("gerekceler.txt", false))
+        {
+            writer.WriteLine(message);
+        }
+    }
+
+    public static string CheckTurkishKeywordInCompnayName(string companyName){
+          var replacements = new Dictionary<string, string>
+        {
+            { "Insaat", "İnşaat" },
+            { "Sirketi", "Şirketi" }
+        };
+
+        // Replace keywords in the content
+         foreach (var replacement in replacements)
+        {
+            companyName = companyName.Replace(replacement.Key, replacement.Value);
+        }
+        return companyName;
     }
    
 }

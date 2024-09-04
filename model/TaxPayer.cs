@@ -1,7 +1,7 @@
 public class TaxPayer
 {
 
-    // VKN,Unvan,Yil,Tutar,Belge,Tablo,EkBilgi
+    // VKN,Unvan,Yil,Tutar,Tablo,EkBilgi
     private string? taxNumber;
     public string TaxNumber
     {
@@ -21,7 +21,6 @@ public class TaxPayer
     public string? Title { get; set; }
     public int Year { get; set; }
     public decimal Amount { get; set; }
-    public int Document { get; set; }
     public string? Result { get; set; }
     public string? Information { get; set; }
 }

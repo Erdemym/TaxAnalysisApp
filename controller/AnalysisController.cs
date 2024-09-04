@@ -13,7 +13,7 @@ public abstract class AnalysisController
        
         //check sbk table has double Vkn and Year Taxpayers
         TaxPayerTableAction taxPayerTableAction = new TaxPayerTableAction();
-        CheckDatas.CheckUnvanHasPetrol(Setting.VtrTaxPayerTitle);
+        //CheckDatas.CheckUnvanHasPetrol(GlobalVariables.VtrTaxPayerTitle);
         CheckDatas.VtrEvaluationDateControlIsNullOrEmpty();
         taxPayerTableAction.CheckValuesCorrection();
         CheckDatas.CheckVtrReportType();
@@ -33,7 +33,7 @@ public abstract class AnalysisController
 
     public static void CheckErrorFlag()
     {
-        if (Setting.ErrorFlag)
+        if (GlobalVariables.ErrorFlag)
         {
             Print.ExitMessage("Program Sonlandırıldı.");
             Environment.Exit(0);

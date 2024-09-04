@@ -34,7 +34,7 @@ public class SbkAnalysisController : AnalysisController
         TaxPayerTableAction sbkAction = new TaxPayerTableAction();
 
         //sbk matrah control
-        if (!Setting.MatrahEmptyFlag)
+        if (!GlobalVariables.MatrahEmptyFlag)
         {
             MatrahTableAction matrahAction = new MatrahTableAction();
             matrahAction.DetermineMatrahForSBK();
@@ -45,7 +45,7 @@ public class SbkAnalysisController : AnalysisController
 
 
         //sbk tabloH control
-        if (!Setting.TablohEmptyFlag)
+        if (!GlobalVariables.TablohEmptyFlag)
         {
             tablohAction.DetermineTabloHforSBK();
         }
@@ -54,7 +54,8 @@ public class SbkAnalysisController : AnalysisController
         new TablohErrorAction().writeTablohErrorToSBK();
         //Fill all blank field to A
         sbkAction.FillBlankTabloToA();
-        //sbkAction.DetermineAnalysisCount();       
+        //sbkAction.DetermineAnalysisCount();   
+        new ReasonLetterAction().DetermineSbkReasonAndWriteItTextFile();    
         Print.ProgramEndMessage();
 
 

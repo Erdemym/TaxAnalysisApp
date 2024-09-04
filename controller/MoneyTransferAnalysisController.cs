@@ -15,7 +15,7 @@ public class MoneyTransferAnalysisController : AnalysisController
 
         sbkAction.DetermineTaxPayersUnderAmountG();
 
-        if (!Setting.MatrahEmptyFlag)
+        if (!GlobalVariables.MatrahEmptyFlag)
         {
             MatrahTableAction matrahAction = new MatrahTableAction();
             matrahAction.DetermineMatrahForGeneralAnalysis();
