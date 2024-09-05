@@ -63,8 +63,6 @@ public class Print
 
     public static void EnterDocumentDateAndNumber()
     {
-        //Console.WriteLine("Evrakın tarihini giriniz (örnek :"+Datetime.today+"."+tDatetime.month+"."+Datetime.year+):");
-
         Console.Write(
             "Evrakın tarihini giriniz (örnek :"
                 + DateTime.Today.ToString("dd")

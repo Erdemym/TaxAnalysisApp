@@ -4,7 +4,7 @@ public class ReasonLetterAction
     public ReasonLetterAction()
     {
         //end with 
-        //ZZZZZ tarihli ve ZZZZZ sayılı incelemeye sevk 
+        //12.02.2024 tarihli ve 12545 sayılı incelemeye sevk 
         beginingOfReasonText = $"{GlobalVariables.InspectorName} tarafından {CheckDatas.FormatTaxOfficeName(GlobalVariables.VtrTaxOfficeName)} {GlobalVariables.VtrTaxPayerNo} vergi kimlik numaralı mükellefi {GlobalVariables.VtrTaxPayerTitle} hakkında tanzim edilen {GlobalVariables.VtrDate} tarih ve {GlobalVariables.VtrNumber} sayılı Vergi Tekniği Raporuna istinaden düzenlenen {GlobalVariables.DocumentDate} tarihli ve {GlobalVariables.DocumentNumber} sayılı incelemeye sevk ";
     }
 

@@ -38,7 +38,7 @@ public class SettingAction
         DateTime formattedReportDate;
          if (DateTime.TryParse(vtrData.ReportDate, out formattedReportDate))
         {
-            // İstediğiniz formatta string olarak biçimlendirin
+            //Formatting date to dd/MM/yyyy
             GlobalVariables.VtrDate = formattedReportDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
         }
         else
