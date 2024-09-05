@@ -34,7 +34,10 @@ public class TaxPayerTableAction
     public void DetermineTaxPayersUnderAmountG()
     {
         TaxPayerDB taxPayerDB = new TaxPayerDB();
-        taxPayerDB.UpdateListForUnderAmount();
+        int effectedRows=taxPayerDB.UpdateListForUnderAmount();
+        if(effectedRows>0)
+            GlobalVariables.ReasonGUnderAmountFlag = true;
+
     }
 
     public void CheckTaxPayersTaxAndYearTwice()

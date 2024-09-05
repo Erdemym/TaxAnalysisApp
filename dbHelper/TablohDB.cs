@@ -158,13 +158,15 @@ public class TablohDB
             );
             if (effectedRow > 0)
             {
-                GlobalVariables.ReasonHFlag = true;
                 updateQuery =
                     $"UPDATE [liste$] SET Tablo='H-{Setting.Result}' WHERE Tutar<={Setting.Amount} AND Tablo = 'H-250'";
                 effectedRow = dbHelper.ExecuteNonQuery(
                     updateQuery,
                     "TablohTableAction.DetermineUnderAmountTabloHforSBK2"
                 );
+                //is there any H under amount set ReasonHFlag
+                if (effectedRow > 0)
+                    GlobalVariables.ReasonHFlag = true;
                 updateQuery =
                     $"UPDATE [liste$] SET Tablo=NULL WHERE Tutar>{Setting.Amount} AND Tablo = 'H-250'";
                 effectedRow = dbHelper.ExecuteNonQuery(

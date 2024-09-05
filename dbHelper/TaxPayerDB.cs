@@ -27,7 +27,7 @@ public class TaxPayerDB
     {
         OleDbHelper dbHelper = new OleDbHelper();
         string updateQuery =
-            $"Update [liste$] set [Tablo]='E',[EkBilgi]='Vkn Eksik' where [VKN] is null";
+            $"Update [liste$] set [Tablo]='E',[EkBilgi]='Vkn Eksik' where [VKN] is NULL";
         dbHelper.OpenConnection();
         int effectedRows = dbHelper.ExecuteNonQuery(updateQuery, "TaxPayerDB.setBlankVknToE");
         dbHelper.CloseConnection();
@@ -57,7 +57,7 @@ public class TaxPayerDB
 
     public int SetBlankToA(){
         OleDbHelper dbHelper = new OleDbHelper();
-        string updateQuery = $"Update [liste$] set [Tablo]='A' where [Tablo] is null";
+        string updateQuery = $"Update [liste$] set [Tablo]='A' where [Tablo] is NULL";
         dbHelper.OpenConnection();
         int effectedRows = dbHelper.ExecuteNonQuery(
             updateQuery,
@@ -70,7 +70,7 @@ public class TaxPayerDB
 
     public void RemoveListFromBeginning(){
         OleDbHelper dbHelper = new OleDbHelper();
-        string updateQuery = "UPDATE [liste$] set Tekrar='',ToplamTutar=null,Tablo='',VtrTarih='',VtrSayi='',VtrTur='',EkBilgi=''";
+        string updateQuery = "UPDATE [liste$] set Tekrar='',ToplamTutar=NULL,Tablo=NULL,VtrTarih='',VtrSayi='',VtrTur='',EkBilgi=''";
         dbHelper.ExecuteNonQuery(updateQuery,"TaxPayerDB.removeListFromBeginning");
         dbHelper.CloseConnection();
     }
@@ -102,13 +102,14 @@ public class TaxPayerDB
         dbHelper.CloseConnection();
         return table;   
     }
-    public void UpdateListForUnderAmount(){
+    public int UpdateListForUnderAmount(){
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
         string UpdateQuery =
                 $"UPDATE [liste$] SET Tablo='G-{Setting.Result}' WHERE Tutar<={Setting.Amount} AND Tablo IS NULL";
         int effectedRows = dbHelper.ExecuteNonQuery(UpdateQuery, "TaxPayerDB.UpdateListForUnderAmount");
         dbHelper.CloseConnection();
+        return effectedRows;
     }
 
     public void EndOfList(string result){

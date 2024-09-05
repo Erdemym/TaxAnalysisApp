@@ -54,7 +54,7 @@ public class TablohTableAction
     {
         TablohDB tabloHDb = new TablohDB();
         int effectedRow = tabloHDb.FindAndUpdateHIZDK();
-        if (effectedRow > 0)
+        if (!GlobalVariables.ReasonHFlag &&effectedRow > 0)
         {
             GlobalVariables.ReasonHFlag = true;
         }
