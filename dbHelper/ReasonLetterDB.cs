@@ -3,11 +3,11 @@ using System.Data.OleDb;
 public class ReasonLetterDB{
 
     public void CleanReasonLetterTable(){
-        OleDbHelper oleDbHelper = new OleDbHelper();
-        oleDbHelper.OpenConnection();
+        OleDbHelper dbHelper = new OleDbHelper();
+        dbHelper.OpenConnection();
         string query = "Update [gerekceler$] set [Gerekçe]=NULL, [Karar]=NULL";
-        oleDbHelper.ExecuteNonQuery(query,"ReasonLetterDB.CleanReasonLetterTable");
-        oleDbHelper.CloseConnection();
+        dbHelper.ExecuteNonQuery(query,"ReasonLetterDB.CleanReasonLetterTable");
+        dbHelper.CloseConnection();
     }
 
     public void AddingLongTextForGerekce(string karar, string longText, int maxLength)

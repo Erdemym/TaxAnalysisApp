@@ -33,30 +33,15 @@ public class TaxPayerTableAction
     //find TaxPayers under amount and Change Tablo to G-Under Amount
     public void DetermineTaxPayersUnderAmountG()
     {
-        using (OleDbHelper dbHelper = new OleDbHelper())
-        {
-            dbHelper.OpenConnection();
-            string UpdateQuery =
-                $"UPDATE [liste$] SET Tablo='G-{Setting.Result}' WHERE Tutar<={Setting.Amount} AND Tablo IS NULL";
-            GlobalVariables.PotentialGCount = dbHelper.ExecuteNonQuery(
-                UpdateQuery,
-                "TaxPayerTableAction.DetermineTaxPayersUnderAmount"
-            );
-            dbHelper.CloseConnection();
-        }
+        TaxPayerDB taxPayerDB = new TaxPayerDB();
+        taxPayerDB.UpdateListForUnderAmount();
     }
 
     public void CheckTaxPayersTaxAndYearTwice()
     {
         //check sbk table has double Vkn and Year Taxpayers
-        OleDbHelper dbHelper = new OleDbHelper();
-        dbHelper.OpenConnection();
-        string doubleTaxPayersQuery =
-            "SELECT VKN,Yil,COUNT(*) AS doubleCount FROM [liste$] GROUP BY VKN,Yil HAVING COUNT(*)>1";
-        DataTable doubleTaxPayersTable = dbHelper.ExecuteQuery(
-            doubleTaxPayersQuery,
-            "TaxPayerTableAction.CheckTaxPayersTaxAndYearTwice"
-        );
+        TaxPayerDB taxPayerDB = new TaxPayerDB();
+        DataTable doubleTaxPayersTable = taxPayerDB.GetTwicedTaxPayerVknAndYear();
         if (doubleTaxPayersTable.Rows.Count > 0)
         {
             foreach (DataRow row in doubleTaxPayersTable.Rows)
@@ -88,11 +73,12 @@ public class TaxPayerTableAction
                 GlobalVariables.ErrorFlag = true;
             }
         }
-        dbHelper.CloseConnection();
+        
     }
 
     public List<TaxPayer> FindMultipleRowInList(List<TaxPayer> taxPayers, string result)
     {
+        TaxPayerDB taxPayerDB = new TaxPayerDB();
         List<TaxPayer> taxPayersWithSameTaxNumber = new List<TaxPayer>();
         //find same taxnumber in gCountList return TaxPayer List
         if (result == "G")
@@ -116,29 +102,12 @@ public class TaxPayerTableAction
                 lastYear = taxpayer.Year;
                 totalAmount += taxpayer.Amount;
                 lastTaxNumber = taxpayer.TaxNumber;
-                //update Taxpayer Year Tekrar column to +++
-                OleDbHelper dbHelper = new OleDbHelper();
-                dbHelper.OpenConnection();
-                string updateQuery =
-                    $"UPDATE [liste$] SET Tekrar='+++' WHERE VKN={taxpayer.TaxNumber} AND Yil={taxpayer.Year}";
-                int effectedRow = dbHelper.ExecuteNonQuery(
-                    updateQuery,
-                    "TaxPayerTableAction.FindMultipleRowInList-113"
-                );
-                dbHelper.CloseConnection();
+                taxPayerDB.UpdateRepeatedColumn(taxpayer.TaxNumber, taxpayer.Year);
             }
 
             if (result == "A")
             {
-                OleDbHelper dbHelper = new OleDbHelper();
-                dbHelper.OpenConnection();
-                string updateQuery =
-                    $"UPDATE [liste$] SET ToplamTutar='{totalAmount}' WHERE VKN={lastTaxNumber} AND Yil={lastYear}";
-                int effectedRow = dbHelper.ExecuteNonQuery(
-                    updateQuery,
-                    "TaxPayerTableAction.FindMultipleRowInList-122"
-                );
-                dbHelper.CloseConnection();
+                taxPayerDB.SetTotalAmountForVknAndYear(totalAmount,lastTaxNumber, lastYear);
                 totalAmount = 0;
             }
 
@@ -161,14 +130,8 @@ public class TaxPayerTableAction
     //find Total count starting with A,H and G in sbk sheet Tablo column, Group by Tablo first character
     public void DetermineAnalysisCount()
     {
-        OleDbHelper dbHelper = new OleDbHelper();
-        dbHelper.OpenConnection();
-        //
-        string query = "SELECT * FROM [liste$] ";
-        DataTable table = dbHelper.ExecuteQuery(
-            query,
-            "TaxPayerTableAction.DetermineAnalysisCount-155"
-        );
+        TaxPayerDB taxPayerDB = new TaxPayerDB();
+        DataTable table = taxPayerDB.GetList();
         foreach (DataRow row in table.Rows)
         {
             TaxPayer taxPayer = fillSbkModel(row);
@@ -218,28 +181,15 @@ public class TaxPayerTableAction
         Console.WriteLine(TotalValueText);
         Print.WriteAsteriskLine();
         //insert two new row with Tekrar column = .
-        string insertQuery = $"INSERT INTO [liste$] (Tekrar) VALUES ('.')";
-        int effectedRow = dbHelper.ExecuteNonQuery(
-            insertQuery,
-            "TaxPayerTableAction.DetermineAnalysisCount-206"
-        );
-        insertQuery = $"INSERT INTO [liste$] (Tekrar) VALUES ('.###.')";
-        effectedRow = dbHelper.ExecuteNonQuery(
-            insertQuery,
-            "TaxPayerTableAction.DetermineAnalysisCount-208"
-        );
-        //insert TotalValueText to Tekrar column = ..
-        string updateQuery = $"UPDATE [liste$] SET Tablo='{TotalValueText}' WHERE Tekrar='.###.'";
-        dbHelper.ExecuteNonQuery(updateQuery, "TaxPayerTableAction.DetermineAnalysisCount-211");
-        dbHelper.CloseConnection();
+        taxPayerDB.EndOfList(TotalValueText);
+        
     }
 
     public void CheckValuesCorrection()
     {
         int rowCount = 0;
-        OleDbHelper dbHelper = new OleDbHelper();
-        string query = "SELECT * FROM [liste$] order by Yil,VKN";
-        DataTable table = dbHelper.ExecuteQuery(query, "TaxPayerTableAction.CheckValuesCorrection");
+        TaxPayerDB taxPayerDb = new TaxPayerDB();
+        DataTable table = taxPayerDb.GetTabloOrderedByYearAndVKN();
         //check vkn length bigger than 10, year beetween Ayar.HYil-1 and Hyil +5,Amount must be digit
         foreach (DataRow row in table.Rows)
         {
@@ -302,48 +252,29 @@ public class TaxPayerTableAction
 
     public void AnalysisYearTimedOuttoE()
     {
-        OleDbHelper dbHelper = new OleDbHelper();
-        dbHelper.OpenConnection();
-        string updateQuery =
-            $"UPDATE [liste$] SET Tablo='E' WHERE Yil <={Setting.TimeoutYear} AND Tablo IS NULL";
-        int effectedRow = dbHelper.ExecuteNonQuery(
-            updateQuery,
-            "TaxPayerTableAction.AnalysisYearTimedOuttoE"
-        );
+        TaxPayerDB taxPayerDB = new TaxPayerDB();
+        int effectedRow = taxPayerDB.SetYearTimedOuttoE();
         if (effectedRow > 0)
         {
             GlobalVariables.TimeBaredFlag = true;
             GlobalVariables.ReasonEFlag = true;
         }
-        dbHelper.CloseConnection();
     }
 
     public void FillBlankTabloToA()
     {
-        OleDbHelper oleDbHelper = new OleDbHelper();
-        string updateQuery = $"Update [liste$] set [Tablo]='A' where [Tablo] is null";
-        oleDbHelper.OpenConnection();
-        int effectedRows = oleDbHelper.ExecuteNonQuery(
-            updateQuery,
-            "TaxPayerTableAction.FillBlankTabloToA"
-        );
+        TaxPayerDB taxPayerDB = new TaxPayerDB();
+        int effectedRows = taxPayerDB.SetBlankToA();
         if (effectedRows > 0)
         {
             GlobalVariables.ReasonAFlag = true;
         }
-        oleDbHelper.CloseConnection();
+        
     }
 
     public void FillBlankVKNToE()
     {
-        OleDbHelper oleDbHelper = new OleDbHelper();
-        string updateQuery =
-            $"Update [liste$] set [Tablo]='E',[EkBilgi]='Vkn Eksik' where [VKN] is null";
-        oleDbHelper.OpenConnection();
-        int effectedRows = oleDbHelper.ExecuteNonQuery(
-            updateQuery,
-            "TaxPayerTableAction.FillBlankVKNToE"
-        );
-        oleDbHelper.CloseConnection();
+        TaxPayerDB taxPayerDB = new TaxPayerDB();
+        taxPayerDB.SetBlankVknToE();
     }
 }
