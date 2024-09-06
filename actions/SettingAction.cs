@@ -11,7 +11,7 @@ public class SettingAction
         getVtrSettings();
         Print.EnterDocumentDateAndNumber();
         
-        if(!GlobalVariables.testMod)
+        if(!GlobalVariables.debugMod)
         Print.EditTaxPayerTitle();
 
         Analysis();

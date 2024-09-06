@@ -11,7 +11,7 @@ public class GlobalVariables
     private static bool _reasonGMatrah7326Flag = false;
     private static bool _reasonGMatrah7440Flag = false;
     private static bool _reasonGUnderAmountFlag = false;
-
+    public static bool debugMod = true;
     public static string DocumentDate{ get; set; }
     public static string DocumentNumber { get; set; }
     public static bool TimeBaredFlag { get => _timeBaredFlag; set => _timeBaredFlag = value; }
@@ -46,5 +46,5 @@ public class GlobalVariables
     public static bool ReasonGMatrah7440Flag { get => _reasonGMatrah7440Flag; set => _reasonGMatrah7440Flag = value; }
     public static bool ReasonAFlag { get => _reasonAFlag; set => _reasonAFlag = value; }
     public static bool ReasonGUnderAmountFlag{get=>_reasonGUnderAmountFlag;set=>_reasonGUnderAmountFlag=value;}
-    public static bool testMod = true;
+    
 }

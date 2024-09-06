@@ -63,23 +63,26 @@ public class Print
 
     public static void EnterDocumentDateAndNumber()
     {
-        if(GlobalVariables.testMod){
+        if (GlobalVariables.debugMod)
+        {
             Print.WriteWarningMessage("!!!Test Modu Aktif.. Productionda Test Modunu Kapatınız.");
-            GlobalVariables.DocumentDate="12.02.2024";
-            GlobalVariables.DocumentNumber="32223";
-        }else{
-        Console.Write(
-            "Evrakın tarihini giriniz (örnek :"
-                + DateTime.Today.ToString("dd")
-                + "."
-                + DateTime.Today.ToString("MM")
-                + "."
-                + DateTime.Today.Year
-                + ") : "
-        );
-        GlobalVariables.DocumentDate = Console.ReadLine();
-        Console.Write("Evrakın numarasını giriniz : ");
-        GlobalVariables.DocumentNumber = Console.ReadLine();
+            GlobalVariables.DocumentDate = "12.02.2024";
+            GlobalVariables.DocumentNumber = "32223";
+        }
+        else
+        {
+            Console.Write(
+                "Evrakın tarihini giriniz (örnek :"
+                    + DateTime.Today.ToString("dd")
+                    + "."
+                    + DateTime.Today.ToString("MM")
+                    + "."
+                    + DateTime.Today.Year
+                    + ") : "
+            );
+            GlobalVariables.DocumentDate = Console.ReadLine();
+            Console.Write("Evrakın numarasını giriniz : ");
+            GlobalVariables.DocumentNumber = Console.ReadLine();
         }
     }
 
@@ -118,6 +121,7 @@ public class Print
     public static void ExitMessage()
     {
         Console.WriteLine("Çıkmak için enter'a basınız.");
-        Console.Read();
+        if (!GlobalVariables.debugMod)
+            Console.Read();
     }
 }
