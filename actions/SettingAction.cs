@@ -31,6 +31,7 @@ public class SettingAction
         DataRow getFirst = ayarTable.Rows[0];
         Vtr vtrData = VtrTableAction.fillVtrModel(getFirst);
         GlobalVariables.VtrTaxPayerTitle = TextOperations.CheckTurkishKeywordInCompnayName(TextOperations.FormatName(vtrData.TaxPayerTitle));
+        GlobalVariables.VtrTaxPayerTitle = TextOperations.FormatTaxPayerTitle(GlobalVariables.VtrTaxPayerTitle);
         GlobalVariables.VtrReportType = vtrData.ReportType;
         GlobalVariables.VtrEvaluationDate = vtrData.EvaluationDate;
         GlobalVariables.VtrTaxPeriod = vtrData.TaxPeriod;

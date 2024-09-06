@@ -243,4 +243,28 @@ public class TextOperations
 
         return $"{Vkn.Substring(0, 3)} {Vkn.Substring(3, 3)} {Vkn.Substring(6, 4)}";
     }
+
+    public static string FormatTaxPayerTitle(string taxPayerTitle)
+    {
+        // Split the string by spaces
+        string[] parts = taxPayerTitle.Split(' ');
+
+        // If the part count is more than 3, return the original string
+        if (parts.Length > 3|| parts.Length<2)
+            return taxPayerTitle;
+
+        // Get the last part and convert it to uppercase with Turkish culture
+        string lastPartUpper = parts[^1].ToUpper(new CultureInfo("tr-TR"));
+
+        // Recombine the name, leaving the first parts unchanged and replacing the last one
+        if (parts.Length > 1)
+        {
+            return string.Join(" ", parts[..^1]) + " " + lastPartUpper;
+        }
+        else
+        {
+            // If there's only one part, just return it as uppercased
+            return lastPartUpper;
+        }
+    }
 }
