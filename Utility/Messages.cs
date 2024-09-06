@@ -28,7 +28,7 @@ public class Messages
     public static void EditTaxPayerTitle()
     {
         Console.Write("Mükellef unvanını düzenleyin : ");
-        GlobalVariables.VtrTaxPayerTitle = CheckDatas.EditText(GlobalVariables.VtrTaxPayerTitle);
+        GlobalVariables.VtrTaxPayerTitle = TextOperations.EditText(GlobalVariables.VtrTaxPayerTitle);
     }
 
     public static void ListHasPotentialTaxPayers()
