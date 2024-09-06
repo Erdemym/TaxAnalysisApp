@@ -49,5 +49,7 @@ public class Messages
 
         string messages =
             $"Listenizde '{potentialType}' potansiyel mükellefler bulunmaktadır.  Yönetici ile görüşün.";
+
+        Print.WriteWarningMessage(messages);
     }
 }
