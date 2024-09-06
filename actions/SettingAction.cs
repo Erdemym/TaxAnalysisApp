@@ -9,10 +9,10 @@ public class SettingAction
         Print.WriteProgramName();
         getSettingsFromDB();
         getVtrSettings();
-        Print.EnterDocumentDateAndNumber();
+        Messages.EnterDocumentDateAndNumber();
         
         if(!GlobalVariables.debugMod)
-        Print.EditTaxPayerTitle();
+        Messages.EditTaxPayerTitle();
 
         Analysis();
 

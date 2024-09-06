@@ -1,4 +1,3 @@
-
 using System.Data;
 
 /// <summary>
@@ -8,8 +7,6 @@ using System.Data;
 /// </summary>
 public class SbkAnalysisController : AnalysisController
 {
-
-
     public override void PreControl()
     {
         MatrahTableAction matrahAction = new MatrahTableAction();
@@ -20,14 +17,11 @@ public class SbkAnalysisController : AnalysisController
         tablohAction.CheckTablohTableIsEmptyForSBK();
         tablohAction.CheckTablohUnexceptedYears();
         tablohAction.CheckTablohKdvMukellefiyeti();
-
     }
-
 
     //method for sbk analysis actions
     public override void Analysis()
     {
-
         TablohTableAction tablohAction = new TablohTableAction();
         tablohAction.DetermineGVTR();
 
@@ -43,7 +37,6 @@ public class SbkAnalysisController : AnalysisController
         //sbk under amount control
         tablohAction.DetermineUnderAmountTabloHforSBK();
 
-
         //sbk tabloH control
         if (!GlobalVariables.TablohEmptyFlag)
         {
@@ -54,20 +47,12 @@ public class SbkAnalysisController : AnalysisController
         new TablohErrorAction().writeTablohErrorToSBK();
         //Fill all blank field to A
         sbkAction.FillBlankTabloToA();
-        //sbkAction.DetermineAnalysisCount();   
-        new ReasonLetterAction().DetermineSbkReasonAndWriteItTextFile();    
+        //sbkAction.DetermineAnalysisCount();
+        if (GlobalVariables.PotentialGCount>0 || GlobalVariables.PotentialZZZCount>0)
+        {
+            Messages.ListHasPotentialTaxPayers();
+        }
+        new ReasonLetterAction().DetermineSbkReasonAndWriteItTextFile();
         Print.ProgramEndMessage();
-
-
-
-
     }
-
-
-
-
-
-
-
-
 }

@@ -34,10 +34,11 @@ public class TaxPayerTableAction
     public void DetermineTaxPayersUnderAmountG()
     {
         TaxPayerDB taxPayerDB = new TaxPayerDB();
-        int effectedRows=taxPayerDB.UpdateListForUnderAmount();
-        if(effectedRows>0)
+        GlobalVariables.PotentialGCount = taxPayerDB.UpdateListForUnderAmount();
+        if (GlobalVariables.PotentialGCount > 0)
+        {
             GlobalVariables.ReasonGUnderAmountFlag = true;
-
+        }
     }
 
     public void CheckTaxPayersTaxAndYearTwice()
@@ -76,7 +77,6 @@ public class TaxPayerTableAction
                 GlobalVariables.ErrorFlag = true;
             }
         }
-        
     }
 
     public List<TaxPayer> FindMultipleRowInList(List<TaxPayer> taxPayers, string result)
@@ -110,7 +110,7 @@ public class TaxPayerTableAction
 
             if (result == "A")
             {
-                taxPayerDB.SetTotalAmountForVknAndYear(totalAmount,lastTaxNumber, lastYear);
+                taxPayerDB.SetTotalAmountForVknAndYear(totalAmount, lastTaxNumber, lastYear);
                 totalAmount = 0;
             }
 
@@ -185,7 +185,6 @@ public class TaxPayerTableAction
         Print.WriteAsteriskLine();
         //insert two new row with Tekrar column = .
         taxPayerDB.EndOfList(TotalValueText);
-        
     }
 
     public void CheckValuesCorrection()
@@ -272,7 +271,6 @@ public class TaxPayerTableAction
         {
             GlobalVariables.ReasonAFlag = true;
         }
-        
     }
 
     public void FillBlankVKNToE()
