@@ -1,6 +1,8 @@
 using System.Globalization;
-public class TextOperations{
-     public static string EditText(string currentInput)
+
+public class TextOperations
+{
+    public static string EditText(string currentInput)
     {
         Console.WriteLine(currentInput); // Show the current name
 
@@ -69,7 +71,8 @@ public class TextOperations{
         Console.Write(text + new string(' ', Console.WindowWidth - text.Length)); // Overwrite any leftover characters
         Console.SetCursorPosition(cursorPos, Console.CursorTop); // Reset cursor position
     }
-      public static string CheckTurkishKeywordInCompnayName(string companyName)
+
+    public static string CheckTurkishKeywordInCompnayName(string companyName)
     {
         var replacements = new Dictionary<string, string>
         {
@@ -92,7 +95,8 @@ public class TextOperations{
         }
         return companyName;
     }
-     public static string FormatTaxOfficeName(string taxOfficeName)
+
+    public static string FormatTaxOfficeName(string taxOfficeName)
     {
         // Split the input string into the code and description parts
         var parts = taxOfficeName.Split(new[] { " - " }, StringSplitOptions.None);
@@ -148,7 +152,7 @@ public class TextOperations{
         return string.Join(" ", words);
     }
 
-     public static string GetSuffix(string fullName)
+    public static string GetSuffix(string fullName)
     {
         //split name
         string[] parts = fullName.Split(' ');
@@ -230,5 +234,13 @@ public class TextOperations{
 
         // Join the parts back together with a space
         return string.Join(" ", parts);
+    }
+
+    public static string FormatVkn(string Vkn)
+    {
+        if (Vkn.Length != 10)
+            throw new ArgumentException("The input number must be 10 digits long.");
+
+        return $"{Vkn.Substring(0, 3)} {Vkn.Substring(3, 3)} {Vkn.Substring(6, 4)}";
     }
 }
