@@ -28,15 +28,6 @@ public class ReasonLetterAction
         return reasonText;
     }
 
-    //this method will be delete
-    private string SBKReasonGVTR()
-    {
-        string reasonText =
-            $"yazısında yer alan hususlar doğrultusunda; mükellefin {GlobalVariables.VtrTaxPeriod.Split(',')[0]} yılı hesap ve işlemlerinin “Sahte Belge Kullanma” yönünden incelenmesi talep edilmekte olup, sistem üzerinden yapılan sorgulamada mükellef hakkında inceleme yılına ilişkin ZZZZZ tarih ve ZZZZZ sayılı Vergi Tekniği Raporu düzenlendiği ve ilgili dönemde sahte belge düzenlemek amacıyla faaliyette bulunduğu tespit edildiğinden evraka konu inceleme talebinin İhbar ve İnceleme Taleplerini Değerlendirme Komisyonlarının Oluşturulması ile Çalışma Usul ve Esaslarına İlişkin Yönerge'nin 10/(2)-g bendi gereğince hıfz edilmesine karar verilmiştir.";
-        reasonText = beginingOfReasonText + reasonText;
-        return reasonText;
-    }
-
     public string SBKReasonGVTR(string VtrDate, string VtrNumber, string year)
     {
         string reasonText =
@@ -57,6 +48,22 @@ public class ReasonLetterAction
     {
         string reasonText =
             $"yazısında belirtilen muhtelif mükelleflerin {Setting.TimeoutYear} yılı işlemlerinin incelenmesi istenilmiştir. 2017/1 Vergi Denetim ve İç Genelgesi'nin 1. maddesinde yer alan; \"Tarh zamanaşımının son yılında yürütülen vergi incelemelerine ilişkin görevlendirmeler en geç içinde bulunulan yılın haziran ayı sonunda yapılacak olması nedeniyle bu tarihten sonra zamanaşımlı döneme ilişkin olarak vergi incelemesi talepleri hakkında vergi incelemesine ilişkin görevlendirme ve/veya takdire sevk işlemi yapılmayacaktır.\" hükmü gereği iş bu karara konu evrak ve eklerinin İhbar ve İnceleme Taleplerini Değerlendirme Komisyonlarının Oluşturulması ile Çalışma Usul ve Esaslarına İlişkin Yönergenin 10/(2)-e bendi gereğince {GlobalVariables.InspectorName}’{TextOperations.GetSuffix(GlobalVariables.InspectorName)} iade edilmesine karar verilmiştir.";
+        reasonText = beginingOfReasonText + reasonText;
+        return reasonText;
+    }
+
+    private string SBDReasonUnderAmount()
+    {
+        string reasonText =
+            $"yazısında yer alan hususlar doğrultusunda; {GlobalVariables.VtrTaxPeriod.Split(',')[0]} yılı işlemlerinin sahte/muhteviyatı itibariyle yanıltıcı belge düzenleme yönünden incelenmesi talep edilen mükellefin, tespit edilen sahte/muhteviyatı itibariyle yanıltıcı belge düzenleme tutarı ({Setting.Amount.ToString("N0").Replace(',', '.')},00.-TL'nin altında) dikkate alındığında; Bakanlık Makamının 24.05.2024 tarih ve 525 sayılı Olurları ile Başkanlık Makamının 18.07.2024 tarih ve 707 sayılı Olurları ile vergi incelemelerinin etkinliğinin ve verimliliğinin artırılması, belirlenen ilke, standart ve yöntemlere uygun olarak kurumsal bir şekilde ve plan dahilinde gerçekleşmesinin sağlanması, iş planlamasını olumsuz yönde etkileyen vergi incelemelerinin tespiti ile bu tür vergi incelemeleri hakkında gerekli önlemlerin alınması hususları doğrultusunda Vergi Müfettişlerinin daha etkin ve verimli incelemeler yapmasını sağlamak amacıyla etkin ve verimli olmayacağı değerlendirilen işbu inceleme talebinin hıfz edilmesi gerektiği kararına varılmıştır.";
+        reasonText = beginingOfReasonText + reasonText;
+        return reasonText;
+    }
+
+      public string SBDReasonGVTR(string VtrDate, string VtrNumber, string year)
+    {
+        string reasonText =
+            $"yazısında yer alan hususlar doğrultusunda; mükellefin {year} yılı hesap ve işlemlerinin “Sahte Belge Düzenleme” yönünden incelenmesi talep edilmekte olup, sistem üzerinden yapılan sorgulamada mükellef hakkında inceleme yılına ilişkin {VtrDate} tarih ve {VtrNumber} sayılı Vergi Tekniği Raporu düzenlendiği ve ilgili dönemde sahte belge düzenlemek amacıyla faaliyette bulunduğu tespit edildiğinden evraka konu inceleme talebinin İhbar ve İnceleme Taleplerini Değerlendirme Komisyonlarının Oluşturulması ile Çalışma Usul ve Esaslarına İlişkin Yönerge'nin 10/(2)-g bendi gereğince hıfz edilmesine karar verilmiştir.";
         reasonText = beginingOfReasonText + reasonText;
         return reasonText;
     }
@@ -91,7 +98,46 @@ public class ReasonLetterAction
         }
     }
 
-    public void CreateGVTRReasonForSBK()
+     public void DetermineSbdReasonAndWriteItTextFile()
+    {
+        string allContent = "";
+        if (GlobalVariables.ReasonEFlag)
+        {
+           // allContent = allContent + "Karar E\t" + SBKReasonE() + "\n";
+        }
+        CreateFile.WriteGerekceToTheTextFile(allContent);
+        if(GlobalVariables.ReasonGUnderAmountFlag){
+            allContent = allContent + "Karar G"+Setting.Result+"\t" + SBDReasonUnderAmount() + "\n";
+        }
+        CreateFile.WriteGerekceToTheTextFile(allContent);
+        if (GlobalVariables.ReasonGVTRFlag)
+        {
+           CreateGVTRReasonForSBD();
+        }
+    }
+
+    private void CreateGVTRReasonForSBD()
+    {
+        TaxPayerDB taxPayerDB = new TaxPayerDB();
+        DataTable dataTable = taxPayerDB.GetResultGVTR();
+        TaxPayer taxPayer = new TaxPayer();
+        string allContent = "";
+        foreach (DataRow sbkRow in dataTable.Rows)
+        {
+            TaxPayer sbkModel = TaxPayerTableAction.fillSbkModel(sbkRow);
+            string reasonText = SBDReasonGVTR(
+                sbkModel.VtrDate,
+                sbkModel.VtrNumber,
+                sbkModel.Year.ToString()
+            );
+            reasonText = sbkModel.TaxNumber + "\t" + reasonText + "\n";
+            allContent = allContent + reasonText;
+        }
+
+        CreateFile.WriteGerekceToTheTextFile(allContent, "gvtr.txt");
+    }
+
+    private void CreateGVTRReasonForSBK()
     {
         TaxPayerDB taxPayerDB = new TaxPayerDB();
         DataTable dataTable = taxPayerDB.GetResultGVTR();

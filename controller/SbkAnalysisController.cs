@@ -40,7 +40,7 @@ public class SbkAnalysisController : AnalysisController
         }
         sbkAction.DetermineTaxPayersUnderAmountG();
         tablohAction.DetermineTaxPayerNotInTabloHforSBK();
-        new TablohErrorAction().writeTablohErrorToSBK();
+        new TablohErrorAction().writeTablohErrorToList();
         //Fill all blank field to A
         sbkAction.FillBlankTabloToA();
         //sbkAction.DetermineAnalysisCount();

@@ -1,6 +1,6 @@
 using System.Data;
 public class TablohErrorAction{								
-    public void writeTablohErrorToSBK(){
+    public void writeTablohErrorToList(){
        TablohErrorDB tablohHataDB = new TablohErrorDB();
        tablohHataDB.FindErrorMessageAndUpdateList();
     }

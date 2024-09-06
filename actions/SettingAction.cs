@@ -78,6 +78,10 @@ public class SettingAction
         {
             WriteAnalysisType("Sahte Belge Kullanma");
             new SbkAnalysisController().Analysis();
+        }else if (Setting.AnalysisType == "SBD")
+        {
+            WriteAnalysisType("Sahte Belge Düzenleme");
+            new SbdAnalysisController().Analysis();
         }
         else if (Setting.AnalysisType == "Genel")
         {
