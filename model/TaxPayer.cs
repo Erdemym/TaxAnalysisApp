@@ -23,4 +23,9 @@ public class TaxPayer
     public decimal Amount { get; set; }
     public string? Result { get; set; }
     public string? Information { get; set; }
+
+    public string? VtrDate { get; set; }
+    public string? VtrNumber { get; set; }
+    public string? VtrType { get; set; }
+    
 }

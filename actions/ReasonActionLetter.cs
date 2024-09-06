@@ -1,3 +1,5 @@
+using System.Data;
+
 public class ReasonLetterAction
 {
     private string beginingOfReasonText = "";
@@ -64,28 +66,49 @@ public class ReasonLetterAction
         string allContent = "";
         if (GlobalVariables.ReasonAFlag)
         {
-            allContent = allContent + "Karar A\n" + SBKReasonA() + "\n\n";
+            allContent = allContent + "Karar A\t" + SBKReasonA() + "\n";
         }
         if (GlobalVariables.ReasonEFlag)
         {
-            allContent = allContent + "Karar E\n" + SBKReasonE() + "\n\n";
+            allContent = allContent + "Karar E\t" + SBKReasonE() + "\n";
         }
         if (GlobalVariables.ReasonHFlag)
         {
-            allContent = allContent + "Karar H\n" + SBKReasonH() + "\n\n";
-        }
-        if (GlobalVariables.ReasonGVTRFlag)
-        {
-            allContent = allContent + "Karar G VTR\n" + SBKReasonGVTR() + "\n\n";
+            allContent = allContent + "Karar H\t" + SBKReasonH() + "\n";
         }
         if (GlobalVariables.ReasonGMatrah7326Flag)
         {
-            allContent = allContent + "Karar G Matrah 7326\n" + SBKReasonGMatrah("7326") + "\n\n";
+            allContent = allContent + "Karar G Matrah 7326\t" + SBKReasonGMatrah("7326") + "\n";
         }
         if (GlobalVariables.ReasonGMatrah7440Flag)
         {
-            allContent = allContent + "Karar G Matrah 7440\n" + SBKReasonGMatrah("7440") + "\n\n";
+            allContent = allContent + "Karar G Matrah 7440\t" + SBKReasonGMatrah("7440") + "\n";
         }
         CreateFile.WriteGerekceToTheTextFile(allContent);
+        if (GlobalVariables.ReasonGVTRFlag)
+        {
+           CreateGVTRReasonForSBK();
+        }
+    }
+
+    public void CreateGVTRReasonForSBK()
+    {
+        TaxPayerDB taxPayerDB = new TaxPayerDB();
+        DataTable dataTable = taxPayerDB.GetResultGVTR();
+        TaxPayer taxPayer = new TaxPayer();
+        string allContent = "";
+        foreach (DataRow sbkRow in dataTable.Rows)
+        {
+            TaxPayer sbkModel = TaxPayerTableAction.fillSbkModel(sbkRow);
+            string reasonText = SBKReasonGVTR(
+                sbkModel.VtrDate,
+                sbkModel.VtrNumber,
+                sbkModel.Year.ToString()
+            );
+            reasonText = sbkModel.TaxNumber + "\t" + reasonText + "\n";
+            allContent = allContent + reasonText;
+        }
+
+        CreateFile.WriteGerekceToTheTextFile(allContent, "gvtr.txt");
     }
 }

@@ -15,6 +15,7 @@ public class TablohDB
         return tabloHTable;
     }
 
+
     public DataTable CheckTablohTableIsEmptyForSBK()
     {
         OleDbHelper dbHelper = new OleDbHelper();

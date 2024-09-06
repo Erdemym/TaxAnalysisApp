@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 public class TaxPayerTableAction
 {
     public static TaxPayer fillSbkModel(System.Data.DataRow row)
-    {
+    { 
         TaxPayer data = new TaxPayer
         {
             TaxNumber = row["VKN"].ToString(),
@@ -14,6 +14,10 @@ public class TaxPayerTableAction
             Amount = Convert.ToDecimal(row["Tutar"]),
             Result = row["Tablo"].ToString(),
             Information = row["EkBilgi"].ToString(),
+            VtrDate = row["VtrTarih"].ToString(),
+            VtrNumber = row["VtrSayi"].ToString(),
+            VtrType = row["VtrTur"].ToString()
+
         };
 
         return data;
