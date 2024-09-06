@@ -1,14 +1,6 @@
 using System.Data;
 using System.Data.OleDb;
 
-/// <summary>
-/// Represents an action class for working with the Matrah table.
-/// CheckMatrahTableIsEmptyForSBK
-/// CheckMatrahTableIsEmptyForGeneralAnalysis
-/// DetermineMatrahForSBK
-/// DetermineMatrahForGeneralAnalysis
-///
-/// </summary>
 public class MatrahTableAction
 {
     public void CheckMatrahTableIsEmptyForSBK()

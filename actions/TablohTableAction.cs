@@ -1,11 +1,6 @@
 using System.Data;
 
-/// <summary>
-/// Contains methods for checking and determining the 'tablo-h' table.
-/// CheckTablohTableIsEmptyForSBK
-/// CheckTablohUnexceptedYears
-/// DetermineTabloHforSBK
-/// </summary>
+
 public class TablohTableAction
 {
     public void CheckTablohKdvMukellefiyeti()

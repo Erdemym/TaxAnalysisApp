@@ -1,18 +1,7 @@
 using System.Data;
 using System.Runtime.CompilerServices;
 
-/// <summary>
-/// Represents an action class for performing various operations on a tax payer table.
-/// DetermineTaxPayersUnderAmount
-/// CheckTaxPayersTaxAndYearTwice
-/// DetermineAnalysisCount
-/// CheckValuesCorrection
-/// CheckUnvanHasSpecialTitle
-/// AnalysisYearTimedOuttoE
-/// FillBlankTabloToA
-/// FillBlankVKNToE
-///
-/// </summary>
+
 public class TaxPayerTableAction
 {
     public static TaxPayer fillSbkModel(System.Data.DataRow row)
