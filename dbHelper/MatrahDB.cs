@@ -4,7 +4,7 @@ public class MatrahDB{
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
         //check if matrah table is empty
-        string matrahQuery = "SELECT * FROM [Matrah$] WHERE [Vergi Kodu]=15 and [Ödeme Bilgisi]='Ödendi'";
+        string matrahQuery = "SELECT * FROM [matrah$] WHERE [Vergi Kodu]=15 and [Ödeme Bilgisi]='Ödendi'";
         DataTable matrahTable = new DataTable();
         try
         {
@@ -25,7 +25,7 @@ public class MatrahDB{
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
         string matrahQuery =
-            "SELECT * FROM [Matrah$] WHERE [Vergi Kodu]=15 or [Vergi Kodu]=1 or [Vergi Kodu]=10  and [Ödeme Bilgisi]='Ödendi'";
+            "SELECT * FROM [matrah$] WHERE [Vergi Kodu]=15 or [Vergi Kodu]=1 or [Vergi Kodu]=10  and [Ödeme Bilgisi]='Ödendi'";
         DataTable matrahTable = new DataTable();
         try
         {
@@ -47,8 +47,9 @@ public class MatrahDB{
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
         string matrahQuery =
-            "SELECT MIN([Vergi No]) as [Vergi No], MIN([Yıl]) as [Yıl], MIN([Kanun]) as [Kanun], SUM([Vergi Kodu]) as [Vergi Kodu] FROM [Matrah$] WHERE [Vergi Kodu]=15 and ([Vergi Kodu]=1 or [Vergi Kodu]=10)  and [Ödeme Bilgisi]='Ödendi' GROUP BY [Vergi No], [Yıl]";
+            "SELECT MIN([Vergi No]) as [Vergi No], MIN([Yıl]) as [Yıl], MIN([Kanun]) as [Kanun], SUM([Vergi Kodu]) as [Vergi Kodu] FROM [matrah$] WHERE [Vergi Kodu]=15 and ([Vergi Kodu]=1 or [Vergi Kodu]=10)  and [Ödeme Bilgisi]='Ödendi' GROUP BY [Vergi No], [Yıl]";
         DataTable matrahTable = dbHelper.ExecuteQuery(matrahQuery,"MatrahDb.getGroupedMatrahForGeneralAnalysis");
+        dbHelper.CloseConnection();
         return matrahTable;
     }
 

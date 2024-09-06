@@ -46,4 +46,5 @@ public class GlobalVariables
     public static bool ReasonGMatrah7440Flag { get => _reasonGMatrah7440Flag; set => _reasonGMatrah7440Flag = value; }
     public static bool ReasonAFlag { get => _reasonAFlag; set => _reasonAFlag = value; }
     public static bool ReasonGUnderAmountFlag{get=>_reasonGUnderAmountFlag;set=>_reasonGUnderAmountFlag=value;}
+    public static bool testMod = true;
 }

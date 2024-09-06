@@ -50,8 +50,10 @@ public class TablohDB
             Print.ColorRed("Tablo-H sutünlarını sayıya dönüştürmeniz gerekmektedir.");
             GlobalVariables.ErrorFlag = true;
             AnalysisController.CheckErrorFlag();
+            dbHelper.CloseConnection();
             return new DataTable();
         }
+        dbHelper.CloseConnection();
         return tabloHTable;
     }
 
@@ -68,7 +70,7 @@ public class TablohDB
             sbk.Tablo IS NULL
             AND EXISTS (
                 SELECT 1
-                FROM [Tablo-h$] tabloH
+                FROM [tablo-h$] tabloH
                 WHERE
                     tabloH.[Vergi No] = sbk.VKN
                     AND tabloH.[Yıl] = sbk.Yil
@@ -85,7 +87,7 @@ public class TablohDB
                 dbHelper.OpenConnection();
                 updateQuery =
                     @"
-        UPDATE [liste$] sbk,[Tablo-h$] tabloH
+        UPDATE [liste$] sbk,[tablo-h$] tabloH
         SET sbk.VtrSayi = tabloH.[Analiz Yılını İçeren En Son VTR Rapor Sayısı],
         sbk.VtrTarih = tabloH.[Analiz Yılını İçeren En Son VTR Rapor Tarihi],
         sbk.VtrTur = tabloH.[Analiz Yılını İçeren En Son VTR Rapor Türü]
@@ -114,7 +116,7 @@ public class TablohDB
             sbk.Tablo IS NULL
             AND EXISTS (
                 SELECT 1
-                FROM [Tablo-h$] tabloH
+                FROM [tablo-h$] tabloH
                 WHERE
                     tabloH.[Vergi No] = sbk.VKN
                     AND tabloH.[Yıl] = sbk.Yil
@@ -147,7 +149,7 @@ public class TablohDB
             sbk.Tablo IS NULL
             AND EXISTS (
                 SELECT 1
-                FROM [Tablo-h$] tabloH
+                FROM [tablo-h$] tabloH
                 WHERE
                     tabloH.[Vergi No] = sbk.VKN
                     AND tabloH.[Yıl] = sbk.Yil
@@ -191,7 +193,7 @@ public class TablohDB
             sbk.Tablo IS NULL
             AND NOT EXISTS (
                 SELECT 1
-                FROM [Tablo-h$] tabloH
+                FROM [tablo-h$] tabloH
                 WHERE
                     tabloH.[Vergi No] = sbk.VKN
                     AND tabloH.[Yıl] = sbk.Yil

@@ -26,9 +26,10 @@ public class TaxPayerDB
     public void SetBlankVknToE()
     {
         OleDbHelper dbHelper = new OleDbHelper();
+        dbHelper.OpenConnection();
         string updateQuery =
             $"Update [liste$] set [Tablo]='E',[EkBilgi]='Vkn Eksik' where [VKN] is NULL";
-        dbHelper.OpenConnection();
+        
         int effectedRows = dbHelper.ExecuteNonQuery(updateQuery, "TaxPayerDB.setBlankVknToE");
         dbHelper.CloseConnection();
     }
@@ -36,6 +37,7 @@ public class TaxPayerDB
     public DataTable GetTabloOrderedByYearAndVKN()
     {
         OleDbHelper dbHelper = new OleDbHelper();
+        dbHelper.OpenConnection();
         string query = "SELECT * FROM [liste$] order by Yil,VKN";
         DataTable table = dbHelper.ExecuteQuery(query, "TaxPayerDB.getTabloOrderedByYearAndVKN");
         dbHelper.CloseConnection();
@@ -70,6 +72,7 @@ public class TaxPayerDB
 
     public void RemoveListFromBeginning(){
         OleDbHelper dbHelper = new OleDbHelper();
+        dbHelper.OpenConnection();
         string updateQuery = "UPDATE [liste$] set Tekrar='',ToplamTutar=NULL,Tablo=NULL,VtrTarih='',VtrSayi='',VtrTur='',EkBilgi=''";
         dbHelper.ExecuteNonQuery(updateQuery,"TaxPayerDB.removeListFromBeginning");
         dbHelper.CloseConnection();

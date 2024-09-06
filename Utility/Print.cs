@@ -63,6 +63,11 @@ public class Print
 
     public static void EnterDocumentDateAndNumber()
     {
+        if(GlobalVariables.testMod){
+            Print.WriteWarningMessage("!!!Test Modu Aktif.. Productionda Test Modunu Kapatınız.");
+            GlobalVariables.DocumentDate="12.02.2024";
+            GlobalVariables.DocumentNumber="32223";
+        }else{
         Console.Write(
             "Evrakın tarihini giriniz (örnek :"
                 + DateTime.Today.ToString("dd")
@@ -75,6 +80,7 @@ public class Print
         GlobalVariables.DocumentDate = Console.ReadLine();
         Console.Write("Evrakın numarasını giriniz : ");
         GlobalVariables.DocumentNumber = Console.ReadLine();
+        }
     }
 
     public static void EditTaxPayerTitle()
@@ -112,5 +118,6 @@ public class Print
     public static void ExitMessage()
     {
         Console.WriteLine("Çıkmak için enter'a basınız.");
+        Console.Read();
     }
 }

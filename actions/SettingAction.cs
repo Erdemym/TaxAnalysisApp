@@ -10,8 +10,10 @@ public class SettingAction
         getSettingsFromDB();
         getVtrSettings();
         Print.EnterDocumentDateAndNumber();
-        //Openit When Programram active
-        //Print.EditTaxPayerTitle();
+        
+        if(!GlobalVariables.testMod)
+        Print.EditTaxPayerTitle();
+
         Analysis();
 
     }
@@ -50,20 +52,11 @@ public class SettingAction
     }
     private void getSettingsFromDB()
     {
-        OleDbHelper dbHelper = new OleDbHelper();
-        
-        string query = "Select * from [ayar$]";
-        DataTable ayarTable=new DataTable();
-        try{
-            ayarTable = dbHelper.ExecuteQuery(query,"SettingAction.getSettingsFromDB-49");
-        }catch{
-            GlobalVariables.ErrorFlag = true;
-            Print.ColorRed("analiz.xls dosyası bulunamadı. Lütfen dosyayı kontrol ediniz.");
-            AnalysisController.CheckErrorFlag();
-        }
-       
+        SettingDB settingDB = new SettingDB();
+        DataTable ayarTable = settingDB.getSettingsFromDB();
        //remove old analysis before re-analysis
-        
+        TaxPayerDB taxPayerDB = new TaxPayerDB();
+        taxPayerDB.RemoveListFromBeginning();
 
 
         Setting.Amount = ayarTable.Rows[0].Field<double>("Tutar");
