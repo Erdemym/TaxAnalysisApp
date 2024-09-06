@@ -1,31 +1,61 @@
 using System.Globalization;
-public static class CheckDatas{
 
+public static class CheckDatas
+{
     private static string[] _vtrTaxPeriod = new string[] { "2005" };
-    public static void CheckTaxPeriodCompatible(string year){
+
+    public static void CheckTaxPeriodCompatible(string year)
+    {
         //add year to _vtrTaxPeriod
         _vtrTaxPeriod = _vtrTaxPeriod.Concat(new string[] { year }).ToArray();
         //Setting.VtrTaxPeriod string don't has year string give warning message
         if (!GlobalVariables.VtrTaxPeriod.Contains(year))
         {
-            Print.WriteWarningMessage($"Rapor dönemi {GlobalVariables.VtrTaxPeriod}, listede {year} yılı var. Yönetici ile görüşün.");
+            Print.WriteWarningMessage(
+                $"Rapor dönemi {GlobalVariables.VtrTaxPeriod}, listede {year} yılı var. Yönetici ile görüşün."
+            );
         }
-        
     }
+
     public static void CheckUnvanHasPetrol(string taxPayerTitle)
     {
         taxPayerTitle = taxPayerTitle.ToUpper();
         if (taxPayerTitle.Contains("PETR"))
         {
-            Print.WriteWarningMessage("İncelenen mükellef unvanı (" + taxPayerTitle + ") PETROL içeriyorsa. Analiz için yönetici ile görüşün.");
+            Print.WriteWarningMessage(
+                "İncelenen mükellef unvanı ("
+                    + taxPayerTitle
+                    + ") PETROL içeriyorsa. Analiz için yönetici ile görüşün."
+            );
         }
     }
+
     public static void CheckUnvanHasSpecialTitle(string taxNumber, string taxPayerTitle)
     {
         taxPayerTitle = taxPayerTitle.ToUpper();
 
         // Initializing test list
-        List<string> specialTitleList = new List<string> { "PART", "BELED", "VALI", "SAVCI", "DERNEK", "VAKIF",  "KURUM", "BASKAN", "MUDUR", "KOOP","HAST","LOJMAN","OKUL","AKP","CHP","HDP","DSP","MHP" };
+        List<string> specialTitleList = new List<string>
+        {
+            "PART",
+            "BELED",
+            "VALI",
+            "SAVCI",
+            "DERNEK",
+            "VAKIF",
+            "KURUM",
+            "BASKAN",
+            "MUDUR",
+            "KOOP",
+            "HAST",
+            "LOJMAN",
+            "OKUL",
+            "AKP",
+            "CHP",
+            "HDP",
+            "DSP",
+            "MHP",
+        };
 
         List<string> result = new List<string>();
 
@@ -36,45 +66,57 @@ public static class CheckDatas{
             {
                 result.Add(element);
             }
-
-
-
         }
 
         if (result.Count > 0)
         {
-            Print.WriteWarningMessage("VKN " + taxNumber + " li " + taxPayerTitle + " unvanlı mükellef unvanı : \"" + string.Join(", ", result) + "\" karakteri içermektedir. Yönetici İle Görüşülsün.");
+            Print.WriteWarningMessage(
+                "VKN "
+                    + taxNumber
+                    + " li "
+                    + taxPayerTitle
+                    + " unvanlı mükellef unvanı : \""
+                    + string.Join(", ", result)
+                    + "\" karakteri içermektedir. Yönetici İle Görüşülsün."
+            );
         }
-
     }
+
     public static void CheckVtrReportType()
     {
-        if(GlobalVariables.VtrReportType=="VTR-Tamamen Sahte Belge Düzenleme")
-        {
-        }else if (!GlobalVariables.VtrReportType.StartsWith("VTR"))
+        if (GlobalVariables.VtrReportType == "VTR-Tamamen Sahte Belge Düzenleme") { }
+        else if (!GlobalVariables.VtrReportType.StartsWith("VTR"))
         {
             Print.WriteErrorMessage("Rapor Türü VTR değil. Yönetici ile görüşün.");
-        }else if (GlobalVariables.VtrReportType == "VTR-Genel")
+        }
+        else if (GlobalVariables.VtrReportType == "VTR-Genel")
         {
-            Print.ColorYellow("Rapor Türü Genel. Yanlışlıkla SBK liste gelmemiş ise Ayarları genel incelemeye göre düzenleyiniz.");
+            Print.ColorYellow(
+                "Rapor Türü Genel. Yanlışlıkla SBK liste gelmemiş ise Ayarları genel incelemeye göre düzenleyiniz."
+            );
             Print.ColorYellow("H analizi yapılmayacak.");
-        }else if (GlobalVariables.VtrReportType == "VTR-Kısmen Sahte Belge Düzenleme")
+        }
+        else if (GlobalVariables.VtrReportType == "VTR-Kısmen Sahte Belge Düzenleme")
         {
             Print.ColorYellow("Rapor Türü Kısmen Sahte Belge Düzenleme. H analizi yapılmayacak.");
-        }else if(GlobalVariables.VtrReportType.StartsWith("VTR-Taklit"))
+        }
+        else if (GlobalVariables.VtrReportType.StartsWith("VTR-Taklit"))
         {
             Print.ColorYellow("Rapor Türü Taklit-Çalıntı belge.");
             Print.ColorYellow("Giriş yaparken belirtmeyi unutmayın.");
             Print.ColorYellow("H analizi yapılmayacak.");
-        }else if(GlobalVariables.VtrReportType.StartsWith("VTR-Muhteviyatı"))
+        }
+        else if (GlobalVariables.VtrReportType.StartsWith("VTR-Muhteviyatı"))
         {
             Print.ColorYellow("Rapor Türü Muhteviyatı İtibarıyla Yanıltıcı Belge Düzenleme.");
             Print.ColorYellow("H analizi yapılmayacak.");
-        }else{
+        }
+        else
+        {
             Print.ColorYellow("Rapor Türü Tanımlı Değil Yönetici İle Görüşün.");
         }
-
     }
+
     public static void VtrEvaluationDateControlIsNullOrEmpty()
     {
         if (string.IsNullOrEmpty(GlobalVariables.VtrEvaluationDate))
@@ -95,10 +137,9 @@ public static class CheckDatas{
         char[] frontVowels = new char[] { 'e', 'i', 'ü', 'ö' };
         char[] backVowels = new char[] { 'a', 'ı', 'u', 'o' };
 
-        
         char lastChar = lastName[lastName.Length - 1];
         int index = lastName.Length - 1;
-        string suffix="";
+        string suffix = "";
         // Check if Last Char is Vowel Add "y"
         if (IsVowel(lastChar))
         {
@@ -113,18 +154,18 @@ public static class CheckDatas{
         lastChar = lastName[index];
 
         // Determine Suffix Letter For Vowel Case
-        
+
         if (Array.Exists(frontVowels, vowel => vowel == lastChar))
         {
-            suffix=suffix+"e"; 
+            suffix = suffix + "e";
         }
         else if (Array.Exists(backVowels, vowel => vowel == lastChar))
         {
-            suffix =suffix+ "a";  
+            suffix = suffix + "a";
         }
         else
         {
-            suffix =suffix+ "a";  //Default Return a
+            suffix = suffix + "a"; //Default Return a
         }
 
         return suffix;
@@ -137,39 +178,38 @@ public static class CheckDatas{
         return Array.Exists(vowels, vowel => vowel == c);
     }
 
-
     public static string FormatName(string name)
     {
-        name=FormatName(name," ");
-        return FormatName(name,".");
+        name = FormatName(name, " ");
+        return FormatName(name, ".");
     }
 
-    static string FormatName(string name,string split)
+    static string FormatName(string name, string split)
     {
         //name=name.Replace("I","İ");
         // Ensure proper culture handling for special characters
         var cultureInfo = new CultureInfo("tr-TR");
-        
+
         // Split the name into parts
         string[] parts = name.Split(' ');
-        
+
         for (int i = 0; i < parts.Length; i++)
         {
             // Capitalize the first letter and ensure the rest are lowercase
             if (!string.IsNullOrEmpty(parts[i]))
             {
-                string _part=parts[i].ToLower(cultureInfo);
+                string _part = parts[i].ToLower(cultureInfo);
                 parts[i] = cultureInfo.TextInfo.ToTitleCase(_part);
             }
         }
 
         string.Join(" ", parts);
-        
+
         // Join the parts back together with a space
         return string.Join(" ", parts);
     }
 
-     public static string FormatTaxOfficeName(string taxOfficeName)
+    public static string FormatTaxOfficeName(string taxOfficeName)
     {
         // Split the input string into the code and description parts
         var parts = taxOfficeName.Split(new[] { " - " }, StringSplitOptions.None);
@@ -183,11 +223,19 @@ public static class CheckDatas{
         // Replace based on the ending of the description
         if (description.EndsWith("VD.", StringComparison.OrdinalIgnoreCase))
         {
-            description = description.Replace("VD.", "Vergi Dairesi Müdürlüğünün", StringComparison.OrdinalIgnoreCase);
+            description = description.Replace(
+                "VD.",
+                "Vergi Dairesi Müdürlüğünün",
+                StringComparison.OrdinalIgnoreCase
+            );
         }
         else if (description.EndsWith("MAL MD.", StringComparison.OrdinalIgnoreCase))
         {
-            description = description.Replace("MAL MD.", "Mal Müdürlüğünün", StringComparison.OrdinalIgnoreCase);
+            description = description.Replace(
+                "MAL MD.",
+                "Mal Müdürlüğünün",
+                StringComparison.OrdinalIgnoreCase
+            );
         }
 
         // Convert to title case
@@ -217,23 +265,24 @@ public static class CheckDatas{
         return string.Join(" ", words);
     }
 
-    public static void WriteGerekceToTheTextFile(string message)
+    public static string CheckTurkishKeywordInCompnayName(string companyName)
     {
-        using (StreamWriter writer = new StreamWriter("gerekceler.txt", false))
-        {
-            writer.WriteLine(message);
-        }
-    }
-
-    public static string CheckTurkishKeywordInCompnayName(string companyName){
-          var replacements = new Dictionary<string, string>
+        var replacements = new Dictionary<string, string>
         {
             { "Insaat", "İnşaat" },
-            { "Sirketi", "Şirketi" }
+            { "Sirketi", "Şirketi" },
+            { "Anonim Şirketi", "A.Ş." },
+            { "Anonim Sirketi", "A.Ş." },
+            { "Anonim Sirket", "A.Ş." },
+            { "Anonim Şirket", "A.Ş." },
+            { "Limited Şirketi", "Ltd.Şti." },
+            { "Limited Sirketi", "Ltd.Şti." },
+            { "Limited Sirket", "Ltd.Şti." },
+            { "Limited Şirket", "Ltd.Şti." },
         };
 
         // Replace keywords in the content
-         foreach (var replacement in replacements)
+        foreach (var replacement in replacements)
         {
             companyName = companyName.Replace(replacement.Key, replacement.Value);
         }
@@ -242,10 +291,9 @@ public static class CheckDatas{
 
     public static string EditText(string currentInput)
     {
-        
         Console.WriteLine(currentInput); // Show the current name
 
-         Console.Write(currentInput); // Show the current name
+        Console.Write(currentInput); // Show the current name
 
         ConsoleKeyInfo keyInfo;
         int cursorPos = currentInput.Length;
@@ -310,5 +358,4 @@ public static class CheckDatas{
         Console.Write(text + new string(' ', Console.WindowWidth - text.Length)); // Overwrite any leftover characters
         Console.SetCursorPosition(cursorPos, Console.CursorTop); // Reset cursor position
     }
-   
 }
