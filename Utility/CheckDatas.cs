@@ -92,22 +92,22 @@ public static class CheckDatas
             Print.ColorYellow(
                 "Rapor Türü Genel. Yanlışlıkla SBK liste gelmemiş ise Ayarları genel incelemeye göre düzenleyiniz."
             );
-            Print.ColorYellow("H analizi yapılmayacak.");
+            Print.ColorYellow("Sistem H-IZDK ya bakmayacak.");
         }
         else if (GlobalVariables.VtrReportType == "VTR-Kısmen Sahte Belge Düzenleme")
         {
-            Print.ColorYellow("Rapor Türü Kısmen Sahte Belge Düzenleme. H analizi yapılmayacak.");
+            Print.ColorYellow("Rapor Türü Kısmen Sahte Belge Düzenleme. Sistem H-IZDK ya bakmayacak.");
         }
         else if (GlobalVariables.VtrReportType.StartsWith("VTR-Taklit"))
         {
             Print.ColorYellow("Rapor Türü Taklit-Çalıntı belge.");
             Print.ColorYellow("Giriş yaparken belirtmeyi unutmayın.");
-            Print.ColorYellow("H analizi yapılmayacak.");
+            Print.ColorYellow("Sistem H-IZDK ya bakmayacak.");
         }
         else if (GlobalVariables.VtrReportType.StartsWith("VTR-Muhteviyatı"))
         {
             Print.ColorYellow("Rapor Türü Muhteviyatı İtibarıyla Yanıltıcı Belge Düzenleme.");
-            Print.ColorYellow("H analizi yapılmayacak.");
+            Print.ColorYellow("Sistem H-IZDK ya bakmayacak.");
         }
         else
         {

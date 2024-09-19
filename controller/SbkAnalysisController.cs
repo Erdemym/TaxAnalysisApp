@@ -34,7 +34,7 @@ public class SbkAnalysisController : AnalysisController
         tablohAction.DetermineUnderAmountTabloHforSBK();
 
         //sbk tabloH control
-        if (!GlobalVariables.TablohEmptyFlag)
+        if (!GlobalVariables.TablohEmptyFlag ||  !GlobalVariables.VtrReportType == "VTR-Tamamen Sahte Belge Düzenleme" )
         {
             tablohAction.DetermineTabloHforSBK();
         }
