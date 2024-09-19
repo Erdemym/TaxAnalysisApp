@@ -5,6 +5,8 @@ public class TextOperations
     public static string EditText(string currentInput)
     {
         Console.WriteLine(currentInput); // Show the current name
+        //current input grater than 149 char get first 149 char
+        currentInput = currentInput.Length > 149 ? currentInput.Substring(0, 149) : currentInput;
 
         Console.Write(currentInput); // Show the current name
 
@@ -86,6 +88,17 @@ public class TextOperations
             { "Limited Sirketi", "Ltd.Şti." },
             { "Limited Sirket", "Ltd.Şti." },
             { "Limited Şirket", "Ltd.Şti." },
+            { "Sırketı", "Şirketi" },
+            { "Anonım Şirketi", "A.Ş." },
+            { "Anonım Sirketi", "A.Ş." },
+            { "Anonım Sirket", "A.Ş." },
+            { "Anonım Şirket", "A.Ş." },
+            { "Lımıted Şırketı", "Ltd.Şti." },
+            { "Lımıted Sırketı", "Ltd.Şti." },
+            { "Lımıted Sırket", "Ltd.Şti." },
+            { "Lımıted Şırket", "Ltd.Şti." },
+            { " Demır ", " Demir " },
+            { " Celık ", " Çelik " },
         };
 
         // Replace keywords in the content
@@ -250,7 +263,7 @@ public class TextOperations
         string[] parts = taxPayerTitle.Split(' ');
 
         // If the part count is more than 3, return the original string
-        if (parts.Length > 3|| parts.Length<2)
+        if (parts.Length > 3 || parts.Length < 2)
             return taxPayerTitle;
 
         // Get the last part and convert it to uppercase with Turkish culture
