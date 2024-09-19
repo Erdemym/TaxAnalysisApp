@@ -43,12 +43,12 @@ public class SbkAnalysisController : AnalysisController
         new TablohErrorAction().writeTablohErrorToList();
         //Fill all blank field to A
         sbkAction.FillBlankTabloToA();
-        //sbkAction.DetermineAnalysisCount();
         if (GlobalVariables.PotentialGCount>0 || GlobalVariables.PotentialZZZCount>0)
         {
             Messages.ListHasPotentialTaxPayers();
         }
         new ReasonLetterAction().DetermineSbkReasonAndWriteItTextFile();
+        sbkAction.DetermineAnalysisCount();
         Print.ProgramEndMessage();
     }
 }

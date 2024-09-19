@@ -23,8 +23,8 @@ public class SbdAnalysisController : AnalysisController
         new TablohErrorAction().writeTablohErrorToList();
         //Fill all blank field to A
         sbdAction.FillBlankTabloToA();
-        //sbkAction.DetermineAnalysisCount();
         new ReasonLetterAction().DetermineSbdReasonAndWriteItTextFile();
+        sbdAction.DetermineAnalysisCount();
         Print.ProgramEndMessage();
     }
 }
