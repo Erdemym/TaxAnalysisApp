@@ -63,7 +63,7 @@ public class ReasonLetterAction
       public string SBDReasonGVTR(string VtrDate, string VtrNumber, string year)
     {
         string reasonText =
-            $"yazısında yer alan hususlar doğrultusunda; mükellefin {year} yılı hesap ve işlemlerinin “Sahte Belge Düzenleme” yönünden incelenmesi talep edilmekte olup, sistem üzerinden yapılan sorgulamada mükellef hakkında inceleme yılına ilişkin {VtrDate} tarih ve {VtrNumber} sayılı Vergi Tekniği Raporu düzenlendiği ve ilgili dönemde sahte belge düzenlemek amacıyla faaliyette bulunduğu tespit edildiğinden evraka konu inceleme talebinin İhbar ve İnceleme Taleplerini Değerlendirme Komisyonlarının Oluşturulması ile Çalışma Usul ve Esaslarına İlişkin Yönerge'nin 10/(2)-g bendi gereğince hıfz edilmesine karar verilmiştir.";
+            $"yazısında yer alan hususlar doğrultusunda; mükellefin {year} yılı hesap ve işlemlerinin sahte belge düzenleme konusunda incelenmesi talep edilmiş olmakla birlikte söz konusu döneme ilişkin VDKBİS üzerinden yapılan sorgulama sonucunda mükellef hakkında mezkûr yıla ilişkin yapılan inceleme sonucunda {VtrDate} tarih ve {VtrNumber} sayılı Vergi Tekniği Raporu düzenlendiği ve sahte belge düzenlemek amacıyla faaliyette bulunduğu tespit edildiğinden talebin hıfz edilmesi kararına varılmıştır.";
         reasonText = beginingOfReasonText + reasonText;
         return reasonText;
     }

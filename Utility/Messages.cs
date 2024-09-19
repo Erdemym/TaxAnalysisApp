@@ -20,6 +20,7 @@ public class Messages
                     + ") : "
             );
             GlobalVariables.DocumentDate = Console.ReadLine();
+            Console.WriteLine("Tarihi Kontrol Et.. yıl ve ay olarak");
             Console.Write("Evrakın numarasını giriniz : ");
             GlobalVariables.DocumentNumber = Console.ReadLine();
         }
