@@ -9,11 +9,6 @@ public class SettingAction
         Print.WriteProgramName();
         getSettingsFromDB();
         getVtrSettings();
-        Messages.EnterDocumentDateAndNumber();
-        
-        if(!GlobalVariables.debugMod)
-        Messages.EditTaxPayerTitle();
-
         Analysis();
 
     }

@@ -47,6 +47,7 @@ public class SbkAnalysisController : AnalysisController
         {
             Messages.ListHasPotentialTaxPayers();
         }
+        Messages.EnterDocumentDateNumberAndEditTaxPayerTitle();
         new ReasonLetterAction().DetermineSbkReasonAndWriteItTextFile();
         sbkAction.DetermineAnalysisCount();
         Print.ProgramEndMessage();

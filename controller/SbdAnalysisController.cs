@@ -23,6 +23,7 @@ public class SbdAnalysisController : AnalysisController
         new TablohErrorAction().writeTablohErrorToList();
         //Fill all blank field to A
         sbdAction.FillBlankTabloToA();
+        Messages.EnterDocumentDateNumberAndEditTaxPayerTitle();
         new ReasonLetterAction().DetermineSbdReasonAndWriteItTextFile();
         sbdAction.DetermineAnalysisCount();
         Print.ProgramEndMessage();

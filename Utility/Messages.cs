@@ -1,6 +1,6 @@
 public class Messages
 {
-    public static void EnterDocumentDateAndNumber()
+    private static void EnterDocumentDateAndNumber()
     {
         if (GlobalVariables.debugMod)
         {
@@ -25,10 +25,18 @@ public class Messages
         }
     }
 
-    public static void EditTaxPayerTitle()
+    private static void EditTaxPayerTitle()
     {
         Console.Write("Mükellef unvanını düzenleyin : ");
         GlobalVariables.VtrTaxPayerTitle = TextOperations.EditText(GlobalVariables.VtrTaxPayerTitle);
+    }
+
+    public static void EnterDocumentDateNumberAndEditTaxPayerTitle(){
+        Messages.EnterDocumentDateAndNumber();
+        
+        if(!GlobalVariables.debugMod)
+        Messages.EditTaxPayerTitle();
+
     }
 
     public static void ListHasPotentialTaxPayers()
