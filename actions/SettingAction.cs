@@ -15,6 +15,7 @@ public class SettingAction
     private void getVtrSettings()
     {
         VtrDB vtrDB = new VtrDB();
+        TaxPayerDB taxPayerDB = new TaxPayerDB();
         DataTable ayarTable = vtrDB.getVtrTable();
         //ayarTable count equal zero give error and exit program
         if (ayarTable.Rows.Count == 0)
@@ -25,6 +26,7 @@ public class SettingAction
         }
         DataRow getFirst = ayarTable.Rows[0];
         Vtr vtrData = VtrTableAction.fillVtrModel(getFirst);
+        taxPayerDB.AddVtrInfo(vtrData);
         GlobalVariables.VtrTaxPayerTitle = TextOperations.CheckTurkishKeywordInCompnayName(TextOperations.FormatName(vtrData.TaxPayerTitle));
         GlobalVariables.VtrTaxPayerTitle = TextOperations.FormatTaxPayerTitle(GlobalVariables.VtrTaxPayerTitle);
         GlobalVariables.VtrReportType = vtrData.ReportType;
@@ -89,7 +91,13 @@ public class SettingAction
 
     private void WriteAnalysisType(string analysisType)
     {
-        Console.WriteLine($"Analiz Türü: {analysisType}");
+        Console.Write($"Analiz Türü: ");
+        if (Setting.AnalysisType == "SBK") 
+          Print.ColorYellow(analysisType);
+        else if (Setting.AnalysisType == "SBD")
+          Print.ColorBlue(analysisType);
+
+         
         Console.WriteLine($"Tutar: {Setting.Amount.ToString("N2")}");
         Console.WriteLine($"Müfettiş: {GlobalVariables.InspectorName}");
         Console.WriteLine($"VTR: {GlobalVariables.VtrNumber}");

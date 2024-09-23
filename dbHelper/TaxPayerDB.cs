@@ -82,7 +82,7 @@ public class TaxPayerDB
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
         string updateQuery =
-            "UPDATE [liste$] set Tekrar='',ToplamTutar=NULL,Tablo=NULL,VtrTarih='',VtrSayi='',VtrTur='',EkBilgi=''";
+            "UPDATE [liste$] set Tekrar='',ToplamTutar=NULL,Tablo=NULL,VtrTarih='',VtrSayi='',VtrTur='',EkBilgi='',VtrBaslik='',VtrBilgisi=''";
         dbHelper.ExecuteNonQuery(updateQuery, "TaxPayerDB.removeListFromBeginning");
         dbHelper.CloseConnection();
     }
@@ -153,6 +153,35 @@ public class TaxPayerDB
         dbHelper.ExecuteNonQuery(updateQuery, "TaxPayerDB.EndOfList.result");
 
         dbHelper.CloseConnection();
+    }
+
+    public void AddVtrInfo(Vtr vtrInfo)
+    {
+        OleDbHelper dbHelper = new OleDbHelper();
+        dbHelper.OpenConnection();
+        var vtrData = new[]
+        {
+            new { VtrTitle = "Görev Partisi", VtrInfo = vtrInfo.MissionSection },
+            new { VtrTitle = "Vergi Müfettişi", VtrInfo = vtrInfo.TaxInspector },
+            new { VtrTitle = "Rapor Tarihi", VtrInfo = vtrInfo.ReportDate },
+            new { VtrTitle = "Rapor Sayısı", VtrInfo = vtrInfo.ReportNo },
+            new { VtrTitle = "Rapor Türü", VtrInfo = vtrInfo.ReportType },
+            new { VtrTitle = "Durumu", VtrInfo = vtrInfo.ReportStatus },
+            new { VtrTitle = "Vergi No", VtrInfo = vtrInfo.TaxNo },
+            new { VtrTitle = "Unvan", VtrInfo = vtrInfo.TaxPayerTitle },
+            new { VtrTitle = "Dönem", VtrInfo = vtrInfo.TaxPeriod },
+            new { VtrTitle = "RDK Değerlendirme Tarihi", VtrInfo = vtrInfo.EvaluationDate },
+        };
+
+        int rowID=4;
+        foreach (var item in vtrData)
+        {
+            string insertQuery = $"UPDATE[liste$] SET VtrBaslik = '{item.VtrTitle}', VtrBilgisi = '{item.VtrInfo}' Where ID = {rowID}";
+            dbHelper.ExecuteNonQuery(insertQuery, "TaxPayerDB.AddVtrInfo");
+            rowID++;
+        }
+        dbHelper.CloseConnection();
+
     }
 
     public int UpdateRepeatedColumn(string taxNumber, int year)

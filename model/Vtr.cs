@@ -23,5 +23,8 @@ public class Vtr
     public string TaxPeriod { get; set; }
     public string EvaluationDate { get; set; }
     public string TaxOfficeName { get; set; }
+    public string MissionSection { get; set; }
+    public string ReportStatus{ get; set; }
+
 
 }

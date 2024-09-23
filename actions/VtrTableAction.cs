@@ -14,7 +14,10 @@ public class VtrTableAction
             TaxNo = row["Vergi No"].ToString(),
             TaxPayerTitle = row[18].ToString(),
             TaxPeriod = row["Dönem"].ToString(),
-            EvaluationDate = row["RDK Değerlendirme Tarihi"].ToString()
+            EvaluationDate = row["RDK Değerlendirme Tarihi"].ToString(),
+            MissionSection = row["Görev Partisi"].ToString(),
+            ReportStatus = row["Durumu"].ToString()
+
         };
 
         return data;
