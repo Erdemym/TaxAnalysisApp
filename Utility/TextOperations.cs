@@ -6,7 +6,8 @@ public class TextOperations
     {
         Console.WriteLine(currentInput); // Show the current name
         //current input grater than 149 char get first 149 char
-        currentInput = currentInput.Length > 149 ? currentInput.Substring(0, 149) : currentInput;
+        int maxChar=100;
+        currentInput = currentInput.Length > maxChar ? currentInput.Substring(0, maxChar) : currentInput;
 
         Console.Write(currentInput); // Show the current name
 
