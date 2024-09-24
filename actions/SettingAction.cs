@@ -43,6 +43,7 @@ public class SettingAction
         }
         else
         {
+            GlobalVariables.VtrDate=vtrData.ReportDate;
             Print.ColorRed("Geçersiz Rapor tarihi Formatı.. Gerekçede Rapor Tarihi bölümünü düzenleyin");
         }
         GlobalVariables.VtrTaxPayerNo=vtrData.TaxNo;

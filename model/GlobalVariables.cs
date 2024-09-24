@@ -1,6 +1,6 @@
 public class GlobalVariables
 {
-    public static bool debugMod = true;
+    public static bool debugMod = false;
     public static string DocumentDate { get; set; }
     public static string DocumentNumber { get; set; }
     public static bool TimeBaredFlag { get; set; }
