@@ -100,6 +100,7 @@ public class TextOperations
             { "Lımıted Şırket", "Ltd.Şti." },
             { " Demır ", " Demir " },
             { " Celık ", " Çelik " },
+            { " Narencıye ", " Narenciye " },
         };
 
         // Replace keywords in the content

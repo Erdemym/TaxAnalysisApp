@@ -12,6 +12,16 @@ public class TaxPayerDB
         return dataTable;
     }
 
+    public int GetListCount()
+    {
+        OleDbHelper dbHelper = new OleDbHelper();
+        dbHelper.OpenConnection();
+        string query = "SELECT * FROM [liste$]";
+        DataTable dataTable = dbHelper.ExecuteQuery(query, "TaxPayerDB.getTabloNullList");
+        dbHelper.CloseConnection();
+        return dataTable.Rows.Count;
+    }
+
     public DataTable GetTabloNullList()
     {
         OleDbHelper dbHelper = new OleDbHelper();
@@ -174,9 +184,13 @@ public class TaxPayerDB
         };
 
         int rowID=4;
+        int listCount=GetListCount();
         foreach (var item in vtrData)
         {
+            
             string insertQuery = $"UPDATE[liste$] SET VtrBaslik = '{item.VtrTitle}', VtrBilgisi = '{item.VtrInfo}' Where ID = {rowID}";
+            if(listCount<14)
+                insertQuery = $"INSERT INTO [liste$] (VtrBaslik,VtrBilgisi) VALUES ('{item.VtrTitle}','{item.VtrInfo}')";
             dbHelper.ExecuteNonQuery(insertQuery, "TaxPayerDB.AddVtrInfo");
             rowID++;
         }

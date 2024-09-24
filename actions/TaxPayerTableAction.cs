@@ -185,6 +185,7 @@ public class TaxPayerTableAction
         int rowCount = 0;
         TaxPayerDB taxPayerDb = new TaxPayerDB();
         DataTable table = taxPayerDb.GetTabloOrderedByYearAndVKN();
+        
         //check vkn length bigger than 10, year beetween Ayar.HYil-1 and Hyil +5,Amount must be digit
         foreach (DataRow row in table.Rows)
         {
