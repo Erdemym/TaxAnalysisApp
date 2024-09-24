@@ -10,7 +10,8 @@ public abstract class AnalysisController
         //CheckDatas.CheckUnvanHasPetrol(GlobalVariables.VtrTaxPayerTitle);
         CheckDatas.VtrEvaluationDateControlIsNullOrEmpty();
         taxPayerTableAction.CheckValuesCorrection();
-        CheckDatas.CheckVtrReportType();
+        if (Setting.AnalysisType == "SBK")
+            CheckDatas.CheckVtrReportType();
         //Check sbk table values
         taxPayerTableAction.CheckTaxPayersTaxAndYearTwice();
         CheckErrorFlag();

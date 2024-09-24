@@ -19,7 +19,7 @@ public class Print
     }
     public static void ColorBlue(string text)
     {
-        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.ForegroundColor = ConsoleColor.DarkMagenta;
         Console.WriteLine(text);
         Console.ForegroundColor = ConsoleColor.White;
     }
