@@ -44,6 +44,7 @@ public class TaxPayerTableAction
             foreach (DataRow row in doubleTaxPayersTable.Rows)
             {
                 string taxNumber = row["VKN"].ToString();
+                string RowOrder = row["ID"].ToString();
                 int year = 9999;
                 int count = 0;
                 try
@@ -53,7 +54,7 @@ public class TaxPayerTableAction
                 }
                 catch
                 {
-                    Print.ColorRed($"{taxNumber} vergi nolu mükellefin yılı sayı değil");
+                    Print.ColorRed($"{RowOrder} -) {taxNumber} vergi nolu mükellefin yılı sayı değil");
                 }
                 //check taxNumber is empty write "Vergi numaralarini kontrol edin
                 if (string.IsNullOrEmpty(taxNumber))
@@ -65,7 +66,7 @@ public class TaxPayerTableAction
                 }
                 else
                     Print.ColorRed(
-                        $"{taxNumber} vergi nolu Mükellefin {year} yılı {count} defa girilmiş"
+                        $"{RowOrder} -) {taxNumber} vergi nolu Mükellefin {year} yılı {count} defa girilmiş"
                     );
                 GlobalVariables.ErrorFlag = true;
             }
@@ -190,6 +191,7 @@ public class TaxPayerTableAction
         foreach (DataRow row in table.Rows)
         {
             string taxPayerTitle = row["Unvan"].ToString();
+            string RowOrder = row["ID"].ToString();
 
             string taxNumber = row["VKN"].ToString();
             CheckDatas.CheckUnvanHasSpecialTitle(taxNumber, taxPayerTitle);
@@ -201,7 +203,7 @@ public class TaxPayerTableAction
                 if (year < Setting.HYear - 1 || year > Setting.HYear + 5)
                 {
                     Print.ColorRed(
-                        $"{taxNumber} vergi nolu mükellefin yılı {year} olarak girilmiş kontrol ediniz"
+                        $"{RowOrder} -) {taxNumber} vergi nolu mükellefin yılı {year} olarak girilmiş kontrol ediniz"
                     );
                     GlobalVariables.ErrorFlag = true;
                 }
@@ -209,7 +211,7 @@ public class TaxPayerTableAction
             }
             catch
             {
-                Print.ColorRed($"{taxNumber} vergi nolu mükellefin yılı sayı değil");
+                Print.ColorRed($"{RowOrder} -) {taxNumber} vergi nolu mükellefin yılı sayı değil");
                 GlobalVariables.ErrorFlag = true;
             }
             try
@@ -218,27 +220,27 @@ public class TaxPayerTableAction
             }
             catch
             {
-                Print.ColorRed($"{taxNumber} vergi nolu mükellefin tutarı sayı değil");
+                Print.ColorRed($"{RowOrder} -) {taxNumber} vergi nolu mükellefin tutarı sayı değil");
                 GlobalVariables.ErrorFlag = true;
             }
             //taxNumber only number
             if (!taxNumber.All(char.IsDigit))
             {
                 Print.ColorRed(
-                    $"{taxNumber} vergi nolu mükellefin VKN'si sayı olmayan karakter içermekte"
+                    $"{RowOrder} -) {taxNumber} vergi nolu mükellefin VKN'si sayı olmayan karakter içermekte"
                 );
                 GlobalVariables.ErrorFlag = true;
             }
             if (taxNumber.Length > 10)
             {
-                Print.ColorRed($"{taxNumber} vergi nolu mükellefin VKN'si 10 haneden büyük");
+                Print.ColorRed($"{RowOrder} -) {taxNumber} vergi nolu mükellefin VKN'si 10 haneden büyük");
                 GlobalVariables.ErrorFlag = true;
             }
 
             if (year < Setting.HYear - 1 || year > Setting.HYear + 5)
             {
                 Print.ColorRed(
-                    $"{taxNumber} vergi nolu mükellefin yılı {year} olarak girilmiş kontrol ediniz"
+                    $"{RowOrder} -) {taxNumber} vergi nolu mükellefin yılı {year} olarak girilmiş kontrol ediniz"
                 );
                 GlobalVariables.ErrorFlag = true;
             }

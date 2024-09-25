@@ -7,6 +7,7 @@ public class GlobalVariables
     public static bool MatrahEmptyFlag { get; set; }
     public static bool TablohEmptyFlag { get; set; }
     public static string InspectorName { get; set; }
+    public static string Inspector { get; set; }
     public static string VtrNumber { get; set; }
     public static string VtrDate { get; set; }
     public static string VtrEvaluationDate { get; internal set; }

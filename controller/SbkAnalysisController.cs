@@ -1,6 +1,5 @@
 using System.Data;
 
-
 public class SbkAnalysisController : AnalysisController
 {
     public override void PreControl()
@@ -34,7 +33,10 @@ public class SbkAnalysisController : AnalysisController
         tablohAction.DetermineUnderAmountTabloHforSBK();
 
         //sbk tabloH control
-        if (!GlobalVariables.TablohEmptyFlag ||  GlobalVariables.VtrReportType != "VTR-Tamamen Sahte Belge Düzenleme" )
+        if (
+            !GlobalVariables.TablohEmptyFlag
+            || GlobalVariables.VtrReportType != "VTR-Tamamen Sahte Belge Düzenleme"
+        )
         {
             tablohAction.DetermineTabloHforSBK();
         }
@@ -43,13 +45,24 @@ public class SbkAnalysisController : AnalysisController
         new TablohErrorAction().writeTablohErrorToList();
         //Fill all blank field to A
         sbkAction.FillBlankTabloToA();
-        if (GlobalVariables.PotentialGCount>0 || GlobalVariables.PotentialZZZCount>0)
+        if (GlobalVariables.PotentialGCount > 0 || GlobalVariables.PotentialZZZCount > 0)
         {
             Messages.ListHasPotentialTaxPayers();
         }
         Messages.EnterDocumentDateNumberAndEditTaxPayerTitle();
         new ReasonLetterAction().DetermineSbkReasonAndWriteItTextFile();
+        //for WriteAnalysisType
+        VtrDB vtrDB = new VtrDB();
+        DataTable ayarTable = vtrDB.getVtrTable();
+        DataRow getFirst = ayarTable.Rows[0];
+        Vtr vtrData = VtrTableAction.fillVtrModel(getFirst);
+        TaxPayerDB taxPayerDB = new TaxPayerDB();
+
+        //end of VtrInfo
+
         sbkAction.DetermineAnalysisCount();
+        taxPayerDB.AddVtrInfo(vtrData);
+        taxPayerDB.AddExcelName();
         Print.ProgramEndMessage();
     }
 }

@@ -6,7 +6,7 @@ public class TaxPayerDB
     {
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
-        string query = "SELECT * FROM [liste$]";
+        string query = "SELECT * FROM [liste$] Where ID IS NOT NULL";
         DataTable dataTable = dbHelper.ExecuteQuery(query, "TaxPayerDB.getTabloNullList");
         dbHelper.CloseConnection();
         return dataTable;
@@ -16,7 +16,7 @@ public class TaxPayerDB
     {
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
-        string query = "SELECT * FROM [liste$]";
+        string query = "SELECT * FROM [liste$] Where ID IS NOT NULL";
         DataTable dataTable = dbHelper.ExecuteQuery(query, "TaxPayerDB.getTabloNullList");
         dbHelper.CloseConnection();
         return dataTable.Rows.Count;
@@ -26,7 +26,7 @@ public class TaxPayerDB
     {
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
-        string query = "SELECT * FROM [liste$] WHERE Tablo IS NULL";
+        string query = "SELECT * FROM [liste$] WHERE Tablo IS NULL AND ID IS NOT NULL";
         DataTable dataTable = dbHelper.ExecuteQuery(query, "TaxPayerDB.getTabloNullList");
         dbHelper.CloseConnection();
         return dataTable;
@@ -47,7 +47,7 @@ public class TaxPayerDB
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
         string updateQuery =
-            $"Update [liste$] set [Tablo]='E',[EkBilgi]='Vkn Eksik' where [VKN] is NULL";
+            $"Update [liste$] set [Tablo]='E',[EkBilgi]='Vkn Eksik' where ID IS NOT NULL AND [VKN] is NULL";
 
         int effectedRows = dbHelper.ExecuteNonQuery(updateQuery, "TaxPayerDB.setBlankVknToE");
         dbHelper.CloseConnection();
@@ -57,7 +57,7 @@ public class TaxPayerDB
     {
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
-        string query = "SELECT * FROM [liste$] order by Yil,VKN";
+        string query = "SELECT * FROM [liste$] WHERE ID IS NOT NULL order by Yil,VKN";
         DataTable table = dbHelper.ExecuteQuery(query, "TaxPayerDB.getTabloOrderedByYearAndVKN");
         dbHelper.CloseConnection();
 
@@ -79,7 +79,7 @@ public class TaxPayerDB
     public int SetBlankToA()
     {
         OleDbHelper dbHelper = new OleDbHelper();
-        string updateQuery = $"Update [liste$] set [Tablo]='A' where [Tablo] is NULL";
+        string updateQuery = $"Update [liste$] set [Tablo]='A' where ID IS NOT NULL AND [Tablo] is NULL";
         dbHelper.OpenConnection();
         int effectedRows = dbHelper.ExecuteNonQuery(updateQuery, "TaxPayerDB.setBlankToA");
         dbHelper.CloseConnection();
@@ -92,7 +92,7 @@ public class TaxPayerDB
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
         string updateQuery =
-            "UPDATE [liste$] set Tekrar='',ToplamTutar=NULL,Tablo=NULL,VtrTarih='',VtrSayi='',VtrTur='',EkBilgi='',VtrBaslik='',VtrBilgisi=''";
+            "UPDATE [liste$] set Tekrar='',ToplamTutar=NULL,Tablo=NULL,VtrTarih='',VtrSayi='',VtrTur='',EkBilgi='',ExcelAdi='',VtrBaslik='',VtrBilgisi=''";
         dbHelper.ExecuteNonQuery(updateQuery, "TaxPayerDB.removeListFromBeginning");
         dbHelper.CloseConnection();
     }
@@ -127,7 +127,7 @@ public class TaxPayerDB
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
         string doubleTaxPayersQuery =
-            "SELECT VKN,Yil,COUNT(*) AS doubleCount FROM [liste$] GROUP BY VKN,Yil HAVING COUNT(*)>1";
+            "SELECT VKN,Yil,COUNT(*) AS doubleCount FROM [liste$] WHERE ID IS NOT NULL GROUP BY VKN,Yil HAVING COUNT(*)>1";
         DataTable table = dbHelper.ExecuteQuery(
             doubleTaxPayersQuery,
             "TaxPayerDB.CheckTaxPayersVknAndYearTwice"
@@ -196,6 +196,18 @@ public class TaxPayerDB
         }
         dbHelper.CloseConnection();
 
+    }
+
+
+    public void AddExcelName(){
+        OleDbHelper dbHelper = new OleDbHelper();
+        dbHelper.OpenConnection();
+        string excelName = GlobalVariables.DocumentNumber+","+GlobalVariables.Inspector+","+GlobalVariables.VtrNumber.Replace("[","").Replace("]","").Replace("/","_")+","+GlobalVariables.VtrTaxPayerTitle;
+        if(Setting.AnalysisType!="SBK")
+            excelName += ","+Setting.AnalysisType;
+        string insertQuery = $"UPDATE[liste$] SET ExcelAdi = '{excelName}' Where ID = 1";
+        dbHelper.ExecuteNonQuery(insertQuery,"TaxPayerDB.AddExcelName");
+        dbHelper.CloseConnection();
     }
 
     public int UpdateRepeatedColumn(string taxNumber, int year)

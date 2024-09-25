@@ -26,13 +26,13 @@ public class SettingAction
         }
         DataRow getFirst = ayarTable.Rows[0];
         Vtr vtrData = VtrTableAction.fillVtrModel(getFirst);
-        taxPayerDB.AddVtrInfo(vtrData);
         GlobalVariables.VtrTaxPayerTitle = TextOperations.CheckTurkishKeywordInCompnayName(TextOperations.FormatName(vtrData.TaxPayerTitle));
         GlobalVariables.VtrTaxPayerTitle = TextOperations.FormatTaxPayerTitle(GlobalVariables.VtrTaxPayerTitle);
         GlobalVariables.VtrReportType = vtrData.ReportType;
         GlobalVariables.VtrEvaluationDate = vtrData.EvaluationDate;
         GlobalVariables.VtrTaxPeriod = vtrData.TaxPeriod;
         GlobalVariables.InspectorName = vtrData.TaxInspectorTitle+" "+vtrData.TaxInspector;
+        GlobalVariables.Inspector=vtrData.TaxInspector;
         GlobalVariables.VtrNumber=vtrData.ReportNo;
         GlobalVariables.VtrTaxOfficeName=vtrData.TaxOfficeName;
         DateTime formattedReportDate;
