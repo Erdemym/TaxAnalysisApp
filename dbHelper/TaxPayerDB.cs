@@ -69,7 +69,7 @@ public class TaxPayerDB
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
         string updateQuery =
-            $"UPDATE [liste$] SET Tablo='E' WHERE Yil <={Setting.TimeoutYear} AND Tablo IS NULL";
+            $"UPDATE [liste$] SET Tablo='E' WHERE Yil <={Setting.TimeoutYear} AND Tablo IS NULL AND ID IS NOT NULL";
         int effectedRows = dbHelper.ExecuteNonQuery(updateQuery, "TaxPayerDB.setYearTimedOuttoE");
         dbHelper.CloseConnection();
 
@@ -141,7 +141,7 @@ public class TaxPayerDB
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
         string UpdateQuery =
-            $"UPDATE [liste$] SET Tablo='G-{Setting.Result}' WHERE Tutar<={Setting.Amount} AND Tablo IS NULL";
+            $"UPDATE [liste$] SET Tablo='G-{Setting.Result}' WHERE Tutar<={Setting.Amount} AND Tablo IS NULL AND ID IS NOT NULL";
         int effectedRows = dbHelper.ExecuteNonQuery(
             UpdateQuery,
             "TaxPayerDB.UpdateListForUnderAmount"

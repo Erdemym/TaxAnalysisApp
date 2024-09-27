@@ -114,7 +114,8 @@ public class TablohDB
         UPDATE [liste$] sbk
         SET sbk.Tablo = 'H-IZDK'
         WHERE
-            sbk.Tablo IS NULL
+            sbk.ID IS NOT NULL 
+            AND sbk.Tablo IS NULL
             AND EXISTS (
                 SELECT 1
                 FROM [tablo-h$] tabloH
@@ -147,7 +148,8 @@ public class TablohDB
         UPDATE [liste$] sbk
         SET sbk.Tablo = 'H-250'
         WHERE
-            sbk.Tablo IS NULL
+            sbk.ID IS NOT NULL 
+            AND sbk.Tablo IS NULL
             AND EXISTS (
                 SELECT 1
                 FROM [tablo-h$] tabloH
