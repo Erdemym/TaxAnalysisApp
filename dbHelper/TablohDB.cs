@@ -191,7 +191,8 @@ public class TablohDB
         UPDATE [liste$] sbk
         SET sbk.Tablo = 'ZZZ'
         WHERE
-            sbk.Tablo IS NULL
+            sbk.ID IS NOT NULL 
+            AND sbk.Tablo IS NULL
             AND NOT EXISTS (
                 SELECT 1
                 FROM [tablo-h$] tabloH

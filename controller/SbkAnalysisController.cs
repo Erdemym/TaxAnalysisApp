@@ -31,11 +31,10 @@ public class SbkAnalysisController : AnalysisController
 
         //sbk under amount control
         tablohAction.DetermineUnderAmountTabloHforSBK();
-
         //sbk tabloH control
         if (
             !GlobalVariables.TablohEmptyFlag
-            || GlobalVariables.VtrReportType != "VTR-Tamamen Sahte Belge Düzenleme"
+            && GlobalVariables.VtrReportType == "VTR-Tamamen Sahte Belge Düzenleme"
         )
         {
             tablohAction.DetermineTabloHforSBK();
