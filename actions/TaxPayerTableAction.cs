@@ -44,7 +44,6 @@ public class TaxPayerTableAction
             foreach (DataRow row in doubleTaxPayersTable.Rows)
             {
                 string taxNumber = row["VKN"].ToString();
-                string RowOrder = row["ID"].ToString();
                 int year = 9999;
                 int count = 0;
                 try
@@ -54,7 +53,7 @@ public class TaxPayerTableAction
                 }
                 catch
                 {
-                    Print.ColorRed($"{RowOrder} -) {taxNumber} vergi nolu mükellefin yılı sayı değil");
+                    Print.ColorRed($"{taxNumber} vergi nolu mükellefin yılı sayı değil");
                 }
                 //check taxNumber is empty write "Vergi numaralarini kontrol edin
                 if (string.IsNullOrEmpty(taxNumber))
@@ -66,7 +65,7 @@ public class TaxPayerTableAction
                 }
                 else
                     Print.ColorRed(
-                        $"{RowOrder} -) {taxNumber} vergi nolu Mükellefin {year} yılı {count} defa girilmiş"
+                        $"{taxNumber} vergi nolu Mükellefin {year} yılı {count} defa girilmiş"
                     );
                 GlobalVariables.ErrorFlag = true;
             }
