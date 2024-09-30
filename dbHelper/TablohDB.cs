@@ -191,7 +191,7 @@ public class TablohDB
             string updateQuery =
                 @"
         UPDATE [liste$] sbk
-        SET sbk.Tablo = 'ZZZ'
+        SET sbk.Tablo = 'Z-A'
         WHERE
             sbk.ID IS NOT NULL 
             AND sbk.Tablo IS NULL

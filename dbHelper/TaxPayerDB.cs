@@ -141,7 +141,7 @@ public class TaxPayerDB
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
         string UpdateQuery =
-            $"UPDATE [liste$] SET Tablo='G-{Setting.Result}' WHERE Tutar<={Setting.Amount} AND Tablo IS NULL AND ID IS NOT NULL";
+            $"UPDATE [liste$] SET Tablo='Z-{Setting.Result}' WHERE Tutar<={Setting.Amount} AND Tablo IS NULL AND ID IS NOT NULL";
         int effectedRows = dbHelper.ExecuteNonQuery(
             UpdateQuery,
             "TaxPayerDB.UpdateListForUnderAmount"
