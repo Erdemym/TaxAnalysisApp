@@ -131,10 +131,15 @@ public class TextOperations
                 StringComparison.OrdinalIgnoreCase
             );
         }
-        else if (description.EndsWith("MAL MD.", StringComparison.OrdinalIgnoreCase))
+        else if (description.EndsWith("MAL MD.", StringComparison.OrdinalIgnoreCase) || description.EndsWith("MALMD.", StringComparison.OrdinalIgnoreCase))
         {
             description = description.Replace(
                 "MAL MD.",
+                "Mal Müdürlüğünün",
+                StringComparison.OrdinalIgnoreCase
+            );
+            description = description.Replace(
+                "MALMD.",
                 "Mal Müdürlüğünün",
                 StringComparison.OrdinalIgnoreCase
             );

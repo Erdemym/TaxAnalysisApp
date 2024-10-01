@@ -21,8 +21,9 @@ public class SettingAction
         if (ayarTable.Rows.Count == 0)
         {
             GlobalVariables.ErrorFlag = true;
-            Print.WriteErrorMessage("VTR ayarları girilmedi.Lütfen kontrol ediniz.");
-            AnalysisController.CheckErrorFlag();
+  
+  
+              AnalysisController.CheckErrorFlag();
         }
         DataRow getFirst = ayarTable.Rows[0];
         Vtr vtrData = VtrTableAction.fillVtrModel(getFirst);
