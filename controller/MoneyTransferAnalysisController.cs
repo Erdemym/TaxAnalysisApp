@@ -13,7 +13,7 @@ public class MoneyTransferAnalysisController : AnalysisController
     {
         TaxPayerTableAction sbkAction = new TaxPayerTableAction();
 
-        sbkAction.DetermineTaxPayersUnderAmountG();
+        sbkAction.DetermineTaxPayersUnderAmountG("G");
 
         if (!GlobalVariables.MatrahEmptyFlag)
         {

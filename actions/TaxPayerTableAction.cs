@@ -24,10 +24,10 @@ public class TaxPayerTableAction
     }
 
     //find TaxPayers under amount and Change Tablo to G-Under Amount
-    public void DetermineTaxPayersUnderAmountG()
+    public void DetermineTaxPayersUnderAmountG(string resultLetter)
     {
         TaxPayerDB taxPayerDB = new TaxPayerDB();
-        GlobalVariables.PotentialGCount = taxPayerDB.UpdateListForUnderAmount();
+        GlobalVariables.PotentialGCount = taxPayerDB.UpdateListForUnderAmount(resultLetter);
         if (GlobalVariables.PotentialGCount > 0)
         {
             GlobalVariables.ReasonGUnderAmountFlag = true;

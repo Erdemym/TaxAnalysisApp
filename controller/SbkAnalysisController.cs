@@ -39,7 +39,7 @@ public class SbkAnalysisController : AnalysisController
         {
             tablohAction.DetermineTabloHforSBK();
         }
-        sbkAction.DetermineTaxPayersUnderAmountG();
+        sbkAction.DetermineTaxPayersUnderAmountG(GlobalVariables.PotentialLetter);
         tablohAction.DetermineTaxPayerNotInTabloHforSBK();
         new TablohErrorAction().writeTablohErrorToList();
         //Fill all blank field to A

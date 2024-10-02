@@ -14,7 +14,7 @@ public class SbdAnalysisController : AnalysisController
     public override void Analysis()
     {
         TaxPayerTableAction sbdAction = new TaxPayerTableAction();
-        sbdAction.DetermineTaxPayersUnderAmountG();
+        sbdAction.DetermineTaxPayersUnderAmountG("G");
 
         TablohTableAction tablohAction = new TablohTableAction();
         tablohAction.DetermineGVTR();
