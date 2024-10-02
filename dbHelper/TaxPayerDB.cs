@@ -137,13 +137,8 @@ public class TaxPayerDB
         return table;
     }
 
-    public int UpdateListForUnderAmount()
+    public int UpdateListForUnderAmount(string resultLetter)
     {
-        string resultLetter = "G";
-
-        if (Setting.AnalysisType == "SBK")
-            resultLetter = "ZZZZZ";
-
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
         string UpdateQuery =

@@ -44,15 +44,15 @@ public class Messages
         string potentialType = "";
         if (GlobalVariables.PotentialGCount > 0 && GlobalVariables.PotentialZZZCount > 0)
         {
-            potentialType = $"G-{Setting.Result} ve ZZZ";
+            potentialType = $"{GlobalVariables.PotentialLetter}-{Setting.Result} ve {GlobalVariables.PotentialLetter}-A";
         }
         else if (GlobalVariables.PotentialGCount > 0)
         {
-            potentialType = $"G-{Setting.Result}";
+            potentialType = $"{GlobalVariables.PotentialLetter}-{Setting.Result}";
         }
         else if (GlobalVariables.PotentialZZZCount > 0)
         {
-            potentialType = "ZZZ";
+            potentialType = $"{GlobalVariables.PotentialLetter}-A";
         }
 
         string messages =
