@@ -79,7 +79,8 @@ public class TaxPayerDB
     public int SetBlankToA()
     {
         OleDbHelper dbHelper = new OleDbHelper();
-        string updateQuery = $"Update [liste$] set [Tablo]='A' where ID IS NOT NULL AND [Tablo] is NULL";
+        string updateQuery =
+            $"Update [liste$] set [Tablo]='A' where ID IS NOT NULL AND [Tablo] is NULL";
         dbHelper.OpenConnection();
         int effectedRows = dbHelper.ExecuteNonQuery(updateQuery, "TaxPayerDB.setBlankToA");
         dbHelper.CloseConnection();
@@ -138,10 +139,15 @@ public class TaxPayerDB
 
     public int UpdateListForUnderAmount()
     {
+        string resultLetter = "G";
+
+        if (Setting.AnalysisType == "SBK")
+            resultLetter = "ZZZZZ";
+
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
         string UpdateQuery =
-            $"UPDATE [liste$] SET Tablo='Z-{Setting.Result}' WHERE Tutar<={Setting.Amount} AND Tablo IS NULL AND ID IS NOT NULL";
+            $"UPDATE [liste$] SET Tablo='{resultLetter}-{Setting.Result}' WHERE Tutar<={Setting.Amount} AND Tablo IS NULL AND ID IS NOT NULL";
         int effectedRows = dbHelper.ExecuteNonQuery(
             UpdateQuery,
             "TaxPayerDB.UpdateListForUnderAmount"
@@ -183,30 +189,37 @@ public class TaxPayerDB
             new { VtrTitle = "RDK Değerlendirme Tarihi", VtrInfo = vtrInfo.EvaluationDate },
         };
 
-        int rowID=4;
-        int listCount=GetListCount();
+        int rowID = 4;
+        int listCount = GetListCount();
         foreach (var item in vtrData)
         {
-            
-            string insertQuery = $"UPDATE[liste$] SET VtrBaslik = '{item.VtrTitle}', VtrBilgisi = '{item.VtrInfo}' Where ID = {rowID}";
-            if(listCount<14)
-                insertQuery = $"INSERT INTO [liste$] (VtrBaslik,VtrBilgisi) VALUES ('{item.VtrTitle}','{item.VtrInfo}')";
+            string insertQuery =
+                $"UPDATE[liste$] SET VtrBaslik = '{item.VtrTitle}', VtrBilgisi = '{item.VtrInfo}' Where ID = {rowID}";
+            if (listCount < 14)
+                insertQuery =
+                    $"INSERT INTO [liste$] (VtrBaslik,VtrBilgisi) VALUES ('{item.VtrTitle}','{item.VtrInfo}')";
             dbHelper.ExecuteNonQuery(insertQuery, "TaxPayerDB.AddVtrInfo");
             rowID++;
         }
         dbHelper.CloseConnection();
-
     }
 
-
-    public void AddExcelName(){
+    public void AddExcelName()
+    {
         OleDbHelper dbHelper = new OleDbHelper();
         dbHelper.OpenConnection();
-        string excelName = GlobalVariables.DocumentNumber+","+GlobalVariables.Inspector+","+GlobalVariables.VtrNumber.Replace("[","").Replace("]","").Replace("/","_")+","+GlobalVariables.VtrTaxPayerTitle;
-        if(Setting.AnalysisType!="SBK")
-            excelName += ","+Setting.AnalysisType;
+        string excelName =
+            GlobalVariables.DocumentNumber
+            + ","
+            + GlobalVariables.Inspector
+            + ","
+            + GlobalVariables.VtrNumber.Replace("[", "").Replace("]", "").Replace("/", "_")
+            + ","
+            + GlobalVariables.VtrTaxPayerTitle;
+        if (Setting.AnalysisType != "SBK")
+            excelName += "," + Setting.AnalysisType;
         string insertQuery = $"UPDATE[liste$] SET ExcelAdi = '{excelName}' Where ID = 1";
-        dbHelper.ExecuteNonQuery(insertQuery,"TaxPayerDB.AddExcelName");
+        dbHelper.ExecuteNonQuery(insertQuery, "TaxPayerDB.AddExcelName");
         dbHelper.CloseConnection();
     }
 
