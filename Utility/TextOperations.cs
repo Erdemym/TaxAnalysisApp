@@ -79,7 +79,6 @@ public class TextOperations
     {
         var replacements = new Dictionary<string, string>
         {
-            { "Insaat", "İnşaat" },
             { "Sirketi", "Şirketi" },
             { "Anonim Şirketi", "A.Ş." },
             { "Anonim Sirketi", "A.Ş." },
@@ -98,9 +97,45 @@ public class TextOperations
             { "Lımıted Sırketı", "Ltd.Şti." },
             { "Lımıted Sırket", "Ltd.Şti." },
             { "Lımıted Şırket", "Ltd.Şti." },
+            {"Sti.", "Şti."},
             { " Demır ", " Demir " },
             { " Celık ", " Çelik " },
             { " Narencıye ", " Narenciye " },
+            {"Temızlık","Temizlik"},
+            {"Otomotıv","Otomotiv"},
+            {"Hızmetlerı","Hizmetleri"},
+            { "Insaat", "İnşaat" },
+            {"Iletisim","İletişim"},
+            {"Elektrık","Elektrik"},
+            {"Enerjı","Enerji"},
+            {"Bilgı","Bilgi"},
+            {" Bılısım","Bilişim"},
+            {"Kırtasıye","Kırtasiye"},
+            {"Urunlerı","Ürünleri"},
+            {"Plastık","Plastik"},
+            {"Hafrıyat","Hafriyat"},
+            {"Madenı","Madeni"},
+            {"Teknolojı","Teknoloji"},
+            {"Tekstıl","Tekstil"},
+            {" Yag ", " Yağ " },
+            {"Naklıyat","Nakliyat"},
+            {"Sanayı","Sanayi"},
+            {"Ithalat","İthalat"},
+            {"Ihale","İhale"},
+            {"Ihracat","İhracat"},
+            {"Yemekcılık","Yemekcilik"},
+            {"Muhendıslık","Mühendislik"},
+            {" Dogus ", " Doğuş " },
+            {" Gerı "," Geri "},
+            {" Donusum ", " Dönüşüm "},
+            {" Dönüsüm ", " Dönüşüm "},
+            {"Malzemelerı","Malzemeleri"},
+            {"Temızleme","Temizleme"},
+
+
+
+
+
         };
 
         // Replace keywords in the content
