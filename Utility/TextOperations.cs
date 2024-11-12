@@ -79,7 +79,6 @@ public class TextOperations
     {
         var replacements = new Dictionary<string, string>
         {
-            { "Sirketi", "Şirketi" },
             { "Anonim Şirketi", "A.Ş." },
             { "Anonim Sirketi", "A.Ş." },
             { "Anonim Sirket", "A.Ş." },
@@ -97,13 +96,12 @@ public class TextOperations
             { "Lımıted Sırketı", "Ltd.Şti." },
             { "Lımıted Sırket", "Ltd.Şti." },
             { "Lımıted Şırket", "Ltd.Şti." },
-            {"Sti.", "Şti."},
             { " Demır ", " Demir " },
             { " Celık ", " Çelik " },
             { " Narencıye ", " Narenciye " },
             {"Temızlık","Temizlik"},
             {"Otomotıv","Otomotiv"},
-            {"Hızmetlerı","Hizmetleri"},
+            {"Hızmet","Hizmet"},
             { "Insaat", "İnşaat" },
             {"Iletisim","İletişim"},
             {"Elektrık","Elektrik"},
@@ -111,7 +109,7 @@ public class TextOperations
             {"Bilgı","Bilgi"},
             {" Bılısım","Bilişim"},
             {"Kırtasıye","Kırtasiye"},
-            {"Urunlerı","Ürünleri"},
+            {"Urun","Ürün"},
             {"Plastık","Plastik"},
             {"Hafrıyat","Hafriyat"},
             {"Madenı","Madeni"},
@@ -129,10 +127,14 @@ public class TextOperations
             {" Gerı "," Geri "},
             {" Donusum ", " Dönüşüm "},
             {" Dönüsüm ", " Dönüşüm "},
-            {"Malzemelerı","Malzemeleri"},
+            //{"Malzemelerı","Malzemeleri"},
             {"Temızleme","Temizleme"},
-
-
+            {"lerı ","leri "},
+            {"Bıtkısel","Bitkisel"},
+            {"Profıl","Profil"},
+            {"Tıc.","Tic."},
+            {"Stı.","Şti."},
+            {"Sti.","Şti."},
 
 
 
