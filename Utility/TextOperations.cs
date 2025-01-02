@@ -87,7 +87,6 @@ public class TextOperations
             { "Limited Sirketi", "Ltd.Şti." },
             { "Limited Sirket", "Ltd.Şti." },
             { "Limited Şirket", "Ltd.Şti." },
-            { "Sırketı", "Şirketi" },
             { "Anonım Şirketi", "A.Ş." },
             { "Anonım Sirketi", "A.Ş." },
             { "Anonım Sirket", "A.Ş." },
@@ -96,6 +95,7 @@ public class TextOperations
             { "Lımıted Sırketı", "Ltd.Şti." },
             { "Lımıted Sırket", "Ltd.Şti." },
             { "Lımıted Şırket", "Ltd.Şti." },
+
             { " Demır ", " Demir " },
             { " Celık ", " Çelik " },
             { " Narencıye ", " Narenciye " },
@@ -135,6 +135,11 @@ public class TextOperations
             {"Tıc.","Tic."},
             {"Stı.","Şti."},
             {"Sti.","Şti."},
+            { "Sırketı", "Şirketi" },
+            { "Lımıted", "Limited" },
+            { "Tıcaret", "Ticaret" },
+            { " Is ", " İş " },
+            {"Makına","Makina"},
 
 
 

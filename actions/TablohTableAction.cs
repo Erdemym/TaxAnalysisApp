@@ -31,12 +31,6 @@ public class TablohTableAction
     {
         TablohDB tabloHDb = new TablohDB();
         DataTable tabloHTable = tabloHDb.CheckTablohUnexceptedYears();
-        if (tabloHTable.Rows.Count > 0)
-        {
-            Print.ColorYellow(
-                $"!!!!!!!!!!!-Tablo-H da {Setting.HYear} yılı var.{Setting.HYear} yılı H analizine girmez. Kontrol Ediniz."
-            );
-        }
     }
 
     public void DetermineGVTR()
@@ -54,6 +48,8 @@ public class TablohTableAction
             GlobalVariables.ReasonHFlag = true;
         }
     }
+
+ 
 
     public void DetermineUnderAmountTabloHforSBK()
     {

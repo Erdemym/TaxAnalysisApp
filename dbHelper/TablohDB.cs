@@ -132,6 +132,16 @@ public class TablohDB
                 "TablohTableAction.DetermineTabloHforSBK"
             );
 
+             if (effectedRow > 0)
+            {
+                updateQuery =
+                    $"UPDATE [liste$] SET Tablo='A' WHERE Yil={Setting.HYear} AND Tablo = 'H-IZDK'";
+                effectedRow = dbHelper.ExecuteNonQuery(
+                    updateQuery,
+                    "TablohTableAction.DetermineUnderAmountTabloHforSBK2"
+                );
+            }
+
             dbHelper.CloseConnection();
 
             return effectedRow;
