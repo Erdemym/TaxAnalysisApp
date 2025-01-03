@@ -79,35 +79,29 @@ public class TextOperations
     {
         var replacements = new Dictionary<string, string>
         {
-            { "Anonim Şirketi", "A.Ş." },
-            { "Anonim Sirketi", "A.Ş." },
-            { "Anonim Sirket", "A.Ş." },
-            { "Anonim Şirket", "A.Ş." },
-            { "Limited Şirketi", "Ltd.Şti." },
-            { "Limited Sirketi", "Ltd.Şti." },
-            { "Limited Sirket", "Ltd.Şti." },
-            { "Limited Şirket", "Ltd.Şti." },
-            { "Anonım Şirketi", "A.Ş." },
-            { "Anonım Sirketi", "A.Ş." },
-            { "Anonım Sirket", "A.Ş." },
-            { "Anonım Şirket", "A.Ş." },
-            { "Lımıted Şırketı", "Ltd.Şti." },
-            { "Lımıted Sırketı", "Ltd.Şti." },
-            { "Lımıted Sırket", "Ltd.Şti." },
-            { "Lımıted Şırket", "Ltd.Şti." },
-
-            { " Demır ", " Demir " },
-            { " Celık ", " Çelik " },
-            { " Narencıye ", " Narenciye " },
+            {"Sırketı","Şirketi"},
+            {"Sırket","Şirket"},
+            {"Lımıted","Limited"},
+            {"Tıcaret","Ticaret"},
+            {"Ticaret","Tic."},
+            {"Anonım","Anonim"},
+            {"Anonim Şirketi","A.Ş."},
+            {"Anonim Şirket","A.Ş."},
+            {"Limited Şirketi","Ltd.Şti."},
+            {"Limited Şirket","Ltd.Şti."},
+            {" Demır "," Demir "},
+            {" Celık "," Çelik "},
+            {" Narencıye "," Narenciye "},
             {"Temızlık","Temizlik"},
             {"Otomotıv","Otomotiv"},
-            {"Hızmet","Hizmet"},
-            { "Insaat", "İnşaat" },
+            {"ızmet","izmet"}, //Hizmet
+            {"Insaat","İnşaat"},
+            {"Iletısım","İletişim"},
             {"Iletisim","İletişim"},
             {"Elektrık","Elektrik"},
             {"Enerjı","Enerji"},
             {"Bilgı","Bilgi"},
-            {" Bılısım","Bilişim"},
+            {"Bılısım","Bilişim"},
             {"Kırtasıye","Kırtasiye"},
             {"Urun","Ürün"},
             {"Plastık","Plastik"},
@@ -115,7 +109,7 @@ public class TextOperations
             {"Madenı","Madeni"},
             {"Teknolojı","Teknoloji"},
             {"Tekstıl","Tekstil"},
-            {" Yag ", " Yağ " },
+            {" Yag"," Yağ"},
             {"Naklıyat","Nakliyat"},
             {"Sanayı","Sanayi"},
             {"Ithalat","İthalat"},
@@ -123,26 +117,51 @@ public class TextOperations
             {"Ihracat","İhracat"},
             {"Yemekcılık","Yemekcilik"},
             {"Muhendıslık","Mühendislik"},
-            {" Dogus ", " Doğuş " },
+            {" Dogus "," Doğuş "},
             {" Gerı "," Geri "},
-            {" Donusum ", " Dönüşüm "},
-            {" Dönüsüm ", " Dönüşüm "},
-            //{"Malzemelerı","Malzemeleri"},
+            {" Donusum "," Dönüşüm "},
+            {" Dönüsüm "," Dönüşüm "},
             {"Temızleme","Temizleme"},
-            {"lerı ","leri "},
             {"Bıtkısel","Bitkisel"},
+            {"Bılgısayar","Bilgisayar"},
+            {"Organızasyon","Organizasyon"},
+            {"Danısmanlık","Danışmanlık"},
+            {"Alümınyum","Alüminyum"},
+            {"Lıght","Light"},
+            {"Kozmetık","Kozmetik"},
+            {"Imalat","İmalat"},
+            {"Hıjyen","Hijyen"},
+            {"Itrıyat","Itriyat"},
+            {"Elektronık","Elektronik"},
+            {"Medıkal","Medikal"},
+            {"Mobılya","Mobilya"},
+            {"Ikız","İkiz"},
+            {"Naklıye","Nakliye"},
+            {"oglu","oğlu"},
+            {"Mersın","Mersin"},
+            {"Züccacıye","Züccaciye"},
+            {"Çelık","Çelik"},
+            {" Dıs "," Dış "},
+            {"Kımya","Kimya"},
+            {"Arastırma","Araştırma"},
+            {"Kıralama","Kiralama"},
+            {"Rehabılıtasyon","Rehabilitasyon"},
+            {"Saglıgı","Sağlığı"},
+            {"Saglık","Sağlık"},
+            {"Nınova","Ninova"},
+            {"Yenı","Yeni"},
+            {"Yenılenebılır","Yenilenebilir"},
+            {"Dınamık","Dinamik"}, 
             {"Profıl","Profil"},
+            {"Üretım","Üretim"},
+            {"Sanayi","San."},
             {"Tıc.","Tic."},
             {"Stı.","Şti."},
             {"Sti.","Şti."},
-            { "Sırketı", "Şirketi" },
-            { "Lımıted", "Limited" },
-            { "Tıcaret", "Ticaret" },
-            { " Is ", " İş " },
+            {"Tic. Ltd","Tic.Ltd"},
+            {"lerı ","leri "},
+            {" Is "," İş "},
             {"Makına","Makina"},
-
-
-
         };
 
         // Replace keywords in the content
@@ -156,7 +175,7 @@ public class TextOperations
     public static string FormatTaxOfficeName(string taxOfficeName)
     {
         // Split the input string into the code and description parts
-        var parts = taxOfficeName.Split(new[] { " - " }, StringSplitOptions.None);
+        var parts = taxOfficeName.Split(new[] {" - "}, StringSplitOptions.None);
         if (parts.Length != 2)
         {
             return "###Vergi Dairesi Adı Bilinmiyor.###";
@@ -269,8 +288,8 @@ public class TextOperations
 
     public static string FormatName(string name)
     {
-        name = FormatName(name, " ");
-        return FormatName(name, ".");
+        name = FormatName(name," ");
+        return FormatName(name,".");
     }
 
     static string FormatName(string name, string split)
