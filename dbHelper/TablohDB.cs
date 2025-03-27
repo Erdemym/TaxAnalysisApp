@@ -219,6 +219,9 @@ public class TablohDB
                 "TablohTableAction.DetermineTaxPayerNotInTabloHforSBK"
             );
             dbHelper.CloseConnection();
+            if(GlobalVariables.PotentialZZZCount > 0 ){
+                GlobalVariables.ReasonAFlag=true;
+            }
         }
     }
 }
