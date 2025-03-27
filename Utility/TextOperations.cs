@@ -321,7 +321,7 @@ public class TextOperations
     public static string FormatVkn(string Vkn)
     {
         if (Vkn.Length != 10)
-            throw new ArgumentException("The input number must be 10 digits long.");
+            Vkn = Vkn.PadLeft(10, '0');
 
         return $"{Vkn.Substring(0, 3)} {Vkn.Substring(3, 3)} {Vkn.Substring(6, 4)}";
     }
