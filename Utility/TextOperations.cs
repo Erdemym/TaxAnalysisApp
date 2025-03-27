@@ -162,6 +162,7 @@ public class TextOperations
             {"lerı ","leri "},
             {" Is "," İş "},
             {"Makına","Makina"},
+            {"Enjeksı","Enjeksi"},
         };
 
         // Replace keywords in the content
