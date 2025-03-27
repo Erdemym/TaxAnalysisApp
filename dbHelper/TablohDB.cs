@@ -105,7 +105,8 @@ public class TablohDB
 
     public int FindAndUpdateHIZDK()
     {
-        int effectedRow = 0;
+        int effectedRowHIZDK = 0;
+        int effectedRowHYear = 0;
         using (OleDbHelper dbHelper = new OleDbHelper())
         {
             dbHelper.OpenConnection();
@@ -127,24 +128,25 @@ public class TablohDB
                     AND tabloH.[Devam Eden Görev] = 'Yok'
                     AND tabloH.[KDV Mükellefiyeti] = 'Var'
             )";
-            effectedRow = dbHelper.ExecuteNonQuery(
+            effectedRowHIZDK = dbHelper.ExecuteNonQuery(
                 updateQuery,
                 "TablohTableAction.DetermineTabloHforSBK"
             );
 
-             if (effectedRow > 0)
+             if (effectedRowHIZDK > 0)
             {
+                
                 updateQuery =
                     $"UPDATE [liste$] SET Tablo='A' WHERE Yil={Setting.HYear} AND Tablo = 'H-IZDK'";
-                effectedRow = dbHelper.ExecuteNonQuery(
+                effectedRowHYear = dbHelper.ExecuteNonQuery(
                     updateQuery,
                     "TablohTableAction.DetermineUnderAmountTabloHforSBK2"
                 );
             }
-
+            effectedRowHIZDK=effectedRowHIZDK-effectedRowHYear;
             dbHelper.CloseConnection();
 
-            return effectedRow;
+            return effectedRowHIZDK;
         }
     }
 
