@@ -85,6 +85,7 @@ public static class CheckDatas
         if (GlobalVariables.VtrReportType == "VTR-Tamamen Sahte Belge Düzenleme") { }
         else if (!GlobalVariables.VtrReportType.StartsWith("VTR"))
         {
+            Console.WriteLine(GlobalVariables.VtrReportType);
             Print.WriteErrorMessage("Rapor Türü VTR değil. Yönetici ile görüşün.");
         }
         else if (GlobalVariables.VtrReportType == "VTR-Genel")
