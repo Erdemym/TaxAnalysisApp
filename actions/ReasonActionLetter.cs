@@ -46,6 +46,14 @@ public class ReasonLetterAction
         return reasonText;
     }
 
+    private string SBKReasonGMatrah7326and7440(string matrahLawCode)
+    {//4.3
+        string reasonText =
+            $"yazısında yer alan hususlar doğrultusunda; {GlobalVariables.VtrTaxPeriod.Split(',')[0]} yılı ve {GlobalVariables.VtrTaxPeriod.Split(',')[1]} yılı işlemlerinin sahte belge kullanma yönünden incelenmesi talep edilen mükellefin ilgili dönemine ilişkin olarak, VDKBİS ve GİBİNTRANET'ten yapılan araştırmalar doğrultusunda {GlobalVariables.VtrTaxPeriod.Split(',')[0]} yılı için 7326 sayılı Kanun kapsamında KDV yönünden vergi artırımında bulunduğu ve ödemelerini Kanunda belirtilen şartlara uygun olarak yaptığı, {GlobalVariables.VtrTaxPeriod.Split(',')[1]} yılı için ise 7440 sayılı Kanun kapsamında KDV yönünden vergi artırımında bulunduğu ve ödemelerini Kanunda belirtilen şartlara uygun olarak yaptığı tespit edildiğinden; inceleme talebinin İhbar ve İnceleme Taleplerini Değerlendirme Komisyonlarının Oluşturulması ile Çalışma Usul ve Esaslarına İlişkin Yönerge'nin 10/(2)-g bendi gereğince hıfz edilmesine karar verilmiştir.";
+        reasonText = beginingOfReasonText + reasonText;
+        return reasonText;
+    }
+
     private string SBKReasonGUnderAmount44()
     {//9-4.4
         string reasonText =
@@ -139,9 +147,13 @@ public class ReasonLetterAction
         }
         if (GlobalVariables.ReasonGMatrah7440Flag)
         {
-            allContent = allContent + "Karar G Matrah 7440\t" + SBKReasonGMatrah("7440") + "\n";
+            allContent = allContent + "Karar G Matrah 7440 (Yılı kontrol edin)\t" + SBKReasonGMatrah("7440") + "\n";
         }
-
+        if(GlobalVariables.VtrTaxPeriod.Split(',').Length>1 && GlobalVariables.ReasonGMatrah7440Flag && GlobalVariables.ReasonGMatrah7326Flag)
+        {
+            allContent = allContent + "Karar G Matrah 7326 ve 7440 (Yıl ve Matrah kodunu kontrol edin)\t" + SBKReasonGMatrah7326and7440() + "\n";
+        }
+        
         if (GlobalVariables.ReasonGVTRFlag)
         {
             allContent = allContent + "\nGVTR Gerekçeleri\n";
