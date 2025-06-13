@@ -28,7 +28,7 @@ public class Print
     {
         Console.ForegroundColor = ConsoleColor.Green;
         WriteAsteriskLine();
-        WriteAsteriskLineWithText(" Analiz Programı V3.2.2 ");
+        WriteAsteriskLineWithText(" Analiz Programı V3.2.3 ");
         WriteAsteriskLine();
         WriteAsteriskLineWithText(" Coded by Erdem YILMAZ © 2025 ");
         WriteAsteriskLine();

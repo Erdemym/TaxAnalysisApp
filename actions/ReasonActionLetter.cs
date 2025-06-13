@@ -153,12 +153,12 @@ public class ReasonLetterAction
         {
             allContent = allContent + "\nPotansiyel Mükellef Gerekçeleri\n";
             allContent = allContent + "Karar No\tDetay\tGerekçe\n";
-            allContent = allContent + "No:4.4 (Potansiyel Mükellef)\tTutar Fark Etmeksizin\t" + SBKReasonGUnderAmount44() + "\n";
-            allContent = allContent + "No:4.5 (Hasılat Esaslı Vergilendirilen Mükellef)\tTutar Fark Etmeksizin\t" + SBKReasonGUnderAmount45() + "\n";
-            allContent = allContent + "No:4.6 (Dernek,Vakıf,Siyasi Parti gibi kurum ve kuruluşlar) \tKV/GV ve KDV mükellefiyeti olmayan ("+Setting.Amount+".TL Altı olması şartıyla)\t" + SBKReasonGUnderAmount46() + "\n";
-            allContent = allContent + "No:4.7 (Sigorta Şirketi)\t"+Setting.Amount+".TL Altı olması şartıyla\t" + SBKReasonGUnderAmount47() + "\n";
-            allContent = allContent + "No:4.8 (KDV mükellefiyeti olmayan Gelir Mükellefiyeti olan)\t("+Setting.Amount+".TL Altı olması şartıyla)\t" + SBKReasonGUnderAmount48() + "\n";
-            allContent = allContent + "No:5.2 (Basit Usul)\tHasılat KDV mükellefiyeti olanlar hariç\t" + SBKReasonEBasitUsul52() + "\n";
+            allContent = allContent + "G-No:4.4 (Potansiyel Mükellef)\tTutar Fark Etmeksizin\t" + SBKReasonGUnderAmount44() + "\n";
+            allContent = allContent + "G-No:4.5 (Hasılat Esaslı Vergilendirilen Mükellef)\tTutar Fark Etmeksizin\t" + SBKReasonGUnderAmount45() + "\n";
+            allContent = allContent + "G-No:4.6 (Dernek,Vakıf,Siyasi Parti gibi kurum ve kuruluşlar) \tKV/GV ve KDV mükellefiyeti olmayan ("+Setting.Amount+".TL Altı olması şartıyla)\t" + SBKReasonGUnderAmount46() + "\n";
+            allContent = allContent + "G-No:4.7 (Sigorta Şirketi)\t"+Setting.Amount+".TL Altı olması şartıyla\t" + SBKReasonGUnderAmount47() + "\n";
+            allContent = allContent + "G-No:4.8 (KDV mükellefiyeti olmayan Gelir Mükellefiyeti olan)\t(Şirket Faaliyeti \" içinde olan bölüm şirkete göre değişecek)("+Setting.Amount+".TL Altı olması şartıyla)\t" + SBKReasonGUnderAmount48() + "\n";
+            allContent = allContent + "E-No:5.2 (Basit Usul)\tHasılat KDV mükellefiyeti olanlar hariç\t" + SBKReasonEBasitUsul52() + "\n";
         }
 
         CreateFile.WriteGerekceToTheTextFile(allContent);

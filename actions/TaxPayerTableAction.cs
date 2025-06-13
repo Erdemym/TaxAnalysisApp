@@ -199,7 +199,7 @@ public class TaxPayerTableAction
             try
             {
                 year = Convert.ToInt32(row["Yil"]);
-                if (year < Setting.HYear - 1 || year > Setting.HYear + 5)
+                if (year < Setting.TimeoutYear - 1 || year > Setting.TimeoutYear + 6)
                 {
                     Print.ColorRed(
                         $"{RowOrder} -) {taxNumber} vergi nolu mükellefin yılı {year} olarak girilmiş kontrol ediniz"
@@ -236,7 +236,7 @@ public class TaxPayerTableAction
                 GlobalVariables.ErrorFlag = true;
             }
 
-            if (year < Setting.HYear - 1 || year > Setting.HYear + 5)
+            if (year < Setting.TimeoutYear - 1 || year > Setting.TimeoutYear + 6)
             {
                 Print.ColorRed(
                     $"{RowOrder} -) {taxNumber} vergi nolu mükellefin yılı {year} olarak girilmiş kontrol ediniz"
