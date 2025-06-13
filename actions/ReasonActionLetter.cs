@@ -151,7 +151,7 @@ public class ReasonLetterAction
         }
         if(GlobalVariables.VtrTaxPeriod.Split(',').Length>1 && GlobalVariables.ReasonGMatrah7440Flag && GlobalVariables.ReasonGMatrah7326Flag)
         {
-            allContent = allContent + "Karar G Matrah 7326 ve 7440 (Yıl ve Matrah kodunu kontrol edin)\t" + SBKReasonGMatrah7326and7440() + "\n";
+            allContent = allContent + "Karar G Matrah 7326 ve 7440 (Yılı kontrol edin)\t" + SBKReasonGMatrah7326and7440() + "\n";
         }
         
         if (GlobalVariables.ReasonGVTRFlag)
