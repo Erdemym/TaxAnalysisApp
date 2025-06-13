@@ -46,7 +46,7 @@ public class ReasonLetterAction
         return reasonText;
     }
 
-    private string SBKReasonGMatrah7326and7440(string matrahLawCode)
+    private string SBKReasonGMatrah7326and7440()
     {//4.3
         string reasonText =
             $"yazısında yer alan hususlar doğrultusunda; {GlobalVariables.VtrTaxPeriod.Split(',')[0]} yılı ve {GlobalVariables.VtrTaxPeriod.Split(',')[1]} yılı işlemlerinin sahte belge kullanma yönünden incelenmesi talep edilen mükellefin ilgili dönemine ilişkin olarak, VDKBİS ve GİBİNTRANET'ten yapılan araştırmalar doğrultusunda {GlobalVariables.VtrTaxPeriod.Split(',')[0]} yılı için 7326 sayılı Kanun kapsamında KDV yönünden vergi artırımında bulunduğu ve ödemelerini Kanunda belirtilen şartlara uygun olarak yaptığı, {GlobalVariables.VtrTaxPeriod.Split(',')[1]} yılı için ise 7440 sayılı Kanun kapsamında KDV yönünden vergi artırımında bulunduğu ve ödemelerini Kanunda belirtilen şartlara uygun olarak yaptığı tespit edildiğinden; inceleme talebinin İhbar ve İnceleme Taleplerini Değerlendirme Komisyonlarının Oluşturulması ile Çalışma Usul ve Esaslarına İlişkin Yönerge'nin 10/(2)-g bendi gereğince hıfz edilmesine karar verilmiştir.";
